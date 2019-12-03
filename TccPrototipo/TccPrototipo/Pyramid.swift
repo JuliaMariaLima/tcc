@@ -1,8 +1,8 @@
 //
-//  Cube.swift
+//  Pyramid.swift
 //  TccPrototipo
 //
-//  Created by Julia Maria Santos on 10/11/19.
+//  Created by Julia Maria Santos on 30/11/19.
 //  Copyright © 2019 Julia Maria Santos. All rights reserved.
 //
 
@@ -10,20 +10,21 @@ import Foundation
 import RealityKit
 import Combine
 
-class CubeEntity: Entity, HasModel, HasCollision, HasPhysics {
+class PyramidEntity: Entity, HasModel, HasCollision, HasPhysics {
     var collisionSubs: [Cancellable] = []
     
     required init(color: SimpleMaterial.Color) {
         super.init()
-        let side: Float = 0.2
-        let size: SIMD3<Float> = [side, side, side]
-        self.model = ModelComponent(
-            mesh: .generateBox(size: size),
-            materials: [SimpleMaterial(
-                color: color,
-                isMetallic: false)
-            ]
-        )
+        let modelHolder = try! ModelEntity.loadModel(named: "pyramid.obj")
+        let modelSize = 19.525
+        let wantedSize = 0.2
+        let scale: Float = Float(1 / (modelSize / wantedSize))
+
+        self.setScale(SIMD3<Float>.init(scale, scale, scale), relativeTo: self)
+
+        self.model = modelHolder.model
+        self.model?.materials = [SimpleMaterial(color: color, isMetallic: false)]
+        
         self.generateCollisionShapes(recursive: false)
         
         self.physicsBody = PhysicsBodyComponent()

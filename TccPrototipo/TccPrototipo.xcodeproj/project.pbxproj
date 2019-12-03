@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		960ED8902392C3220037675A /* pyramid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 960ED88F2392C3220037675A /* pyramid.obj */; };
+		960ED8922392C3950037675A /* Pyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960ED8912392C3950037675A /* Pyramid.swift */; };
 		961720EA23789059008E1298 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720E923789059008E1298 /* AppDelegate.swift */; };
 		961720EC23789059008E1298 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720EB23789059008E1298 /* ViewController.swift */; };
-		961720EE23789059008E1298 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = 961720ED23789059008E1298 /* Experience.rcproject */; };
 		961720F123789059008E1298 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720EF23789059008E1298 /* Main.storyboard */; };
 		961720F32378905C008E1298 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 961720F22378905C008E1298 /* Assets.xcassets */; };
 		961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720F42378905C008E1298 /* LaunchScreen.storyboard */; };
@@ -17,10 +18,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		960ED88F2392C3220037675A /* pyramid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pyramid.obj; sourceTree = "<group>"; };
+		960ED8912392C3950037675A /* Pyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pyramid.swift; sourceTree = "<group>"; };
 		961720E623789059008E1298 /* TccPrototipo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TccPrototipo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		961720E923789059008E1298 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		961720EB23789059008E1298 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		961720ED23789059008E1298 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		961720F023789059008E1298 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		961720F22378905C008E1298 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		961720F52378905C008E1298 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,9 +63,10 @@
 				961720E923789059008E1298 /* AppDelegate.swift */,
 				961720EB23789059008E1298 /* ViewController.swift */,
 				961720FD2378906A008E1298 /* Cube.swift */,
-				961720ED23789059008E1298 /* Experience.rcproject */,
+				960ED8912392C3950037675A /* Pyramid.swift */,
 				961720EF23789059008E1298 /* Main.storyboard */,
 				961720F22378905C008E1298 /* Assets.xcassets */,
+				960ED88F2392C3220037675A /* pyramid.obj */,
 				961720F42378905C008E1298 /* LaunchScreen.storyboard */,
 				961720F72378905C008E1298 /* Info.plist */,
 			);
@@ -130,6 +133,7 @@
 			files = (
 				961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */,
 				961720F32378905C008E1298 /* Assets.xcassets in Resources */,
+				960ED8902392C3220037675A /* pyramid.obj in Resources */,
 				961720F123789059008E1298 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,8 +147,8 @@
 			files = (
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
 				961720EC23789059008E1298 /* ViewController.swift in Sources */,
+				960ED8922392C3950037675A /* Pyramid.swift in Sources */,
 				961720EA23789059008E1298 /* AppDelegate.swift in Sources */,
-				961720EE23789059008E1298 /* Experience.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
