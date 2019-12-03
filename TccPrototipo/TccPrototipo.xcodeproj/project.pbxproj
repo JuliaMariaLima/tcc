@@ -15,6 +15,7 @@
 		961720F32378905C008E1298 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 961720F22378905C008E1298 /* Assets.xcassets */; };
 		961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720F42378905C008E1298 /* LaunchScreen.storyboard */; };
 		961720FE2378906A008E1298 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720FD2378906A008E1298 /* Cube.swift */; };
+		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		961720F52378905C008E1298 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		961720F72378905C008E1298 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		961720FD2378906A008E1298 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
+		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				961720EB23789059008E1298 /* ViewController.swift */,
 				961720FD2378906A008E1298 /* Cube.swift */,
 				960ED8912392C3950037675A /* Pyramid.swift */,
+				96581784239612FB004C90D0 /* Floor.swift */,
 				961720EF23789059008E1298 /* Main.storyboard */,
 				961720F22378905C008E1298 /* Assets.xcassets */,
 				960ED88F2392C3220037675A /* pyramid.obj */,
@@ -147,6 +150,7 @@
 			files = (
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
 				961720EC23789059008E1298 /* ViewController.swift in Sources */,
+				96581785239612FB004C90D0 /* Floor.swift in Sources */,
 				960ED8922392C3950037675A /* Pyramid.swift in Sources */,
 				961720EA23789059008E1298 /* AppDelegate.swift in Sources */,
 			);

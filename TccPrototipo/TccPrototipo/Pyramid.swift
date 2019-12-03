@@ -44,8 +44,19 @@ class PyramidEntity: Entity, HasModel, HasCollision, HasPhysics {
             self.physicsBody?.mode = .dynamic
         })
         
+        collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
+            self.physicsBody?.mode = .dynamic
+        })
+        
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
             self.physicsBody?.mode = .kinematic
         })
+    }
+    
+    func cancelCollision() {        
+        for collision in collisionSubs {
+            collision.cancel()
+        }
+        self.physicsBody?.mode = .kinematic
     }
 }

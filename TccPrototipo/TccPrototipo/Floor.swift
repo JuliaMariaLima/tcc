@@ -1,8 +1,8 @@
 //
-//  Cube.swift
+//  Floor.swift
 //  TccPrototipo
 //
-//  Created by Julia Maria Santos on 10/11/19.
+//  Created by Julia Maria Santos on 03/12/19.
 //  Copyright © 2019 Julia Maria Santos. All rights reserved.
 //
 
@@ -10,15 +10,13 @@ import Foundation
 import RealityKit
 import Combine
 
-class CubeEntity: Entity, HasModel, HasCollision, HasPhysics {
+class FloorEntity: Entity, HasModel, HasCollision, HasPhysics {
     var collisionSubs: [Cancellable] = []
     
     required init(color: SimpleMaterial.Color) {
         super.init()
-        let side: Float = 0.2
-        let size: SIMD3<Float> = [side, side, side]
         self.model = ModelComponent(
-            mesh: .generateBox(size: size),
+            mesh: .generatePlane(width: 10, depth: 10),
             materials: [SimpleMaterial(
                 color: color,
                 isMetallic: false)
@@ -43,19 +41,8 @@ class CubeEntity: Entity, HasModel, HasCollision, HasPhysics {
             self.physicsBody?.mode = .dynamic
         })
         
-        collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
-            self.physicsBody?.mode = .dynamic
-        })
-        
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
             self.physicsBody?.mode = .kinematic
         })
-    }
-    
-    func cancelCollision() {        
-        for collision in collisionSubs {
-            collision.cancel()
-        }
-        self.physicsBody?.mode = .kinematic
     }
 }
