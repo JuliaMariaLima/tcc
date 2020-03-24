@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		960ED8902392C3220037675A /* pyramid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 960ED88F2392C3220037675A /* pyramid.obj */; };
-		960ED8922392C3950037675A /* Pyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960ED8912392C3950037675A /* Pyramid.swift */; };
+		960ED8902392C3220037675A /* quadrilateralPyramid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 960ED88F2392C3220037675A /* quadrilateralPyramid.obj */; };
+		960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960ED8912392C3950037675A /* QuadrilateralPyramid.swift */; };
 		961720EA23789059008E1298 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720E923789059008E1298 /* AppDelegate.swift */; };
 		961720EC23789059008E1298 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720EB23789059008E1298 /* ViewController.swift */; };
 		961720F123789059008E1298 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720EF23789059008E1298 /* Main.storyboard */; };
@@ -16,11 +16,28 @@
 		961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720F42378905C008E1298 /* LaunchScreen.storyboard */; };
 		961720FE2378906A008E1298 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720FD2378906A008E1298 /* Cube.swift */; };
 		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
+		96B5639324218707006D595B /* triangularPrism.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639224218707006D595B /* triangularPrism.obj */; };
+		96B5639524218892006D595B /* semiSphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639424218892006D595B /* semiSphere.obj */; };
+		96B5639E24219398006D595B /* cylinder.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639D24219398006D595B /* cylinder.obj */; };
+		96B563A224219637006D595B /* pentagonalPrism.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B563A124219637006D595B /* pentagonalPrism.obj */; };
+		96B563A42421966A006D595B /* octahedron.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B563A32421966A006D595B /* octahedron.obj */; };
+		96B563A6242196BD006D595B /* tetrahedron.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B563A5242196BD006D595B /* tetrahedron.obj */; };
+		96B563A824219AB3006D595B /* cone.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B563A724219AB3006D595B /* cone.obj */; };
+		96B563AA24219BD5006D595B /* pentagonalPyramid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B563A924219BD5006D595B /* pentagonalPyramid.obj */; };
+		96B563AD24256D4D006D595B /* TriangularPrism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563AC24256D4D006D595B /* TriangularPrism.swift */; };
+		96B563AF24256FFE006D595B /* SemiSphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563AE24256FFE006D595B /* SemiSphere.swift */; };
+		96B563B1242570B2006D595B /* Cylinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563B0242570B2006D595B /* Cylinder.swift */; };
+		96B563B3242570F5006D595B /* PentagonalPrism.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563B2242570F5006D595B /* PentagonalPrism.swift */; };
+		96B563B52425715E006D595B /* Octahedron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563B42425715E006D595B /* Octahedron.swift */; };
+		96B563B724257304006D595B /* Tetrahedron.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563B624257304006D595B /* Tetrahedron.swift */; };
+		96B563B92425758F006D595B /* Cone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563B82425758F006D595B /* Cone.swift */; };
+		96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563BA242576FC006D595B /* PentagonalPyramid.swift */; };
+		96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563BC24297D90006D595B /* GeometryEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		960ED88F2392C3220037675A /* pyramid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pyramid.obj; sourceTree = "<group>"; };
-		960ED8912392C3950037675A /* Pyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pyramid.swift; sourceTree = "<group>"; };
+		960ED88F2392C3220037675A /* quadrilateralPyramid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = quadrilateralPyramid.obj; sourceTree = "<group>"; };
+		960ED8912392C3950037675A /* QuadrilateralPyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrilateralPyramid.swift; sourceTree = "<group>"; };
 		961720E623789059008E1298 /* TccPrototipo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TccPrototipo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		961720E923789059008E1298 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		961720EB23789059008E1298 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -30,6 +47,23 @@
 		961720F72378905C008E1298 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		961720FD2378906A008E1298 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
 		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
+		96B5639224218707006D595B /* triangularPrism.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triangularPrism.obj; sourceTree = "<group>"; };
+		96B5639424218892006D595B /* semiSphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = semiSphere.obj; sourceTree = "<group>"; };
+		96B5639D24219398006D595B /* cylinder.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cylinder.obj; sourceTree = "<group>"; };
+		96B563A124219637006D595B /* pentagonalPrism.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pentagonalPrism.obj; sourceTree = "<group>"; };
+		96B563A32421966A006D595B /* octahedron.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = octahedron.obj; sourceTree = "<group>"; };
+		96B563A5242196BD006D595B /* tetrahedron.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetrahedron.obj; sourceTree = "<group>"; };
+		96B563A724219AB3006D595B /* cone.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cone.obj; sourceTree = "<group>"; };
+		96B563A924219BD5006D595B /* pentagonalPyramid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pentagonalPyramid.obj; sourceTree = "<group>"; };
+		96B563AC24256D4D006D595B /* TriangularPrism.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangularPrism.swift; sourceTree = "<group>"; };
+		96B563AE24256FFE006D595B /* SemiSphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemiSphere.swift; sourceTree = "<group>"; };
+		96B563B0242570B2006D595B /* Cylinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cylinder.swift; sourceTree = "<group>"; };
+		96B563B2242570F5006D595B /* PentagonalPrism.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PentagonalPrism.swift; sourceTree = "<group>"; };
+		96B563B42425715E006D595B /* Octahedron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Octahedron.swift; sourceTree = "<group>"; };
+		96B563B624257304006D595B /* Tetrahedron.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tetrahedron.swift; sourceTree = "<group>"; };
+		96B563B82425758F006D595B /* Cone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cone.swift; sourceTree = "<group>"; };
+		96B563BA242576FC006D595B /* PentagonalPyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PentagonalPyramid.swift; sourceTree = "<group>"; };
+		96B563BC24297D90006D595B /* GeometryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,18 +96,43 @@
 		961720E823789059008E1298 /* TccPrototipo */ = {
 			isa = PBXGroup;
 			children = (
+				96B563AB24256D29006D595B /* Model */,
 				961720E923789059008E1298 /* AppDelegate.swift */,
 				961720EB23789059008E1298 /* ViewController.swift */,
-				961720FD2378906A008E1298 /* Cube.swift */,
-				960ED8912392C3950037675A /* Pyramid.swift */,
 				96581784239612FB004C90D0 /* Floor.swift */,
 				961720EF23789059008E1298 /* Main.storyboard */,
 				961720F22378905C008E1298 /* Assets.xcassets */,
-				960ED88F2392C3220037675A /* pyramid.obj */,
+				960ED88F2392C3220037675A /* quadrilateralPyramid.obj */,
+				96B5639224218707006D595B /* triangularPrism.obj */,
+				96B5639424218892006D595B /* semiSphere.obj */,
+				96B5639D24219398006D595B /* cylinder.obj */,
+				96B563A124219637006D595B /* pentagonalPrism.obj */,
+				96B563A32421966A006D595B /* octahedron.obj */,
+				96B563A5242196BD006D595B /* tetrahedron.obj */,
+				96B563A724219AB3006D595B /* cone.obj */,
+				96B563A924219BD5006D595B /* pentagonalPyramid.obj */,
 				961720F42378905C008E1298 /* LaunchScreen.storyboard */,
 				961720F72378905C008E1298 /* Info.plist */,
 			);
 			path = TccPrototipo;
+			sourceTree = "<group>";
+		};
+		96B563AB24256D29006D595B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				961720FD2378906A008E1298 /* Cube.swift */,
+				960ED8912392C3950037675A /* QuadrilateralPyramid.swift */,
+				96B563AC24256D4D006D595B /* TriangularPrism.swift */,
+				96B563AE24256FFE006D595B /* SemiSphere.swift */,
+				96B563B0242570B2006D595B /* Cylinder.swift */,
+				96B563B2242570F5006D595B /* PentagonalPrism.swift */,
+				96B563B42425715E006D595B /* Octahedron.swift */,
+				96B563B624257304006D595B /* Tetrahedron.swift */,
+				96B563B82425758F006D595B /* Cone.swift */,
+				96B563BA242576FC006D595B /* PentagonalPyramid.swift */,
+				96B563BC24297D90006D595B /* GeometryEntity.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,10 +193,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96B563A224219637006D595B /* pentagonalPrism.obj in Resources */,
+				96B563AA24219BD5006D595B /* pentagonalPyramid.obj in Resources */,
+				96B5639E24219398006D595B /* cylinder.obj in Resources */,
+				96B563A6242196BD006D595B /* tetrahedron.obj in Resources */,
+				96B5639524218892006D595B /* semiSphere.obj in Resources */,
 				961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */,
 				961720F32378905C008E1298 /* Assets.xcassets in Resources */,
-				960ED8902392C3220037675A /* pyramid.obj in Resources */,
+				96B563A42421966A006D595B /* octahedron.obj in Resources */,
+				960ED8902392C3220037675A /* quadrilateralPyramid.obj in Resources */,
+				96B5639324218707006D595B /* triangularPrism.obj in Resources */,
 				961720F123789059008E1298 /* Main.storyboard in Resources */,
+				96B563A824219AB3006D595B /* cone.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,8 +217,17 @@
 			files = (
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
 				961720EC23789059008E1298 /* ViewController.swift in Sources */,
+				96B563AD24256D4D006D595B /* TriangularPrism.swift in Sources */,
+				96B563B1242570B2006D595B /* Cylinder.swift in Sources */,
+				96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */,
+				96B563AF24256FFE006D595B /* SemiSphere.swift in Sources */,
+				96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */,
+				96B563B724257304006D595B /* Tetrahedron.swift in Sources */,
+				96B563B92425758F006D595B /* Cone.swift in Sources */,
 				96581785239612FB004C90D0 /* Floor.swift in Sources */,
-				960ED8922392C3950037675A /* Pyramid.swift in Sources */,
+				96B563B52425715E006D595B /* Octahedron.swift in Sources */,
+				96B563B3242570F5006D595B /* PentagonalPrism.swift in Sources */,
+				960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */,
 				961720EA23789059008E1298 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

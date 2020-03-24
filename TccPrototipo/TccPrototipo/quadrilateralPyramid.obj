@@ -1,5 +1,5 @@
-# Apple ModelIO OBJ File: pyramid
-mtllib pyramid.mtl
+# Apple ModelIO OBJ File: quadrilateralPyramid
+mtllib quadrilateralPyramid.mtl
 g 
 v 0.087523 19.753 -0.049868
 v 9.7623 0.2284 9.7623

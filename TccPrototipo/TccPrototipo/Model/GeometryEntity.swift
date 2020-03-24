@@ -1,29 +1,21 @@
 //
-//  Cube.swift
+//  GeometryEntity.swift
 //  TccPrototipo
 //
-//  Created by Julia Maria Santos on 10/11/19.
-//  Copyright © 2019 Julia Maria Santos. All rights reserved.
+//  Created by Julia Maria Santos on 23/03/20.
+//  Copyright © 2020 Julia Maria Santos. All rights reserved.
 //
 
 import Foundation
 import RealityKit
 import Combine
 
-class CubeEntity: Entity, HasModel, HasCollision, HasPhysics {
+class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
     var collisionSubs: [Cancellable] = []
-    
-    required init(color: SimpleMaterial.Color) {
+
+    required init() {
         super.init()
-        let side: Float = 0.2
-        let size: SIMD3<Float> = [side, side, side]
-        self.model = ModelComponent(
-            mesh: .generateBox(size: size),
-            materials: [SimpleMaterial(
-                color: color,
-                isMetallic: false)
-            ]
-        )
+        
         self.generateCollisionShapes(recursive: false)
         
         self.physicsBody = PhysicsBodyComponent()
@@ -31,9 +23,6 @@ class CubeEntity: Entity, HasModel, HasCollision, HasPhysics {
         self.physicsBody?.mode = .kinematic
         self.physicsBody?.isContinuousCollisionDetectionEnabled = true
         self.physicsBody?.isRotationLocked = (true, true, true)
-    }
-    required init() {
-        fatalError("init() has not been implemented")
     }
     
     func addCollision() {
@@ -52,7 +41,7 @@ class CubeEntity: Entity, HasModel, HasCollision, HasPhysics {
         })
     }
     
-    func cancelCollision() {        
+    func cancelCollision() {
         for collision in collisionSubs {
             collision.cancel()
         }
