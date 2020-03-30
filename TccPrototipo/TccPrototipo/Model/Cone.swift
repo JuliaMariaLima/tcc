@@ -13,7 +13,7 @@ import Combine
 class ConeEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .Cone)
         let modelHolder = try! ModelEntity.loadModel(named: "cone.obj")
         let modelWidthSize = 1.0
         let modelHeightSize = 1.0
@@ -31,5 +31,9 @@ class ConeEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

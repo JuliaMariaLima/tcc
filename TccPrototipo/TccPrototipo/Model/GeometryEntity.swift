@@ -10,11 +10,28 @@ import Foundation
 import RealityKit
 import Combine
 
+
+enum GeometryType {
+    case Cube
+    case QuadrilateralPyramid
+    case TriangularPrism
+    case SemiSphere
+    case Cylinder
+    case PentagonalPrism
+    case Octahedron
+    case Tetrahedron
+    case Cone
+    case PentagonalPyramid
+}
+
 class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
     var collisionSubs: [Cancellable] = []
-
-    required init() {
+    var type: GeometryType!
+    
+    required init(type: GeometryType) {
         super.init()
+        
+        self.type = type
         
         self.generateCollisionShapes(recursive: false)
         
@@ -25,14 +42,20 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
         self.physicsBody?.isRotationLocked = (true, true, true)
     }
     
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+    
     func addCollision() {
         guard let scene = scene else { return }
 
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-            self.physicsBody?.mode = .dynamic
+            self.stopAllAnimations()
+            self.physicsBody?.mode = .dynamic //testar sem mudar
         })
         
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
+            self.stopAllAnimations()
             self.physicsBody?.mode = .dynamic
         })
         

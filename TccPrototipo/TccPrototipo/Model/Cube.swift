@@ -13,7 +13,7 @@ import Combine
 class CubeEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .Cube)
         let side: Float = 0.2
         let size: SIMD3<Float> = [side, side, side]
         self.model = ModelComponent(
@@ -27,5 +27,9 @@ class CubeEntity: GeometryEntity {
     
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

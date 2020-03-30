@@ -13,7 +13,7 @@ import Combine
 class TriangularPrismEntity: GeometryEntity {    
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .TriangularPrism)
         let modelHolder = try! ModelEntity.loadModel(named: "triangularPrism.obj")
         let modelWidthSize = 9.195
         let modelHeightSize = 9.697
@@ -31,5 +31,9 @@ class TriangularPrismEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

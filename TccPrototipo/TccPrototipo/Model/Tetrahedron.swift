@@ -13,7 +13,7 @@ import Combine
 class TetrahedronEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .Tetrahedron)
         let modelHolder = try! ModelEntity.loadModel(named: "tetrahedron.obj")
         let modelWidthSize = 0.966
         let modelHeightSize = 1.0
@@ -31,5 +31,9 @@ class TetrahedronEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

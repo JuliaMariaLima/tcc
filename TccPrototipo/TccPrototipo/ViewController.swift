@@ -19,22 +19,27 @@ class ViewController: UIViewController {
     
     var coachingView: ARCoachingOverlayView!
     
-    //    var cube: CubeEntity!
-    //    var pyramid: QuadrilateralPyramidEntity!
     var floor: FloorEntity!
     
-    var anchorEntityCube: AnchorEntity!
-    var anchorEntityPyramid: AnchorEntity!
     var anchorEntityFloor: AnchorEntity!
     
     var anchorEntityForms: [AnchorEntity] = []
     var entities: [GeometryEntity] = []
+    var mapMatches: [GeometryType:[GeometryType]] = [:]
     
     var selectedEntity: GeometryEntity!
     
     var planeAnchor: ARPlaneAnchor? = nil
     
     var animation: Cancellable!
+    
+    var currentAnimation: AnimationPlaybackController!
+    
+    var isTouching: Bool! = false
+    
+    var moveDuration: TimeInterval = 30
+    
+    var moveDistance: Float = 15
     
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
@@ -57,6 +62,7 @@ class ViewController: UIViewController {
         let button = UIButton(frame: CGRect(x: view.frame.width / 2 - 25, y: view.frame.height - 150, width: 50, height: 45))
         
         button.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
+        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         button.setImage(UIImage(named: "up"), for: .normal)
         
         return button
@@ -66,6 +72,7 @@ class ViewController: UIViewController {
         let button = UIButton(frame: CGRect(x: view.frame.width / 2 - 25, y: view.frame.height - 50, width: 50, height: 45))
         
         button.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
+        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         button.setImage(UIImage(named: "down"), for: .normal)
         
         return button
@@ -75,6 +82,7 @@ class ViewController: UIViewController {
         let button = UIButton(frame: CGRect(x: view.frame.width / 2 - 75, y: view.frame.height - 102.5, width: 45, height: 50))
         
         button.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
+        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         button.setImage(UIImage(named: "left"), for: .normal)
         
         return button
@@ -84,6 +92,7 @@ class ViewController: UIViewController {
         let button = UIButton(frame: CGRect(x: view.frame.width / 2 + 25, y: view.frame.height - 102.5, width: 45, height: 50))
         
         button.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
+        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         button.setImage(UIImage(named: "right"), for: .normal)
         
         return button
@@ -97,13 +106,12 @@ class ViewController: UIViewController {
         arView.session.delegate = self
         arView.scene.addAnchor(cameraAnchor)
         
-        //        cube = CubeEntity(color: .red)
-        //        pyramid = QuadrilateralPyramidEntity(color: .yellow)
         floor = FloorEntity(color: .clear)
         
         arView.addGestureRecognizer(tapRecognizer)
         
         setUpEntities()
+        setUpMatches()
         setUpConfigurations()
         setUpCoachingView()
         setUpButtons()
@@ -126,25 +134,47 @@ class ViewController: UIViewController {
     }
     
     func setUpSubscription() {
-        animation = arView.scene.subscribe(to: AnimationEvents.PlaybackCompleted.self) { (event) in
-            //print(event.playbackController.entity as Any)
-            self.calculateDistance()
+        animation = arView.scene.subscribe(to: AnimationEvents.PlaybackTerminated.self) { (event) in
+            guard let movingEntity = event.playbackController.entity as? GeometryEntity else { return }
+            for entity in self.entities {
+                for match in self.mapMatches[movingEntity.type] ?? [] {
+                    if entity.type == match {
+                        self.calculateDistance(movingEntity: movingEntity, staticEntity: entity)
+                    }
+                }
+                //                print("MAPMATCHES[", movingEntity,"] = ", self.mapMatches[movingEntity.type] ?? [])
+                //                if mapMatches[movingEntity]
+                //
+            }
         }
     }
     
     func setUpEntities() {
         entities.append(CubeEntity(color: .red))
         entities.append(QuadrilateralPyramidEntity(color: .blue))
-        entities.append(TriangularPrismEntity(color: .cyan))
-        entities.append(SemiSphereEntity(color: .green))
-        entities.append(CylinderEntity(color: .magenta))
-        entities.append(PentagonalPrismEntity(color: .orange))
-        entities.append(OctahedronEntity(color: .purple))
-        entities.append(TetrahedronEntity(color: .yellow))
-        entities.append(ConeEntity(color: .systemPink))
-        entities.append(PentagonalPyramidEntity(color: .white))
+        //        entities.append(TriangularPrismEntity(color: .cyan))
+        //        entities.append(SemiSphereEntity(color: .green))
+        //        entities.append(CylinderEntity(color: .magenta))
+        //        entities.append(PentagonalPrismEntity(color: .orange))
+        //        entities.append(OctahedronEntity(color: .purple))
+        //        entities.append(TetrahedronEntity(color: .yellow))
+        //        entities.append(ConeEntity(color: .systemPink))
+        //        entities.append(PentagonalPyramidEntity(color: .white))
         
         selectedEntity = entities.first!
+    }
+    
+    func setUpMatches() {
+        mapMatches[.Cube] = [.Cube]
+        mapMatches[.QuadrilateralPyramid] = [.Cube]
+        mapMatches[.TriangularPrism] = [.Octahedron, .TriangularPrism]
+        mapMatches[.SemiSphere] = [.Cylinder]
+        mapMatches[.Cylinder] = [.Cylinder]
+        mapMatches[.PentagonalPrism] = [.PentagonalPrism]
+        mapMatches[.Octahedron] = [.TriangularPrism, .Octahedron]
+        mapMatches[.Tetrahedron] = [.Octahedron, .TriangularPrism]
+        mapMatches[.Cone] = [.Cylinder]
+        mapMatches[.PentagonalPyramid] = [.PentagonalPrism]
     }
     
     func addEntities() {
@@ -161,65 +191,48 @@ class ViewController: UIViewController {
         var n: Double = 0
         for entity in entities {
             entity.generateCollisionShapes(recursive: false)
-
+            
             let anchorEntity = AnchorEntity()
-            anchorEntity.position = [x + Float(n*0.2), y, z]
+            anchorEntity.position = [x + Float(n*0.4), y, z]
             
             entity.position = [0, 0, 0]
             anchorEntity.addChild(entity)
-
-            arView.installGestures(.translation, for: entity)
+            
+//            arView.installGestures(.translation, for: entity)
             arView.scene.addAnchor(anchorEntity)
             
             entity.addCollision()
             n += 1
         }
         
-        //        anchorEntityCube = AnchorEntity()
-        //        anchorEntityCube.position = [x, y + 0.1, z]
-        //        cube.position = [0, 0, 0]
-        //
-        //        anchorEntityPyramid = AnchorEntity()
-        //        anchorEntityPyramid.position = [x - 0.5, y, z]
-        //        pyramid.position = [0, 0, 0]
-        
-        anchorEntityFloor = AnchorEntity()
-        anchorEntityFloor.position = [x, y, z]
-        
-        //        anchorEntityCube.addChild(cube)
-        //        anchorEntityPyramid.addChild(pyramid)
-        anchorEntityFloor.addChild(floor)
-        
-        //        arView.installGestures(.translation, for: cube)
-        //        arView.installGestures(.translation, for: pyramid)
-        
-        //        arView.scene.addAnchor(anchorEntityCube)
-        //        arView.scene.addAnchor(anchorEntityPyramid)
-        arView.scene.addAnchor(anchorEntityFloor)
-        
+//        anchorEntityFloor = AnchorEntity()
+//        anchorEntityFloor.position = [x, y, z]
+//        anchorEntityFloor.addChild(floor)
+//
+//        arView.scene.addAnchor(anchorEntityFloor)
     }
     
     // MARK: - Actions
     
-    func calculateDistance() {
-        //        let cubePosition = cube.position(relativeTo: pyramid)
-        //        var pyramidPosition = cubePosition
-        //        pyramidPosition.y += 10
-        //        let dist = distance(cubePosition, pyramid.position)
+    func calculateDistance(movingEntity: GeometryEntity, staticEntity: GeometryEntity) {
+        let staticPosition = staticEntity.position(relativeTo: movingEntity)
+        var movingPosition = staticPosition
+        movingPosition.y += 10
+        let dist = distance(staticPosition, movingEntity.position)
+        print("DIST (static: ", staticEntity, " - moving: ", movingEntity, ") = ", dist)
+        //        if dist < 15 && movingPosition.y > staticPosition.y {
         //
-        //        if dist < 15 && pyramidPosition.y > cubePosition.y {
-        //
-        //            pyramid.setPosition(pyramidPosition, relativeTo: pyramid)
-        //            pyramid.cancelCollision()
-        //            cube.cancelCollision()
+        //            movingEntity.setPosition(movingPosition, relativeTo: movingEntity)
+        //            movingEntity.cancelCollision()
+        //            staticEntity.cancelCollision()
         //            let alert = UIAlertController(title: "Você ganhou!!", message: "", preferredStyle: .alert)
         //            alert.addAction(UIAlertAction(title: "Jogar de novo", style: .cancel, handler: { (alert) in
-        //                self.cube.removeFromParent()
-        //                self.pyramid.removeFromParent()
-        //                self.anchorEntityCube.removeFromParent()
-        //                self.anchorEntityPyramid.removeFromParent()
-        //                self.anchorEntityFloor.removeFromParent()
-        //                self.reset()
+        //                //                        self.staticEntity.removeFromParent()
+        //                //                        self.movingEntity.removeFromParent()
+        //                //                        self.anchorEntityFloor.removeFromParent()
+        //                // self.reset()
+        //                movingEntity.cancelCollision()
+        //                staticEntity.cancelCollision()
         //            }))
         //
         //            self.present(alert, animated: true)
@@ -237,47 +250,47 @@ class ViewController: UIViewController {
     func buttonUpClicked() {
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
-        transform.translation.y += 0.1
-        
-        selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: 1.0)
+        transform.translation.y += moveDistance
+    
+        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: moveDuration)
     }
     
     @objc
     func buttonDownClicked() {
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
-        transform.translation.y -= 0.1
+        transform.translation.y -= moveDistance
         
-        selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: 1.0)
+        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: moveDuration)
     }
     
     @objc
     func buttonLeftClicked() {
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
-        transform.translation.x -= 0.1
+        transform.translation.x -= moveDistance
         
-        selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: 1.0)
+        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: moveDuration)
     }
     
     @objc
     func buttonRightClicked() {
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
-        transform.translation.x += 0.1
+        transform.translation.x += moveDistance
         
-        selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: 1.0)
+        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: moveDuration)
+    }
+    
+    @objc
+    func buttonReleased() {
+        currentAnimation.stop()
     }
     
     @objc
     private func handleTap(recognizer: UITapGestureRecognizer) {
         print(">>>> TAP <<<<")
         let tapLocation = recognizer.location(in: arView)
-        
-        //        guard let result = arView.raycast(from: tapLocation,
-        //                                        allowing: .existingPlaneGeometry,
-        //                                        alignment: .horizontal).first
-        //            else { return }
         
         let hits = arView.hitTest(tapLocation)
         

@@ -13,7 +13,7 @@ import Combine
 class CylinderEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .Cylinder)
         let modelHolder = try! ModelEntity.loadModel(named: "cylinder.obj")
         let modelSize = 1.0
         let wantedSize = 0.2
@@ -27,5 +27,9 @@ class CylinderEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

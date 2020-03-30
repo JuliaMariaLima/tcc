@@ -13,7 +13,7 @@ import Combine
 class SemiSphereEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .SemiSphere)
         let modelHolder = try! ModelEntity.loadModel(named: "semiSphere.obj")
         let modelSize = 0.6
         let wantedSize = 0.2
@@ -27,5 +27,9 @@ class SemiSphereEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

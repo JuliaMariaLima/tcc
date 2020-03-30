@@ -13,7 +13,7 @@ import Combine
 class PentagonalPyramidEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .PentagonalPyramid)
         let modelHolder = try! ModelEntity.loadModel(named: "pentagonalPyramid.obj")
         let modelWidthSize = 0.095
         let modelHeightSize = 0.09
@@ -31,5 +31,9 @@ class PentagonalPyramidEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }

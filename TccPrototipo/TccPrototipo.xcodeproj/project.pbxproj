@@ -99,7 +99,6 @@
 				96B563AB24256D29006D595B /* Model */,
 				961720E923789059008E1298 /* AppDelegate.swift */,
 				961720EB23789059008E1298 /* ViewController.swift */,
-				96581784239612FB004C90D0 /* Floor.swift */,
 				961720EF23789059008E1298 /* Main.storyboard */,
 				961720F22378905C008E1298 /* Assets.xcassets */,
 				960ED88F2392C3220037675A /* quadrilateralPyramid.obj */,
@@ -131,6 +130,7 @@
 				96B563B82425758F006D595B /* Cone.swift */,
 				96B563BA242576FC006D595B /* PentagonalPyramid.swift */,
 				96B563BC24297D90006D595B /* GeometryEntity.swift */,
+				96581784239612FB004C90D0 /* Floor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

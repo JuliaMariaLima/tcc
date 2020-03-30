@@ -13,7 +13,7 @@ import Combine
 class QuadrilateralPyramidEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
-        super.init()
+        super.init(type: .QuadrilateralPyramid)
         let modelHolder = try! ModelEntity.loadModel(named: "quadrilateralPyramid.obj")
         let modelSize = 19.525
         let wantedSize = 0.2
@@ -26,5 +26,9 @@ class QuadrilateralPyramidEntity: GeometryEntity {
     }
     required init() {
         fatalError("init() has not been implemented")
+    }
+    
+    required init(type: GeometryType) {
+        fatalError("init(type:) has not been implemented")
     }
 }
