@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  GameViewController.swift
 //  TccPrototipo
 //
 //  Created by Julia Maria Santos on 10/11/19.
@@ -11,11 +11,11 @@ import RealityKit
 import ARKit
 import Combine
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController {
     
     // MARK: - Properties
     
-    @IBOutlet var arView: ARView!
+    var arView: ARView!
     
     var coachingView: ARCoachingOverlayView!
     
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
     
     var moveDuration: TimeInterval = 30
     
-    var moveDistance: Float = 15
+    var moveDistance: Float = 10
     
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
@@ -57,51 +57,21 @@ class ViewController: UIViewController {
     }()
     
     // MARK:- UI Views
-    
-    lazy var buttonUp: UIButton! = {
-        let button = UIButton(frame: CGRect(x: view.frame.width / 2 - 25, y: view.frame.height - 150, width: 50, height: 45))
-        
-        button.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
-        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
-        button.setImage(UIImage(named: "up"), for: .normal)
-        
-        return button
-    }()
-    
-    lazy var buttonDown: UIButton! = {
-        let button = UIButton(frame: CGRect(x: view.frame.width / 2 - 25, y: view.frame.height - 50, width: 50, height: 45))
-        
-        button.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
-        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
-        button.setImage(UIImage(named: "down"), for: .normal)
-        
-        return button
-    }()
-    
-    lazy var buttonLeft: UIButton! = {
-        let button = UIButton(frame: CGRect(x: view.frame.width / 2 - 75, y: view.frame.height - 102.5, width: 45, height: 50))
-        
-        button.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
-        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
-        button.setImage(UIImage(named: "left"), for: .normal)
-        
-        return button
-    }()
-    
-    lazy var buttonRight: UIButton! = {
-        let button = UIButton(frame: CGRect(x: view.frame.width / 2 + 25, y: view.frame.height - 102.5, width: 45, height: 50))
-        
-        button.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
-        button.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
-        button.setImage(UIImage(named: "right"), for: .normal)
-        
-        return button
-    }()
+
     
     // MARK:- Life Cicle
     
+    override func loadView() {
+        let view = ARView(frame: .zero)
+        
+        self.view = view
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        arView = self.view as? ARView
         
         arView.session.delegate = self
         arView.scene.addAnchor(cameraAnchor)
@@ -127,18 +97,37 @@ class ViewController: UIViewController {
     }
     
     func setUpButtons() {
+        let buttonUp = ArrowButtonView(type: .up)
         view.addSubview(buttonUp)
+        buttonUp.setUpConstraints()
+        buttonUp.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
+        buttonUp.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        
+        let buttonDown = ArrowButtonView(type: .down)
         view.addSubview(buttonDown)
-        view.addSubview(buttonLeft)
+        buttonDown.setUpConstraints()
+        buttonDown.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
+        buttonDown.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        
+        let buttonRight = ArrowButtonView(type: .right)
         view.addSubview(buttonRight)
+        buttonRight.setUpConstraints()
+        buttonRight.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
+        buttonRight.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        
+        let buttonLeft = ArrowButtonView(type: .left)
+        view.addSubview(buttonLeft)
+        buttonLeft.setUpConstraints()
+        buttonLeft.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
+        buttonLeft.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
     }
     
     func setUpSubscription() {
         animation = arView.scene.subscribe(to: AnimationEvents.PlaybackTerminated.self) { (event) in
             guard let movingEntity = event.playbackController.entity as? GeometryEntity else { return }
             for entity in self.entities {
-                for match in self.mapMatches[movingEntity.type] ?? [] {
-                    if entity.type == match {
+                for match in self.mapMatches[movingEntity.type]! {
+                    if entity.type == match && entity != movingEntity {
                         self.calculateDistance(movingEntity: movingEntity, staticEntity: entity)
                     }
                 }
@@ -152,14 +141,14 @@ class ViewController: UIViewController {
     func setUpEntities() {
         entities.append(CubeEntity(color: .red))
         entities.append(QuadrilateralPyramidEntity(color: .blue))
-        //        entities.append(TriangularPrismEntity(color: .cyan))
-        //        entities.append(SemiSphereEntity(color: .green))
-        //        entities.append(CylinderEntity(color: .magenta))
-        //        entities.append(PentagonalPrismEntity(color: .orange))
-        //        entities.append(OctahedronEntity(color: .purple))
-        //        entities.append(TetrahedronEntity(color: .yellow))
-        //        entities.append(ConeEntity(color: .systemPink))
-        //        entities.append(PentagonalPyramidEntity(color: .white))
+        entities.append(TriangularPrismEntity(color: .cyan))
+        entities.append(SemiSphereEntity(color: .green))
+        entities.append(CylinderEntity(color: .magenta))
+        entities.append(PentagonalPrismEntity(color: .orange))
+        entities.append(OctahedronEntity(color: .purple))
+        entities.append(TetrahedronEntity(color: .yellow))
+        entities.append(ConeEntity(color: .systemPink))
+        entities.append(PentagonalPyramidEntity(color: .white))
         
         selectedEntity = entities.first!
     }
@@ -215,28 +204,31 @@ class ViewController: UIViewController {
     // MARK: - Actions
     
     func calculateDistance(movingEntity: GeometryEntity, staticEntity: GeometryEntity) {
-        let staticPosition = staticEntity.position(relativeTo: movingEntity)
-        var movingPosition = staticPosition
-        movingPosition.y += 10
-        let dist = distance(staticPosition, movingEntity.position)
+        let staticPosition = staticEntity.position(relativeTo: nil)
+        let movingPosition = movingEntity.position(relativeTo: nil)
+        print("static position: ", staticPosition)
+        var goalPosition = staticPosition
+        goalPosition.y += 0.2
+        let dist = distance(staticPosition, movingPosition)
         print("DIST (static: ", staticEntity, " - moving: ", movingEntity, ") = ", dist)
-        //        if dist < 15 && movingPosition.y > staticPosition.y {
-        //
-        //            movingEntity.setPosition(movingPosition, relativeTo: movingEntity)
-        //            movingEntity.cancelCollision()
-        //            staticEntity.cancelCollision()
-        //            let alert = UIAlertController(title: "Você ganhou!!", message: "", preferredStyle: .alert)
-        //            alert.addAction(UIAlertAction(title: "Jogar de novo", style: .cancel, handler: { (alert) in
-        //                //                        self.staticEntity.removeFromParent()
-        //                //                        self.movingEntity.removeFromParent()
-        //                //                        self.anchorEntityFloor.removeFromParent()
-        //                // self.reset()
-        //                movingEntity.cancelCollision()
-        //                staticEntity.cancelCollision()
-        //            }))
-        //
-        //            self.present(alert, animated: true)
-        //        }
+//        let minDist = staticEntity.model!.mesh.bounds.max.y
+        if dist < 0.25 && movingPosition.y > staticPosition.y {
+            
+            movingEntity.setPosition(goalPosition, relativeTo: nil)
+            movingEntity.cancelCollision()
+            staticEntity.cancelCollision()
+            let alert = UIAlertController(title: "Você ganhou!!", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Jogar de novo", style: .cancel, handler: { (alert) in
+                //                        self.staticEntity.removeFromParent()
+                //                        self.movingEntity.removeFromParent()
+                //                        self.anchorEntityFloor.removeFromParent()
+                // self.reset()
+                movingEntity.cancelCollision()
+                staticEntity.cancelCollision()
+            }))
+            
+            self.present(alert, animated: true)
+        }
     }
     
     func reset() {
@@ -309,7 +301,7 @@ class ViewController: UIViewController {
 
 //MARK: - AR Coaching Overlay View Delegate
 
-extension ViewController: ARCoachingOverlayViewDelegate {
+extension GameViewController: ARCoachingOverlayViewDelegate {
     
     func setUpCoachingView() {
         coachingView = ARCoachingOverlayView()
@@ -342,7 +334,7 @@ extension ViewController: ARCoachingOverlayViewDelegate {
 
 // MARK:- AR Session Delegate
 
-extension ViewController: ARSessionDelegate {
+extension GameViewController: ARSessionDelegate {
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         for anchor in anchors {
             if anchor is ARPlaneAnchor, planeAnchor == nil {

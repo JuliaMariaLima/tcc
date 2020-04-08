@@ -14,15 +14,15 @@ class CubeEntity: GeometryEntity {
     
     required init(color: SimpleMaterial.Color) {
         super.init(type: .Cube)
-        let side: Float = 0.2
-        let size: SIMD3<Float> = [side, side, side]
-        self.model = ModelComponent(
-            mesh: .generateBox(size: size),
-            materials: [SimpleMaterial(
-                color: color,
-                isMetallic: false)
-            ]
-        )
+        let modelHolder = try! ModelEntity.loadModel(named: "cube.obj")
+        let modelSize = 1.0
+        let wantedSize = 0.2
+        let scale: Float = Float(1 / (modelSize / wantedSize))
+
+        self.setScale(SIMD3<Float>.init(scale, scale, scale), relativeTo: self)
+        
+        self.model = modelHolder.model
+        self.model?.materials = [SimpleMaterial(color: color, isMetallic: false)]
     }
     
     required init() {

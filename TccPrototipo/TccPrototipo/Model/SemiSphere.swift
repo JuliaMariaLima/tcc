@@ -21,7 +21,6 @@ class SemiSphereEntity: GeometryEntity {
 
         self.setScale(SIMD3<Float>.init(scale, scale, scale), relativeTo: self)
 
-
         self.model = modelHolder.model
         self.model?.materials = [SimpleMaterial(color: color, isMetallic: false)]
     }

@@ -51,7 +51,7 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
 
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
             self.stopAllAnimations()
-            self.physicsBody?.mode = .dynamic //testar sem mudar
+//            self.physicsBody?.mode = .dynamic //testar sem mudar
         })
         
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
