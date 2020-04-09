@@ -18,12 +18,13 @@ class TriangularPrismEntity: GeometryEntity {
         let modelWidthSize = 9.195
         let modelHeightSize = 9.697
         let modelDepthSize = 7.963
-        let wantedSize = 0.2
+        let wantedSizeWH = 0.2
+        let wantedSizeD = 0.1732050808
 
         self.setScale(SIMD3<Float>.init(
-            Float(1 / (modelWidthSize / wantedSize)),
-            Float(1 / (modelHeightSize / wantedSize)),
-            Float(1 / (modelDepthSize / wantedSize))),
+            Float(1 / (modelWidthSize / wantedSizeWH)),
+            Float(1 / (modelHeightSize / wantedSizeWH)),
+            Float(1 / (modelDepthSize / wantedSizeD))),
                       relativeTo: self)
 
         self.model = modelHolder.model

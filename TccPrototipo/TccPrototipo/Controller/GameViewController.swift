@@ -57,7 +57,7 @@ class GameViewController: UIViewController {
     }()
     
     // MARK:- UI Views
-
+    
     
     // MARK:- Life Cicle
     
@@ -93,6 +93,8 @@ class GameViewController: UIViewController {
     func setUpConfigurations() {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
+        
+        //        arView.debugOptions = [.showAnchorGeometry, .showAnchorOrigins, .showPhysics]
         arView.session.run(configuration)
     }
     
@@ -145,7 +147,6 @@ class GameViewController: UIViewController {
         entities.append(SemiSphereEntity(color: .green))
         entities.append(CylinderEntity(color: .magenta))
         entities.append(PentagonalPrismEntity(color: .orange))
-        entities.append(OctahedronEntity(color: .purple))
         entities.append(TetrahedronEntity(color: .yellow))
         entities.append(ConeEntity(color: .systemPink))
         entities.append(PentagonalPyramidEntity(color: .white))
@@ -156,12 +157,11 @@ class GameViewController: UIViewController {
     func setUpMatches() {
         mapMatches[.Cube] = [.Cube]
         mapMatches[.QuadrilateralPyramid] = [.Cube]
-        mapMatches[.TriangularPrism] = [.Octahedron, .TriangularPrism]
+        mapMatches[.TriangularPrism] = [.TriangularPrism]
         mapMatches[.SemiSphere] = [.Cylinder]
         mapMatches[.Cylinder] = [.Cylinder]
         mapMatches[.PentagonalPrism] = [.PentagonalPrism]
-        mapMatches[.Octahedron] = [.TriangularPrism, .Octahedron]
-        mapMatches[.Tetrahedron] = [.Octahedron, .TriangularPrism]
+        mapMatches[.Tetrahedron] = [.TriangularPrism]
         mapMatches[.Cone] = [.Cylinder]
         mapMatches[.PentagonalPyramid] = [.PentagonalPrism]
     }
@@ -187,18 +187,18 @@ class GameViewController: UIViewController {
             entity.position = [0, 0, 0]
             anchorEntity.addChild(entity)
             
-//            arView.installGestures(.translation, for: entity)
+            //            arView.installGestures(.translation, for: entity)
             arView.scene.addAnchor(anchorEntity)
             
             entity.addCollision()
             n += 1
         }
         
-//        anchorEntityFloor = AnchorEntity()
-//        anchorEntityFloor.position = [x, y, z]
-//        anchorEntityFloor.addChild(floor)
-//
-//        arView.scene.addAnchor(anchorEntityFloor)
+        //        anchorEntityFloor = AnchorEntity()
+        //        anchorEntityFloor.position = [x, y, z]
+        //        anchorEntityFloor.addChild(floor)
+        //
+        //        arView.scene.addAnchor(anchorEntityFloor)
     }
     
     // MARK: - Actions
@@ -207,12 +207,13 @@ class GameViewController: UIViewController {
         let staticPosition = staticEntity.position(relativeTo: nil)
         let movingPosition = movingEntity.position(relativeTo: nil)
         print("static position: ", staticPosition)
+        print("moving position: ", movingPosition)
         var goalPosition = staticPosition
         goalPosition.y += 0.2
         let dist = distance(staticPosition, movingPosition)
         print("DIST (static: ", staticEntity, " - moving: ", movingEntity, ") = ", dist)
-//        let minDist = staticEntity.model!.mesh.bounds.max.y
-        if dist < 0.25 && movingPosition.y > staticPosition.y {
+        //        let minDist = staticEntity.model!.mesh.bounds.max.y
+        if dist < 0.22 && staticPosition.y - movingPosition.y > -0.22 {
             
             movingEntity.setPosition(goalPosition, relativeTo: nil)
             movingEntity.cancelCollision()
@@ -223,8 +224,8 @@ class GameViewController: UIViewController {
                 //                        self.movingEntity.removeFromParent()
                 //                        self.anchorEntityFloor.removeFromParent()
                 // self.reset()
-                movingEntity.cancelCollision()
-                staticEntity.cancelCollision()
+                //                movingEntity.cancelCollision()
+                //                staticEntity.cancelCollision()
             }))
             
             self.present(alert, animated: true)
@@ -243,7 +244,7 @@ class GameViewController: UIViewController {
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
         transform.translation.y += moveDistance
-    
+        
         currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: moveDuration)
     }
     

@@ -18,14 +18,17 @@ class TetrahedronEntity: GeometryEntity {
         let modelWidthSize = 0.966
         let modelHeightSize = 1.0
         let modelDepthSize = 0.966
-        let wantedSizeWD = 0.2
-        let wantedSizeH = 0.2309401077 // all sides equal
+        let wantedSizeWD = 0.1932
+        let wantedSizeH = 0.2
+        
         self.setScale(SIMD3<Float>.init(
             Float(1 / (modelWidthSize / wantedSizeWD)),
             Float(1 / (modelHeightSize / wantedSizeH)),
             Float(1 / (modelDepthSize / wantedSizeWD))),
                       relativeTo: self)
 
+        self.setOrientation(simd_quatf.init(angle: Float.pi / 2.4, axis: [0, 1, 0]), relativeTo: self)
+        
         self.model = modelHolder.model
         self.model?.materials = [SimpleMaterial(color: color, isMetallic: false)]
     }
