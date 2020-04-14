@@ -12,7 +12,7 @@ class TimerView: UIView {
     private var labelTimer: UILabel!
     private var backgroundTimer: UIImageView!
     private var timer: Timer?
-    private var duration: Int = 90
+    private var duration: Int = 9
     private var currentTime: Int!
     
     override init(frame: CGRect) {

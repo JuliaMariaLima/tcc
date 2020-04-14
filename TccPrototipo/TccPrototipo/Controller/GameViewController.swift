@@ -72,7 +72,7 @@ class GameViewController: UIViewController {
     // MARK:- Life Cicle
     
     override func loadView() {
-        let view = ARView(frame: .zero)
+        let view = ARView(frame: UIScreen.main.bounds)
         
         self.view = view
         self.navigationController?.isNavigationBarHidden = true
@@ -153,9 +153,9 @@ class GameViewController: UIViewController {
     
     func setUpEndGame() {
         endGameView = EndGameView(frame: .zero)
-//        view.addSubview(endGameView)
-//
-//        endGameView.setUpConstraints()
+        view.addSubview(endGameView)
+
+        endGameView.setUpConstraints()
     }
     
     func setUpSubscription() {
@@ -206,7 +206,6 @@ class GameViewController: UIViewController {
             let anchor = result.anchor as! ARPlaneAnchor?
             else {
                 reset()
-                timerView.restart()
                 return
         }
         
@@ -279,6 +278,7 @@ class GameViewController: UIViewController {
         arView.session.run(configuration, options: .resetTracking)
         coachingView.activatesAutomatically = true
         planeAnchor = nil
+        timerView.restart()
     }
     
     @objc
@@ -351,7 +351,7 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         view.addSubview(coachingView)
         
         coachingView.delegate = self
-        coachingView.goal = .verticalPlane //horizontalPlane
+        coachingView.goal = .horizontalPlane
         coachingView.session = arView.session
         coachingView.translatesAutoresizingMaskIntoConstraints = false
         

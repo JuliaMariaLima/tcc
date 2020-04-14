@@ -26,7 +26,7 @@ class PointsView: UIView {
     }
     
     func setUpBackground() {
-        let image = UIImage(named: "backgroundPoints")
+        let image = UIImage(named: "backgroundTimer")
         backgroundPoints = UIImageView(image: image)
         backgroundPoints.translatesAutoresizingMaskIntoConstraints = false
         
@@ -39,7 +39,7 @@ class PointsView: UIView {
         labelPoints.font = UIFont(name: "ChalkboardSE-Regular", size: 30)!
         labelPoints.text = "0pts"
         labelPoints.numberOfLines = 1
-        labelPoints.textColor = .lightGreen
+        labelPoints.textColor = .labelYellow
         labelPoints.textAlignment = .center
         
         addSubview(labelPoints)
