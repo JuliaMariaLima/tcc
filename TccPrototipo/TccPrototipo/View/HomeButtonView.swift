@@ -14,9 +14,9 @@ enum HomeButtonType{
 }
 
 class HomeButtonView: UIButton{
-    var type: HomeButtonType!
-    var origin: UIViewController!
-    var destination: UIViewController!
+    private var type: HomeButtonType!
+    private var origin: UIViewController!
+    private var destination: UIViewController!
     
     init(type: HomeButtonType, from origin: UIViewController, to destination: UIViewController) {
         super.init(frame: .zero)

@@ -24,7 +24,9 @@ class GameViewController: UIViewController {
     var anchorEntityFloor: AnchorEntity!
     
     var anchorEntityForms: [AnchorEntity] = []
+    
     var entities: [GeometryEntity] = []
+    
     var mapMatches: [GeometryType:[GeometryType]] = [:]
     
     var selectedEntity: GeometryEntity!
@@ -40,6 +42,14 @@ class GameViewController: UIViewController {
     var moveDuration: TimeInterval = 30
     
     var moveDistance: Float = 10
+    
+    var timerView: TimerView!
+    
+    var pointsView: PointsView!
+    
+    var points: Int = 0
+    
+    var endGameView: EndGameView!
     
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
@@ -80,12 +90,15 @@ class GameViewController: UIViewController {
         
         arView.addGestureRecognizer(tapRecognizer)
         
+        setUpConfigurations()
+        setUpButtons()
+        setUpTimer()
+        setUpPoints()
+        setUpEndGame()
+        setUpSubscription()
         setUpEntities()
         setUpMatches()
-        setUpConfigurations()
         setUpCoachingView()
-        setUpButtons()
-        setUpSubscription()
     }
     
     // MARK:- Set ups
@@ -122,6 +135,27 @@ class GameViewController: UIViewController {
         buttonLeft.setUpConstraints()
         buttonLeft.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
         buttonLeft.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+    }
+    
+    func setUpTimer() {
+        timerView = TimerView(frame: .zero)
+        view.addSubview(timerView)
+        
+        timerView.setUpConstraints()
+    }
+    
+    func setUpPoints() {
+        pointsView = PointsView(frame: .zero)
+        view.addSubview(pointsView)
+        
+        pointsView.setUpConstraints()
+    }
+    
+    func setUpEndGame() {
+        endGameView = EndGameView(frame: .zero)
+//        view.addSubview(endGameView)
+//
+//        endGameView.setUpConstraints()
     }
     
     func setUpSubscription() {
@@ -167,11 +201,16 @@ class GameViewController: UIViewController {
     }
     
     func addEntities() {
-        guard let result = arView.raycast(from: self.view.center, allowing: .existingPlaneGeometry, alignment: .horizontal).first
+        guard
+            let result = arView.raycast(from: self.view.center, allowing: .existingPlaneGeometry, alignment: .horizontal).first,
+            let anchor = result.anchor as! ARPlaneAnchor?
             else {
                 reset()
+                timerView.restart()
                 return
         }
+        
+        print("EXTENT:: ", anchor.extent)
         
         let x = result.worldTransform.columns.3.x
         let y = result.worldTransform.columns.3.y
@@ -229,6 +268,8 @@ class GameViewController: UIViewController {
             }))
             
             self.present(alert, animated: true)
+            points += 10
+            pointsView.update(points)
         }
     }
     
@@ -237,6 +278,7 @@ class GameViewController: UIViewController {
         configuration.planeDetection = .horizontal
         arView.session.run(configuration, options: .resetTracking)
         coachingView.activatesAutomatically = true
+        planeAnchor = nil
     }
     
     @objc
@@ -309,7 +351,7 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         view.addSubview(coachingView)
         
         coachingView.delegate = self
-        coachingView.goal = .horizontalPlane
+        coachingView.goal = .verticalPlane //horizontalPlane
         coachingView.session = arView.session
         coachingView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -329,7 +371,13 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         print("ta funcionando desativei", coachingOverlayView)
         coachingView.activatesAutomatically = false
         
-        addEntities()
+        DispatchQueue.main.async { [unowned self] in
+            self.timerView.startClock() {
+                self.endGameView.present()
+            }
+            
+            self.addEntities()
+        }
     }
 }
 

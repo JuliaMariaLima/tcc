@@ -16,7 +16,7 @@ enum ArrowButtonType {
 }
 
 class ArrowButtonView: UIButton {
-    var type: ArrowButtonType!
+    private var type: ArrowButtonType!
     
     init(type: ArrowButtonType) {
         super.init(frame: .zero)
