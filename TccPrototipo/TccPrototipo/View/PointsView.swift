@@ -14,7 +14,7 @@ class PointsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-                
+        self.isHidden = true
         self.translatesAutoresizingMaskIntoConstraints = false
         
         setUpBackground()

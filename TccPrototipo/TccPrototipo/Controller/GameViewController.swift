@@ -49,7 +49,19 @@ class GameViewController: UIViewController {
     
     var points: Int = 0
     
+    var placeBoardView: PlaceBoardView!
+    
+    var startGameView: StartGameView!
+    
     var endGameView: EndGameView!
+    
+    var configuration: ARWorldTrackingConfiguration!
+    
+    var game: Game!
+    
+    var board: Board!
+    
+    var countDownView: CountDownView!
     
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
@@ -79,6 +91,7 @@ class GameViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>oi")
         super.viewDidLoad()
         
         arView = self.view as? ARView
@@ -90,25 +103,35 @@ class GameViewController: UIViewController {
         
         arView.addGestureRecognizer(tapRecognizer)
         
+        game = Game(viewController: self)
+        
         setUpConfigurations()
+        createBoard()
         setUpButtons()
         setUpTimer()
         setUpPoints()
+        setUpPlaceBoard()
+        setUpCountDown()
+        setUpStartGame()
         setUpEndGame()
         setUpSubscription()
         setUpEntities()
         setUpMatches()
-        setUpCoachingView()
     }
     
     // MARK:- Set ups
     
     func setUpConfigurations() {
-        let configuration = ARWorldTrackingConfiguration()
+        configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         
-        //        arView.debugOptions = [.showAnchorGeometry, .showAnchorOrigins, .showPhysics]
+//        arView.debugOptions = [.showAnchorGeometry, .showAnchorOrigins, .showPhysics]
         arView.session.run(configuration)
+    }
+    
+    func createBoard() {
+        board = Board(view: arView)
+        board!.delegate = self
     }
     
     func setUpButtons() {
@@ -138,7 +161,7 @@ class GameViewController: UIViewController {
     }
     
     func setUpTimer() {
-        timerView = TimerView(frame: .zero)
+        timerView = TimerView(frame: .zero, duration: game.duration)
         view.addSubview(timerView)
         
         timerView.setUpConstraints()
@@ -154,8 +177,40 @@ class GameViewController: UIViewController {
     func setUpEndGame() {
         endGameView = EndGameView(frame: .zero)
         view.addSubview(endGameView)
-
+        
         endGameView.setUpConstraints()
+        
+        endGameView.playButton.addTarget(self, action: #selector(playAgain), for: .touchDown)
+        endGameView.homeButton.addTarget(self, action: #selector(goHome), for: .touchDown)
+    }
+    
+    func setUpStartGame() {
+        startGameView = StartGameView(frame: .zero)
+        view.addSubview(startGameView)
+        
+        startGameView.setUpConstraints()
+        
+        startGameView.playButton.addTarget(self, action: #selector(start), for: .touchDown)
+        startGameView.homeButton.addTarget(self, action: #selector(goHome), for: .touchDown)
+    }
+    
+    func setUpPlaceBoard() {
+        placeBoardView = PlaceBoardView(frame: .zero)
+        view.addSubview(placeBoardView)
+        
+        placeBoardView.setUpConstraints()
+        
+        placeBoardView.placeButton.addTarget(self, action: #selector(place), for: .touchDown)
+        placeBoardView.homeButton.addTarget(self, action: #selector(goHome), for: .touchDown)
+    }
+    
+    func setUpCountDown() {
+        countDownView = CountDownView()
+        view.addSubview(countDownView)
+        
+        countDownView.setUpConstraints()
+        
+        countDownView.delegate = self
     }
     
     func setUpSubscription() {
@@ -205,7 +260,7 @@ class GameViewController: UIViewController {
             let result = arView.raycast(from: self.view.center, allowing: .existingPlaneGeometry, alignment: .horizontal).first,
             let anchor = result.anchor as! ARPlaneAnchor?
             else {
-                reset()
+                resetToInitialConfiguration()
                 return
         }
         
@@ -272,14 +327,16 @@ class GameViewController: UIViewController {
         }
     }
     
-    func reset() {
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        arView.session.run(configuration, options: .resetTracking)
-        coachingView.activatesAutomatically = true
+    func resetToInitialConfiguration() {
+        arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         planeAnchor = nil
         timerView.restart()
+        points = 0
+        pointsView.update(points)
+        coachingView.activatesAutomatically = true
     }
+    
+    //MARK: - Objc actions
     
     @objc
     func buttonUpClicked() {
@@ -327,7 +384,31 @@ class GameViewController: UIViewController {
         print(">>>> TAP <<<<")
         let tapLocation = recognizer.location(in: arView)
         
-        let hits = arView.hitTest(tapLocation)
+        switch game.current {
+        case .placing:
+            handleTapPlacing(location: tapLocation)
+        case .playing:
+            handleTapPlaying(location: tapLocation)
+        default:
+            break
+        }
+    }
+    
+    func handleTapPlacing(location: CGPoint) {
+        guard let result = arView.raycast(from: location,
+                                          allowing: .existingPlaneGeometry,
+                                          alignment: .horizontal).first
+            else { return }
+        
+        let arAnchor = ARAnchor(name: "Anchor for sphere", transform: result.worldTransform)
+        
+        arView.session.add(anchor: arAnchor)
+        board.addPoint(to: arAnchor)
+        print("Botou")
+    }
+    
+    func handleTapPlaying(location: CGPoint) {
+        let hits = arView.hitTest(location)
         
         for hit in hits {
             if hit.entity is GeometryEntity {
@@ -339,8 +420,93 @@ class GameViewController: UIViewController {
         
         print("Achou nada")
     }
+    
+    @objc
+    func place() {
+        game.change(to: .placing)
+    }
+   
+    @objc
+    func start() {
+        game.change(to: .counting)
+//        setUpCoachingView()
+//        resetToInitialConfiguration()
+//        startGameView.isHidden = true
+    }
+    
+    @objc
+    func playAgain() {
+        for entity in entities {
+            entity.anchor?.removeFromParent()
+        }
+        
+        coachingView.removeFromSuperview()
+        coachingView = nil
+        entities.removeAll()
+        selectedEntity = nil
+        endGameView.isHidden = true
+        start()
+    }
+    
+    @objc
+    func goHome() {
+        coachingView?.removeFromSuperview()
+        coachingView = nil
+        startGameView.isHidden = false
+        endGameView.isHidden = false
+        game.change(to: .waiting)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    //MARK: - Game actions
+    
+    func waitingToWaiting() {}
+
+    func waitingToPlacing() {
+        placeBoardView.isHidden = true
+        setUpCoachingView()
+        resetToInitialConfiguration()
+    }
+    
+    func placingToStarting() {
+        startGameView.isHidden = false
+    }
+    
+    func startingToCounting() {
+        startGameView.isHidden = true
+        countDownView.start()
+    }
+    
+    func countingToRandomizing() {}
+    
+    func randomizingToPlaying() {}
+    
+    func playingToFinished() {}
+    
+    func finishedToStarting() {}
+    
+    func finishedToWaiting() {}
 }
 
+//MARK: - Game Delegate
+
+extension GameViewController: GameDelegate {
+    func placed(_ board: Board, anchors: [ARAnchor]) {
+        game.change(to: .starting)
+    }
+    
+    func counted() {
+        game.change(to: .randomizing)
+    }
+    
+    func randomized() {
+        game.change(to: .playing)
+    }
+    
+    func played() {
+        game.change(to: .finished)
+    }
+}
 
 //MARK: - AR Coaching Overlay View Delegate
 
@@ -371,13 +537,13 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         print("ta funcionando desativei", coachingOverlayView)
         coachingView.activatesAutomatically = false
         
-        DispatchQueue.main.async { [unowned self] in
-            self.timerView.startClock() {
-                self.endGameView.present()
-            }
-            
-            self.addEntities()
-        }
+//        DispatchQueue.main.async { [unowned self] in
+//            self.timerView.startClock() {
+//                self.endGameView.present()
+//            }
+//
+//            self.addEntities()
+//        }
     }
 }
 

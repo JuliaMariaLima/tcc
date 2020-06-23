@@ -1,38 +1,36 @@
 //
-//  EndGameView.swift
+//  PlaceBoardView.swift
 //  TccPrototipo
 //
-//  Created by Julia Maria Santos on 13/04/20.
+//  Created by Julia Maria Santos on 22/06/20.
 //  Copyright © 2020 Julia Maria Santos. All rights reserved.
 //
 
 import UIKit
 
-class EndGameView: UIView {
+class PlaceBoardView: UIView {
     private var backgroundEndGame: UIImageView!
     private var circleView: UIImageView!
     private var triangleView: UIImageView!
     
     private var titleLabel: UILabel!
-    private var scoreLabel: UILabel!
-    private var highScoreLabel: UILabel!
+    private var explanationLabel: UILabel!
     
-    var playButton: UIButton!
+    var placeButton: UIButton!
     var homeButton: UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.isHidden = true
+        self.isHidden = false
         self.translatesAutoresizingMaskIntoConstraints = false
         
         setUpBackground()
         setUpCircleView()
         setUpTriangleView()
         setUpTitle()
-        setUpScore()
-        setUpHighScore()
-        setUpPlayButton()
+        setUpExplanation()
+        setUpPlaceButton()
         setUpHomeButton()
     }
     
@@ -50,8 +48,10 @@ class EndGameView: UIView {
     
     private func setUpCircleView() {
         let image = UIImage(named: "circleEndGame")
-        circleView = UIImageView(image: image)
+        let mirrorImage = UIImage(cgImage: (image?.cgImage)!, scale: 1, orientation: .downMirrored)
+        circleView = UIImageView(image: mirrorImage)
         circleView.translatesAutoresizingMaskIntoConstraints = false
+        circleView.transform = circleView.transform.rotated(by: .pi / 2)
         
         addSubview(circleView)
     }
@@ -59,6 +59,7 @@ class EndGameView: UIView {
         let image = UIImage(named: "triangleEndGame")
         triangleView = UIImageView(image: image)
         triangleView.translatesAutoresizingMaskIntoConstraints = false
+        triangleView.transform = triangleView.transform.rotated(by: .pi / 2)
         
         addSubview(triangleView)
     }
@@ -67,7 +68,7 @@ class EndGameView: UIView {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont(name: "ChalkboardSE-Bold", size: 39)!
-        titleLabel.text = "Time is over!"
+        titleLabel.text = "Onboarding!"
         titleLabel.numberOfLines = 1
         titleLabel.textColor = .lightGreen
         titleLabel.textAlignment = .center
@@ -75,37 +76,26 @@ class EndGameView: UIView {
         addSubview(titleLabel)
     }
     
-    private func setUpScore() {
-        scoreLabel = UILabel(frame: .zero)
-        scoreLabel.translatesAutoresizingMaskIntoConstraints = false
-        scoreLabel.font = UIFont(name: "ChalkboardSE-Light", size: 26)!
-        scoreLabel.text = "Score: "
-        scoreLabel.numberOfLines = 1
-        scoreLabel.textColor = .lightGreen
-        scoreLabel.textAlignment = .center
+    private func setUpExplanation() {
+        explanationLabel = UILabel(frame: .zero)
+        explanationLabel.translatesAutoresizingMaskIntoConstraints = false
+        explanationLabel.font = UIFont(name: "ChalkboardSE-Light", size: 26)!
+        explanationLabel.text = "Choose 4 points\nto delimit the\nboard space"
+        explanationLabel.numberOfLines = 3
+        explanationLabel.textColor = .lightGreen
+        explanationLabel.textAlignment = .center
         
-        addSubview(scoreLabel)
-    }
-    private func setUpHighScore() {
-        highScoreLabel = UILabel(frame: .zero)
-        highScoreLabel.translatesAutoresizingMaskIntoConstraints = false
-        highScoreLabel.font = UIFont(name: "ChalkboardSE-Light", size: 26)!
-        highScoreLabel.text = "High Score: "
-        highScoreLabel.numberOfLines = 1
-        highScoreLabel.textColor = .lightGreen
-        highScoreLabel.textAlignment = .center
-        
-        addSubview(highScoreLabel)
+        addSubview(explanationLabel)
     }
     
-    private func setUpPlayButton() {
-        let image = UIImage(named: "playEndGame")
+    private func setUpPlaceButton() {
+        let image = UIImage(named: "placeButton")
 
-        playButton = UIButton(frame: .zero)
-        playButton.translatesAutoresizingMaskIntoConstraints = false
-        playButton.setImage(image, for: .normal)
+        placeButton = UIButton(frame: .zero)
+        placeButton.translatesAutoresizingMaskIntoConstraints = false
+        placeButton.setImage(image, for: .normal)
         
-        addSubview(playButton)
+        addSubview(placeButton)
     }
     private func setUpHomeButton() {
         let image = UIImage(named: "homeEndGame")
@@ -134,10 +124,9 @@ class EndGameView: UIView {
         setUpCircleViewConstraints(superview)
         setUpTriangleViewConstraints(superview)
         setUpTitleConstraints()
-        setUpHighScoreConstraints()
-        setUpScoreConstraints()
+        setUpExplanationConstraints()
         setUpHomeButtonConstraints(superview)
-        setUpPlayButtonConstraints(superview)
+        setUpPlaceButtonConstraints(superview)
     }
     
     private func setUpBackgroundConstraints() {
@@ -151,8 +140,8 @@ class EndGameView: UIView {
     
     private func setUpCircleViewConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
-            circleView.rightAnchor.constraint(equalTo: self.leftAnchor),
-            circleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 60),
+            circleView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            circleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30),
             circleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1514),
             circleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0959)
         ])
@@ -160,8 +149,8 @@ class EndGameView: UIView {
     
     private func setUpTriangleViewConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
-            triangleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -15),
-            triangleView.bottomAnchor.constraint(equalTo: self.topAnchor),
+            triangleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
+            triangleView.leftAnchor.constraint(equalTo: self.rightAnchor),
             triangleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1094),
             triangleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1094)
         ])
@@ -174,25 +163,19 @@ class EndGameView: UIView {
         ])
     }
     
-    private func setUpScoreConstraints() {
+    private func setUpExplanationConstraints() {
         NSLayoutConstraint.activate([
-            scoreLabel.bottomAnchor.constraint(equalTo: highScoreLabel.topAnchor, constant: -10),
-            scoreLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        ])
-    }
-    private func setUpHighScoreConstraints() {
-        NSLayoutConstraint.activate([
-            highScoreLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -20),
-            highScoreLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            explanationLabel.bottomAnchor.constraint(equalTo: placeButton.topAnchor, constant: -20),
+            explanationLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
         ])
     }
     
-    private func setUpPlayButtonConstraints(_ superview: UIView) {
+    private func setUpPlaceButtonConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
-            playButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            playButton.bottomAnchor.constraint(equalTo: homeButton.topAnchor, constant: -10),
-            playButton.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0873),
-            playButton.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1994)
+            placeButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            placeButton.bottomAnchor.constraint(equalTo: homeButton.topAnchor, constant: -10),
+            placeButton.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0873),
+            placeButton.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1994)
         ])
     }
     
@@ -205,11 +188,4 @@ class EndGameView: UIView {
         ])
     }
     
-    func present(score: Int? = 0, highScore: Int? = 0) {
-        print("ACABOUUUUU O PROGRAMA")
-        scoreLabel.text = "Score: \(score ?? 0)"
-        highScoreLabel.text = "High Score: \(highScore ?? 0)"
-        
-        self.isHidden = false
-    }
 }

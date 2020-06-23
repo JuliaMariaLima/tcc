@@ -15,17 +15,12 @@ enum HomeButtonType{
 
 class HomeButtonView: UIButton{
     private var type: HomeButtonType!
-    private var origin: UIViewController!
-    private var destination: UIViewController!
-    
-    init(type: HomeButtonType, from origin: UIViewController, to destination: UIViewController) {
+
+    init(type: HomeButtonType) {
         super.init(frame: .zero)
         
         self.type = type
-        self.origin = origin
-        self.destination = destination
         
-        self.addTarget(self, action: #selector(clicked), for: .touchDown)
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -81,10 +76,5 @@ class HomeButtonView: UIButton{
         }
         
         self.setImage(UIImage(named: name), for: .normal)
-    }
-    
-    @objc
-    func clicked() {
-        origin.navigationController?.pushViewController(destination, animated: true)
     }
 }

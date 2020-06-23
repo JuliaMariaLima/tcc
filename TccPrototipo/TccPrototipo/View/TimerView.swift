@@ -12,13 +12,14 @@ class TimerView: UIView {
     private var labelTimer: UILabel!
     private var backgroundTimer: UIImageView!
     private var timer: Timer?
-    private var duration: Int = 9
+    private var duration: Int! //seconds
     private var currentTime: Int!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, duration: Int) {
         super.init(frame: frame)
-        
+        self.isHidden = true
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.duration = duration
         self.currentTime = self.duration
 
         setUpBackground()
@@ -112,7 +113,7 @@ class TimerView: UIView {
     }
     
     func restart() {
-        self.timer!.invalidate()
+        self.timer?.invalidate()
         
         self.currentTime = self.duration
         

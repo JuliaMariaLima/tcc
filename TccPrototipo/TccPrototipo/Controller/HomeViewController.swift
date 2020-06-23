@@ -9,6 +9,7 @@
 import UIKit
 
 class HomeViewController: UIViewController {
+    var gameViewController = GameViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,12 +21,27 @@ class HomeViewController: UIViewController {
     }
     
     func setUpButtons() {
-        let playButton = HomeButtonView(type: .play, from: self, to: GameViewController())
+        let playButton = HomeButtonView(type: .play)
         view.addSubview(playButton)
         playButton.setUpConstraints()
+        playButton.addTarget(self, action: #selector(play), for: .touchDown)
         
-        let constructButton = HomeButtonView(type: .construct, from: self, to: GameViewController())
+        let constructButton = HomeButtonView(type: .construct)
         view.addSubview(constructButton)
         constructButton.setUpConstraints()
+        constructButton.addTarget(self, action: #selector(construct), for: .touchDown)
+    }
+    
+    @objc
+    func play() {
+        print("play")
+        self.navigationController?.pushViewController(gameViewController, animated: true)
+    }
+    
+    @objc
+    func construct() {
+        print("construct")
+        //self.navigationController?.pushViewController(ConstructViewController(), animated: true)
     }
 }
+

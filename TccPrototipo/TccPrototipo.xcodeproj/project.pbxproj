@@ -15,6 +15,11 @@
 		961720F32378905C008E1298 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 961720F22378905C008E1298 /* Assets.xcassets */; };
 		961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720F42378905C008E1298 /* LaunchScreen.storyboard */; };
 		961720FE2378906A008E1298 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720FD2378906A008E1298 /* Cube.swift */; };
+		963112A924A152E30080B421 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112A824A152E30080B421 /* Game.swift */; };
+		963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AA24A15BB00080B421 /* GameDelegate.swift */; };
+		963112AD24A15BCC0080B421 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AC24A15BCC0080B421 /* Board.swift */; };
+		963112AF24A1695B0080B421 /* PlaceBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AE24A1695B0080B421 /* PlaceBoardView.swift */; };
+		963112B324A1B0EC0080B421 /* CountDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112B224A1B0EC0080B421 /* CountDownView.swift */; };
 		9639DDB6243BFA87000B309F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDB5243BFA87000B309F /* UIColor.swift */; };
 		9639DDB9243BFC30000B309F /* HomeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDB8243BFC30000B309F /* HomeButtonView.swift */; };
 		9639DDBB243C07B7000B309F /* ArrowButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDBA243C07B7000B309F /* ArrowButtonView.swift */; };
@@ -22,6 +27,8 @@
 		9639DDBF2445372B000B309F /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDBE2445372B000B309F /* TimerView.swift */; };
 		9639DDC124453F6C000B309F /* PointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC024453F6C000B309F /* PointsView.swift */; };
 		9639DDC324454708000B309F /* EndGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC224454708000B309F /* EndGameView.swift */; };
+		9639DDC524467331000B309F /* ConstructViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC424467331000B309F /* ConstructViewController.swift */; };
+		9639DDC82460F74B000B309F /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC72460F74B000B309F /* StartGameView.swift */; };
 		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
 		969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CBC58243BF52B002152AA /* HomeViewController.swift */; };
 		96B5639324218707006D595B /* triangularPrism.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639224218707006D595B /* triangularPrism.obj */; };
@@ -54,6 +61,11 @@
 		961720F52378905C008E1298 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		961720F72378905C008E1298 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		961720FD2378906A008E1298 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
+		963112A824A152E30080B421 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		963112AA24A15BB00080B421 /* GameDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDelegate.swift; sourceTree = "<group>"; };
+		963112AC24A15BCC0080B421 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		963112AE24A1695B0080B421 /* PlaceBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBoardView.swift; sourceTree = "<group>"; };
+		963112B224A1B0EC0080B421 /* CountDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownView.swift; sourceTree = "<group>"; };
 		9639DDB5243BFA87000B309F /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		9639DDB8243BFC30000B309F /* HomeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeButtonView.swift; sourceTree = "<group>"; };
 		9639DDBA243C07B7000B309F /* ArrowButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowButtonView.swift; sourceTree = "<group>"; };
@@ -61,6 +73,8 @@
 		9639DDBE2445372B000B309F /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		9639DDC024453F6C000B309F /* PointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsView.swift; sourceTree = "<group>"; };
 		9639DDC224454708000B309F /* EndGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGameView.swift; sourceTree = "<group>"; };
+		9639DDC424467331000B309F /* ConstructViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructViewController.swift; sourceTree = "<group>"; };
+		9639DDC72460F74B000B309F /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
 		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
 		969CBC58243BF52B002152AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		96B5639224218707006D595B /* triangularPrism.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triangularPrism.obj; sourceTree = "<group>"; };
@@ -135,28 +149,7 @@
 			path = TccPrototipo;
 			sourceTree = "<group>";
 		};
-		9639DDB7243BFC0C000B309F /* View */ = {
-			isa = PBXGroup;
-			children = (
-				9639DDB8243BFC30000B309F /* HomeButtonView.swift */,
-				9639DDBA243C07B7000B309F /* ArrowButtonView.swift */,
-				9639DDBE2445372B000B309F /* TimerView.swift */,
-				9639DDC024453F6C000B309F /* PointsView.swift */,
-				9639DDC224454708000B309F /* EndGameView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		969CBC57243BF4EE002152AA /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				969CBC58243BF52B002152AA /* HomeViewController.swift */,
-				961720EB23789059008E1298 /* GameViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		96B563AB24256D29006D595B /* Model */ = {
+		963112A724A152C90080B421 /* Geometries */ = {
 			isa = PBXGroup;
 			children = (
 				961720FD2378906A008E1298 /* Cube.swift */,
@@ -171,6 +164,42 @@
 				96B563BA242576FC006D595B /* PentagonalPyramid.swift */,
 				96B563BC24297D90006D595B /* GeometryEntity.swift */,
 				96581784239612FB004C90D0 /* Floor.swift */,
+			);
+			path = Geometries;
+			sourceTree = "<group>";
+		};
+		9639DDB7243BFC0C000B309F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9639DDB8243BFC30000B309F /* HomeButtonView.swift */,
+				9639DDBA243C07B7000B309F /* ArrowButtonView.swift */,
+				9639DDBE2445372B000B309F /* TimerView.swift */,
+				9639DDC024453F6C000B309F /* PointsView.swift */,
+				963112AE24A1695B0080B421 /* PlaceBoardView.swift */,
+				9639DDC72460F74B000B309F /* StartGameView.swift */,
+				9639DDC224454708000B309F /* EndGameView.swift */,
+				963112B224A1B0EC0080B421 /* CountDownView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		969CBC57243BF4EE002152AA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				969CBC58243BF52B002152AA /* HomeViewController.swift */,
+				961720EB23789059008E1298 /* GameViewController.swift */,
+				9639DDC424467331000B309F /* ConstructViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		96B563AB24256D29006D595B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				963112A724A152C90080B421 /* Geometries */,
+				963112A824A152E30080B421 /* Game.swift */,
+				963112AA24A15BB00080B421 /* GameDelegate.swift */,
+				963112AC24A15BCC0080B421 /* Board.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -258,13 +287,19 @@
 			files = (
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
 				961720EC23789059008E1298 /* GameViewController.swift in Sources */,
+				9639DDC524467331000B309F /* ConstructViewController.swift in Sources */,
+				963112B324A1B0EC0080B421 /* CountDownView.swift in Sources */,
 				96B563AD24256D4D006D595B /* TriangularPrism.swift in Sources */,
 				96B563B1242570B2006D595B /* Cylinder.swift in Sources */,
 				96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */,
+				963112AD24A15BCC0080B421 /* Board.swift in Sources */,
 				9639DDB6243BFA87000B309F /* UIColor.swift in Sources */,
+				963112A924A152E30080B421 /* Game.swift in Sources */,
 				969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */,
+				9639DDC82460F74B000B309F /* StartGameView.swift in Sources */,
 				9639DDC124453F6C000B309F /* PointsView.swift in Sources */,
 				96B563AF24256FFE006D595B /* SemiSphere.swift in Sources */,
+				963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */,
 				96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */,
 				96B563B724257304006D595B /* Tetrahedron.swift in Sources */,
 				9639DDBF2445372B000B309F /* TimerView.swift in Sources */,
@@ -272,6 +307,7 @@
 				9639DDC324454708000B309F /* EndGameView.swift in Sources */,
 				96581785239612FB004C90D0 /* Floor.swift in Sources */,
 				96B563B52425715E006D595B /* Octahedron.swift in Sources */,
+				963112AF24A1695B0080B421 /* PlaceBoardView.swift in Sources */,
 				96B563B3242570F5006D595B /* PentagonalPrism.swift in Sources */,
 				9639DDBB243C07B7000B309F /* ArrowButtonView.swift in Sources */,
 				960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */,

@@ -20,7 +20,7 @@ class ArrowButtonView: UIButton {
     
     init(type: ArrowButtonType) {
         super.init(frame: .zero)
-        
+        self.isHidden = true
         self.type = type
         self.translatesAutoresizingMaskIntoConstraints = false
     }
