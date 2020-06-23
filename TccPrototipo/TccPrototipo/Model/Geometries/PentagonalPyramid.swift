@@ -12,13 +12,13 @@ import Combine
 
 class PentagonalPyramidEntity: GeometryEntity {
     
-    required init(color: SimpleMaterial.Color) {
+    required init(color: SimpleMaterial.Color, size: Double) {
         super.init(type: .PentagonalPyramid)
         let modelHolder = try! ModelEntity.loadModel(named: "pentagonalPyramid.obj")
         let modelWidthSize = 0.095
         let modelHeightSize = 0.05
         let modelDepthSize = 0.09
-        let wantedSize = 0.2
+        let wantedSize = size
         
         self.setScale(SIMD3<Float>.init(
             Float(1 / (modelWidthSize / wantedSize)),

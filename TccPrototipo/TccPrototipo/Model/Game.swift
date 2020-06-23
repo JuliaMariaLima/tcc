@@ -43,12 +43,9 @@ class Game {
         case (.starting, .counting):
             print("started -> counting")
             viewController.startingToCounting()
-        case (.counting, .randomizing):
-            print("counted -> randomizing")
-            viewController.countingToRandomizing()
-        case (.randomizing, .playing):
-            print("randomized -> playing")
-            viewController.randomizingToPlaying()
+        case (.counting, .playing):
+            print("counted -> playing")
+            viewController.countingToPlaying()
         case (.playing, .finished):
             print("played -> finished")
             viewController.playingToFinished()

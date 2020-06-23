@@ -12,11 +12,11 @@ import Combine
 
 class CylinderEntity: GeometryEntity {
     
-    required init(color: SimpleMaterial.Color) {
+    required init(color: SimpleMaterial.Color, size: Double) {
         super.init(type: .Cylinder)
         let modelHolder = try! ModelEntity.loadModel(named: "cylinder.obj")
         let modelSize = 1.0
-        let wantedSize = 0.2
+        let wantedSize = size
         let scale: Float = Float(1 / (modelSize / wantedSize))
 
         self.setScale(SIMD3<Float>.init(scale, scale, scale), relativeTo: self)

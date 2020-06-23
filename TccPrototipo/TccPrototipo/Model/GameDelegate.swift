@@ -6,14 +6,12 @@
 //  Copyright © 2020 Julia Maria Santos. All rights reserved.
 //
 
-import ARKit
+import RealityKit
 
 protocol GameDelegate: class {
-    func placed(_ board: Board, anchors: [ARAnchor])
+    func placed(_ board: Board, anchors: [AnchorEntity])
     
     func counted()
-    
-    func randomized()
-    
+        
     func played()
 }

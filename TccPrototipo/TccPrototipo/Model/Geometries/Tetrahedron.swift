@@ -12,14 +12,14 @@ import Combine
 
 class TetrahedronEntity: GeometryEntity {
     
-    required init(color: SimpleMaterial.Color) {
+    required init(color: SimpleMaterial.Color, size: Double) {
         super.init(type: .Tetrahedron)
         let modelHolder = try! ModelEntity.loadModel(named: "tetrahedron.obj")
         let modelWidthSize = 0.966
         let modelHeightSize = 1.0
         let modelDepthSize = 0.966
-        let wantedSizeWD = 0.1932
-        let wantedSizeH = 0.2
+        let wantedSizeWD = size * modelWidthSize
+        let wantedSizeH = size
         
         self.setScale(SIMD3<Float>.init(
             Float(1 / (modelWidthSize / wantedSizeWD)),

@@ -12,13 +12,13 @@ import Combine
 
 class ConeEntity: GeometryEntity {
     
-    required init(color: SimpleMaterial.Color) {
+    required init(color: SimpleMaterial.Color, size: Double) {
         super.init(type: .Cone)
         let modelHolder = try! ModelEntity.loadModel(named: "cone.obj")
         let modelWidthSize = 1.0
         let modelHeightSize = 1.0
         let modelDepthSize = 0.998
-        let wantedSize = 0.2
+        let wantedSize = size
         
         self.setScale(SIMD3<Float>.init(
             Float(1 / (modelWidthSize / wantedSize)),

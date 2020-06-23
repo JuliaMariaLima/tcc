@@ -27,6 +27,8 @@ class GameViewController: UIViewController {
     
     var entities: [GeometryEntity] = []
     
+    var entitieTypes: [GeometryType] = []
+    
     var mapMatches: [GeometryType:[GeometryType]] = [:]
     
     var selectedEntity: GeometryEntity!
@@ -62,6 +64,16 @@ class GameViewController: UIViewController {
     var board: Board!
     
     var countDownView: CountDownView!
+    
+    var buttonUp: ArrowButtonView!
+    
+    var buttonDown: ArrowButtonView!
+    
+    var buttonRight: ArrowButtonView!
+    
+    var buttonLeft: ArrowButtonView!
+    
+    var colors: [UIColor] = [.blue, .red, .yellow]
     
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
@@ -115,8 +127,8 @@ class GameViewController: UIViewController {
         setUpStartGame()
         setUpEndGame()
         setUpSubscription()
-        setUpEntities()
         setUpMatches()
+        setUpEntitiesTypes()
     }
     
     // MARK:- Set ups
@@ -135,25 +147,25 @@ class GameViewController: UIViewController {
     }
     
     func setUpButtons() {
-        let buttonUp = ArrowButtonView(type: .up)
+        buttonUp = ArrowButtonView(type: .up)
         view.addSubview(buttonUp)
         buttonUp.setUpConstraints()
         buttonUp.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
         buttonUp.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         
-        let buttonDown = ArrowButtonView(type: .down)
+        buttonDown = ArrowButtonView(type: .down)
         view.addSubview(buttonDown)
         buttonDown.setUpConstraints()
         buttonDown.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
         buttonDown.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         
-        let buttonRight = ArrowButtonView(type: .right)
+        buttonRight = ArrowButtonView(type: .right)
         view.addSubview(buttonRight)
         buttonRight.setUpConstraints()
         buttonRight.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
         buttonRight.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         
-        let buttonLeft = ArrowButtonView(type: .left)
+        buttonLeft = ArrowButtonView(type: .left)
         view.addSubview(buttonLeft)
         buttonLeft.setUpConstraints()
         buttonLeft.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
@@ -229,18 +241,30 @@ class GameViewController: UIViewController {
         }
     }
     
-    func setUpEntities() {
-        entities.append(CubeEntity(color: .red))
-        entities.append(QuadrilateralPyramidEntity(color: .blue))
-        entities.append(TriangularPrismEntity(color: .cyan))
-        entities.append(SemiSphereEntity(color: .green))
-        entities.append(CylinderEntity(color: .magenta))
-        entities.append(PentagonalPrismEntity(color: .orange))
-        entities.append(TetrahedronEntity(color: .yellow))
-        entities.append(ConeEntity(color: .systemPink))
-        entities.append(PentagonalPyramidEntity(color: .white))
+    func setUpEntities(size: Double) {
+        entities.append(CubeEntity(color: .red, size: size))
+        entities.append(QuadrilateralPyramidEntity(color: .blue, size: size))
+        entities.append(TriangularPrismEntity(color: .cyan, size: size))
+        entities.append(SemiSphereEntity(color: .green, size: size))
+        entities.append(CylinderEntity(color: .magenta, size: size))
+        entities.append(PentagonalPrismEntity(color: .orange, size: size))
+        entities.append(TetrahedronEntity(color: .yellow, size: size))
+        entities.append(ConeEntity(color: .systemPink, size: size))
+        entities.append(PentagonalPyramidEntity(color: .white, size: size))
         
         selectedEntity = entities.first!
+    }
+    
+    func setUpEntitiesTypes() {
+        entitieTypes.append(.Cube)
+        entitieTypes.append(.QuadrilateralPyramid)
+        entitieTypes.append(.TriangularPrism)
+        entitieTypes.append(.SemiSphere)
+        entitieTypes.append(.Cylinder)
+        entitieTypes.append(.PentagonalPrism)
+        entitieTypes.append(.Tetrahedron)
+        entitieTypes.append(.Cone)
+        entitieTypes.append(.PentagonalPyramid)
     }
     
     func setUpMatches() {
@@ -280,7 +304,6 @@ class GameViewController: UIViewController {
             entity.position = [0, 0, 0]
             anchorEntity.addChild(entity)
             
-            //            arView.installGestures(.translation, for: entity)
             arView.scene.addAnchor(anchorEntity)
             
             entity.addCollision()
@@ -334,6 +357,28 @@ class GameViewController: UIViewController {
         points = 0
         pointsView.update(points)
         coachingView.activatesAutomatically = true
+    }
+    
+    func appearWidgets() {
+        timerView.isHidden = false
+        
+        buttonUp.isHidden = false
+        buttonDown.isHidden = false
+        buttonRight.isHidden = false
+        buttonLeft.isHidden = false
+        
+        pointsView.isHidden = false
+    }
+    
+    func desappearWidgets() {
+        timerView.isHidden = true
+        
+        buttonUp.isHidden = true
+        buttonDown.isHidden = true
+        buttonRight.isHidden = true
+        buttonLeft.isHidden = true
+        
+        pointsView.isHidden = true
     }
     
     //MARK: - Objc actions
@@ -436,15 +481,7 @@ class GameViewController: UIViewController {
     
     @objc
     func playAgain() {
-        for entity in entities {
-            entity.anchor?.removeFromParent()
-        }
-        
-        coachingView.removeFromSuperview()
-        coachingView = nil
-        entities.removeAll()
-        selectedEntity = nil
-        endGameView.isHidden = true
+        game.change(to: .starting)
         start()
     }
     
@@ -466,6 +503,7 @@ class GameViewController: UIViewController {
         placeBoardView.isHidden = true
         setUpCoachingView()
         resetToInitialConfiguration()
+        desappearWidgets()
     }
     
     func placingToStarting() {
@@ -477,13 +515,32 @@ class GameViewController: UIViewController {
         countDownView.start()
     }
     
-    func countingToRandomizing() {}
+    func countingToPlaying() {
+        board.randomizeInitialBoard(entitieTypes: entitieTypes, colors: colors)
+        appearWidgets()
+        DispatchQueue.main.async { [unowned self] in
+            self.timerView.startClock() {
+                self.played()
+            }
+        }
+    }
     
-    func randomizingToPlaying() {}
+    func playingToFinished() {
+        desappearWidgets()
+        endGameView.present()
+    }
     
-    func playingToFinished() {}
-    
-    func finishedToStarting() {}
+    func finishedToStarting() {
+        for entity in entities {
+            entity.anchor?.removeFromParent()
+        }
+        
+        coachingView?.removeFromSuperview()
+        coachingView = nil
+        entities.removeAll()
+        selectedEntity = nil
+        endGameView.isHidden = true
+    }
     
     func finishedToWaiting() {}
 }
@@ -491,18 +548,14 @@ class GameViewController: UIViewController {
 //MARK: - Game Delegate
 
 extension GameViewController: GameDelegate {
-    func placed(_ board: Board, anchors: [ARAnchor]) {
+    func placed(_ board: Board, anchors: [AnchorEntity]) {
         game.change(to: .starting)
     }
     
     func counted() {
-        game.change(to: .randomizing)
-    }
-    
-    func randomized() {
         game.change(to: .playing)
     }
-    
+
     func played() {
         game.change(to: .finished)
     }

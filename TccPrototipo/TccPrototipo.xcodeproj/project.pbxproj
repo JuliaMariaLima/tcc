@@ -30,6 +30,7 @@
 		9639DDC524467331000B309F /* ConstructViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC424467331000B309F /* ConstructViewController.swift */; };
 		9639DDC82460F74B000B309F /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC72460F74B000B309F /* StartGameView.swift */; };
 		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
+		965855E424A29A4600521454 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965855E324A29A4600521454 /* Array.swift */; };
 		969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CBC58243BF52B002152AA /* HomeViewController.swift */; };
 		96B5639324218707006D595B /* triangularPrism.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639224218707006D595B /* triangularPrism.obj */; };
 		96B5639524218892006D595B /* semiSphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639424218892006D595B /* semiSphere.obj */; };
@@ -76,6 +77,7 @@
 		9639DDC424467331000B309F /* ConstructViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructViewController.swift; sourceTree = "<group>"; };
 		9639DDC72460F74B000B309F /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
 		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
+		965855E324A29A4600521454 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		969CBC58243BF52B002152AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		96B5639224218707006D595B /* triangularPrism.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triangularPrism.obj; sourceTree = "<group>"; };
 		96B5639424218892006D595B /* semiSphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = semiSphere.obj; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				961720F42378905C008E1298 /* LaunchScreen.storyboard */,
 				961720F72378905C008E1298 /* Info.plist */,
 				9639DDB5243BFA87000B309F /* UIColor.swift */,
+				965855E324A29A4600521454 /* Array.swift */,
 			);
 			path = TccPrototipo;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				9639DDBB243C07B7000B309F /* ArrowButtonView.swift in Sources */,
 				960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */,
 				961720EA23789059008E1298 /* AppDelegate.swift in Sources */,
+				965855E424A29A4600521454 /* Array.swift in Sources */,
 				9639DDB9243BFC30000B309F /* HomeButtonView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

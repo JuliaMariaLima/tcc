@@ -12,14 +12,14 @@ import Combine
 
 class TriangularPrismEntity: GeometryEntity {    
     
-    required init(color: SimpleMaterial.Color) {
+    required init(color: SimpleMaterial.Color, size: Double) {
         super.init(type: .TriangularPrism)
         let modelHolder = try! ModelEntity.loadModel(named: "triangularPrism.obj")
         let modelWidthSize = 9.195
         let modelHeightSize = 9.697
         let modelDepthSize = 7.963
-        let wantedSizeWH = 0.2
-        let wantedSizeD = 0.1732050808
+        let wantedSizeWH = size
+        let wantedSizeD = size * 0.866025404
 
         self.setScale(SIMD3<Float>.init(
             Float(1 / (modelWidthSize / wantedSizeWH)),

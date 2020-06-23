@@ -12,13 +12,13 @@ import Combine
 
 class PentagonalPrismEntity: GeometryEntity {
     
-    required init(color: SimpleMaterial.Color) {
+    required init(color: SimpleMaterial.Color, size: Double) {
         super.init(type: .PentagonalPrism)
         let modelHolder = try! ModelEntity.loadModel(named: "pentagonalPrism.obj")
         let modelWidthSize = 1.618
         let modelHeightSize = 1.0
         let modelDepthSize = 1.539
-        let wantedSize = 0.2
+        let wantedSize = size
         
         self.setScale(SIMD3<Float>.init(
             Float(1 / (modelWidthSize / wantedSize)),
