@@ -24,6 +24,7 @@ class Board {
     private var geometriesSize: Double = 0
     private var initialGamePoints: [SIMD2<Float>] = []
     private var backupGamePoints: [SIMD2<Float>] = []
+    private var entities: [GeometryEntity] = []
     
     weak var delegate: GameDelegate?
     
@@ -91,18 +92,27 @@ class Board {
             
             self.arView.scene.addAnchor(anchorEntity)
             anchorEntity.addChild(entity)
+            
+            entities.append(entity)
         }
 
-//        for p in backupGamePoints {
-//            let position = SIMD3<Float>(p.x, first.position.y, p.y)
-//            let anchorEntity = AnchorEntity()
-//            anchorEntity.setPosition(position, relativeTo: first)
-//
-//            let cubeEntity = CylinderEntity(color: .blue, size: geometriesSize)
-//
-//            self.arView.scene.addAnchor(anchorEntity)
-//            anchorEntity.addChild(cubeEntity)
-//        }
+        delegate?.updatedEntities(entities)
+    }
+    
+    func clearBoard() {
+        for entity in entities {
+            entity.anchor?.removeFromParent()
+        }
+        entities.removeAll()
+        delegate?.updatedEntities(entities)
+        removeInitialCubes()
+    }
+    
+    func restart() {
+        clearBoard()
+        anchors.removeAll()
+        first = nil
+        isAddingPoins = true
     }
     
     private func calculatePoints() -> ([SIMD2<Float>], [SIMD2<Float>]){

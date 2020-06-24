@@ -13,5 +13,7 @@ protocol GameDelegate: class {
     
     func counted()
         
+    func updatedEntities(_ entities: [GeometryEntity])
+    
     func played()
 }

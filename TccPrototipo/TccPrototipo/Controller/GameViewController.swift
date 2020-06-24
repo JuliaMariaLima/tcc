@@ -22,16 +22,14 @@ class GameViewController: UIViewController {
     var floor: FloorEntity!
     
     var anchorEntityFloor: AnchorEntity!
-    
-    var anchorEntityForms: [AnchorEntity] = []
-    
+        
     var entities: [GeometryEntity] = []
     
     var entitieTypes: [GeometryType] = []
     
     var mapMatches: [GeometryType:[GeometryType]] = [:]
     
-    var selectedEntity: GeometryEntity!
+    var selectedEntity: GeometryEntity?
     
     var planeAnchor: ARPlaneAnchor? = nil
     
@@ -353,10 +351,8 @@ class GameViewController: UIViewController {
     func resetToInitialConfiguration() {
         arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         planeAnchor = nil
-        timerView.restart()
-        points = 0
-        pointsView.update(points)
-        coachingView.activatesAutomatically = true
+        resetWidgets()
+        coachingView?.activatesAutomatically = true
     }
     
     func appearWidgets() {
@@ -381,10 +377,18 @@ class GameViewController: UIViewController {
         pointsView.isHidden = true
     }
     
+    func resetWidgets() {
+        timerView.restart()
+        points = 0
+        pointsView.update(points)
+    }
+    
     //MARK: - Objc actions
     
     @objc
     func buttonUpClicked() {
+        guard let selectedEntity = selectedEntity else { return }
+        
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
         transform.translation.y += moveDistance
@@ -394,6 +398,8 @@ class GameViewController: UIViewController {
     
     @objc
     func buttonDownClicked() {
+        guard let selectedEntity = selectedEntity else { return }
+
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
         transform.translation.y -= moveDistance
@@ -403,6 +409,8 @@ class GameViewController: UIViewController {
     
     @objc
     func buttonLeftClicked() {
+        guard let selectedEntity = selectedEntity else { return }
+
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
         transform.translation.x -= moveDistance
@@ -412,6 +420,8 @@ class GameViewController: UIViewController {
     
     @objc
     func buttonRightClicked() {
+        guard let selectedEntity = selectedEntity else { return }
+
         let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
         var transform = Transform(matrix: transformMatrix)
         transform.translation.x += moveDistance
@@ -487,10 +497,6 @@ class GameViewController: UIViewController {
     
     @objc
     func goHome() {
-        coachingView?.removeFromSuperview()
-        coachingView = nil
-        startGameView.isHidden = false
-        endGameView.isHidden = false
         game.change(to: .waiting)
         self.navigationController?.popViewController(animated: true)
     }
@@ -513,6 +519,17 @@ class GameViewController: UIViewController {
     func startingToCounting() {
         startGameView.isHidden = true
         countDownView.start()
+        resetWidgets()
+    }
+    
+    func startingToWaiting() {
+        desappearWidgets()
+        coachingView?.removeFromSuperview()
+        coachingView = nil
+        startGameView.isHidden = true
+        endGameView.isHidden = true
+        placeBoardView.isHidden = false
+        board.restart()
     }
     
     func countingToPlaying() {
@@ -528,21 +545,26 @@ class GameViewController: UIViewController {
     func playingToFinished() {
         desappearWidgets()
         endGameView.present()
+        currentAnimation?.stop()
     }
     
     func finishedToStarting() {
-        for entity in entities {
-            entity.anchor?.removeFromParent()
-        }
-        
+        board.clearBoard()
         coachingView?.removeFromSuperview()
         coachingView = nil
-        entities.removeAll()
         selectedEntity = nil
         endGameView.isHidden = true
     }
     
-    func finishedToWaiting() {}
+    func finishedToWaiting() {
+        desappearWidgets()
+        coachingView?.removeFromSuperview()
+        coachingView = nil
+        startGameView.isHidden = true
+        endGameView.isHidden = true
+        placeBoardView.isHidden = false
+        board.restart()
+    }
 }
 
 //MARK: - Game Delegate
@@ -556,6 +578,11 @@ extension GameViewController: GameDelegate {
         game.change(to: .playing)
     }
 
+    func updatedEntities(_ entities: [GeometryEntity]) {
+        self.entities = entities
+        self.selectedEntity = entities.first
+    }
+    
     func played() {
         game.change(to: .finished)
     }

@@ -21,7 +21,7 @@ class Game {
     }
     
     var current: Step!
-    var duration: Int = 2 // seconds
+    var duration: Int = 240 // seconds
     var viewController: GameViewController!
     
     init(viewController: GameViewController) {
@@ -43,6 +43,9 @@ class Game {
         case (.starting, .counting):
             print("started -> counting")
             viewController.startingToCounting()
+        case (.starting, .waiting):
+            print("started -> waiting")
+            viewController.startingToWaiting()
         case (.counting, .playing):
             print("counted -> playing")
             viewController.countingToPlaying()
