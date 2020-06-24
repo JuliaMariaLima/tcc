@@ -9,11 +9,13 @@
 import RealityKit
 
 protocol GameDelegate: class {
-    func placed(_ board: Board, anchors: [AnchorEntity])
+    func placed(area: Double)
     
     func counted()
         
     func updatedEntities(_ entities: [GeometryEntity])
+    
+    func updateGeometriesSize(_ size: Double)
     
     func played()
 }

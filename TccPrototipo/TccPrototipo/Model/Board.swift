@@ -11,6 +11,8 @@ import ARKit
 
 class Board {
     private var arView: ARView!
+    private var entitieTypes: [GeometryType] = []
+    private var colors: [UIColor] = []
     private var isAddingPoins = true
     private var anchors: [AnchorEntity] = [] {
         didSet {
@@ -21,20 +23,36 @@ class Board {
     
     private var first: AnchorEntity?
     private var cameraAnchor: AnchorEntity?
-    private var geometriesSize: Double = 0
+    private var geometriesSize: Double = 0 {
+        didSet {
+            delegate?.updateGeometriesSize(geometriesSize)
+        }
+    }
+    
     private var initialGamePoints: [SIMD2<Float>] = []
     private var backupGamePoints: [SIMD2<Float>] = []
-    private var entities: [GeometryEntity] = []
+    private var availablePoints: [SIMD2<Float>] = []
+    private var entities: [GeometryEntity] = [] {
+        didSet {
+            delegate?.updatedEntities(entities)
+        }
+    }
+    
+    private var area: Double!
+    private var vertices: [SIMD2<Float>] = []
     
     weak var delegate: GameDelegate?
     
-    fileprivate var rot60: simd_float2x2 {
+    private var rot60: simd_float2x2 {
         simd_float2x2(SIMD2(cos(.pi/3), -sin(.pi/3)),
                       SIMD2(sin(.pi/3), cos(.pi/3)))
     }
     
-    init(view: ARView) {
+    init(view: ARView, entitieTypes: [GeometryType], colors: [UIColor]) {
         self.arView = view
+        self.entitieTypes = entitieTypes
+        self.colors = colors
+        
         getCameraAnchor()
     }
     
@@ -42,7 +60,6 @@ class Board {
         for a in arView.scene.anchors {
             if a.name == "cameraAnchor" {
                 cameraAnchor = a as? AnchorEntity
-                //                print("Achou cameraAnchor: \(cameraAnchor)")
                 return
             }
         }
@@ -55,48 +72,33 @@ class Board {
         
         DispatchQueue.main.async {
             let cubeEntity = CubeEntity(color: .red, size: 0.1)
-            //            self.arView.installGestures(for: cubeEntity)
             
             self.arView.scene.addAnchor(anchorEntity)
             anchorEntity.addChild(cubeEntity)
-            
-            self.arView.installGestures(.translation, for: cubeEntity)
-            
-            // Make this thread safe
+                        
             self.anchors.append(anchorEntity)
             
             if self.first == nil { self.first = anchorEntity }
-            //            print("X: \(anchorEntity.position(relativeTo: self.cameraAnchor).x) Y: \(anchorEntity.position(relativeTo: self.cameraAnchor).y)  Z: \(anchorEntity.position(relativeTo: self.cameraAnchor).z)")
         }
     }
     
-    func finishInitialPointsPlacement() {
+    private func finishInitialPointsPlacement() {
         isAddingPoins = false
-        delegate?.placed(self, anchors: anchors)
+        area = calculateArea()
+        print("AREA: \(area!)")
+        delegate?.placed(area: area)
     }
     
-    func randomizeInitialBoard(entitieTypes: [GeometryType], colors: [UIColor]) {
-        guard let first = first else { return }
+    func randomizeInitialBoard() {
+        setGeometriesSize(area: area)
+        removeInitialCubes()
         
-        (initialGamePoints, backupGamePoints) = calculatePoints()
+        (initialGamePoints, backupGamePoints) = calculatePoints(in: vertices)
+        availablePoints = backupGamePoints
         
-        for p in initialGamePoints {
-            let position = SIMD3<Float>(p.x, first.position.y, p.y)
-            let anchorEntity = AnchorEntity()
-            anchorEntity.setPosition(position, relativeTo: first)
-            
-            let randomColor = Int.random(in: 0..<colors.count)
-            let randomType = Int.random(in: 0..<entitieTypes.count)
-            
-            let entity = constructEntity(color: colors[randomColor], size: geometriesSize, type: entitieTypes[randomType])
-            
-            self.arView.scene.addAnchor(anchorEntity)
-            anchorEntity.addChild(entity)
-            
-            entities.append(entity)
+        for position in initialGamePoints {
+           createEntity(in: position)
         }
-
-        delegate?.updatedEntities(entities)
     }
     
     func clearBoard() {
@@ -104,7 +106,6 @@ class Board {
             entity.anchor?.removeFromParent()
         }
         entities.removeAll()
-        delegate?.updatedEntities(entities)
         removeInitialCubes()
     }
     
@@ -113,21 +114,68 @@ class Board {
         anchors.removeAll()
         first = nil
         isAddingPoins = true
+        vertices.removeAll()
     }
     
-    private func calculatePoints() -> ([SIMD2<Float>], [SIMD2<Float>]){
-        guard anchors.count == 4, let first = first else { return ([], []) }
+    func addNewPair() {
+        guard availablePoints.count >= 2 else { return }
         
-        var vertices: [SIMD2<Float>] = []
+        addEntity()
+        addEntity()
+    }
+    
+    private func addEntity() {
+        let index = Int.random(in: 0..<availablePoints.count)
+        let position = availablePoints.remove(at: index)
+        
+        createEntity(in: position)
+    }
+    
+    func removePair(firstEntity: GeometryEntity, secondEntity: GeometryEntity) {
+        removeEntity(firstEntity)
+        removeEntity(secondEntity)
+    }
+    
+    private func removeEntity(_ entity: GeometryEntity) {
+        entity.anchor?.removeFromParent()
+        
+        guard let index = entities.firstIndex(of: entity) else { return }
+        
+        entities.remove(at: index)
+    }
+    
+    private func createEntity(in position: SIMD2<Float>) {
+        guard let first = first else { return }
+
+        let position3D = SIMD3<Float>(position.x, first.position.y, position.y)
+        let anchorEntity = AnchorEntity()
+        anchorEntity.setPosition(position3D, relativeTo: first)
+        
+        let randomColor = Int.random(in: 0..<colors.count)
+        let randomType = Int.random(in: 0..<entitieTypes.count)
+        
+        let entity = constructEntity(color: colors[randomColor], size: geometriesSize, type: entitieTypes[randomType])
+        entity.generateCollisionShapes(recursive: false)
+        
+        arView.scene.addAnchor(anchorEntity)
+        anchorEntity.addChild(entity)
+        
+        entities.append(entity)
+        entity.addCollision()
+    }
+    
+    private func calculateArea() -> Double {
+        guard anchors.count == 4, let first = first else { return 0 }
         
         for a in anchors {
             vertices.append(SIMD2<Float>(a.position(relativeTo: first).x, a.position(relativeTo: first).z))
         }
         
-        setGeometriesSize(area: calculateInitialQuadrilateralArea(vertices: vertices))
-        removeInitialCubes()
-        
-        let points = calculateDistances(vertices: vertices, distancePins: Float(2 * geometriesSize))
+        return calculateInitialQuadrilateralArea(vertices: vertices)
+    }
+    
+    private func calculatePoints(in vertices: [SIMD2<Float>]) -> ([SIMD2<Float>], [SIMD2<Float>]){
+        let points = calculateDistances(vertices: vertices, distancePins: Float(1.5 * geometriesSize))
         
         return dividePoints(points: points)
     }
@@ -203,10 +251,10 @@ class Board {
     }
     
     private func setGeometriesSize(area: Double) {
-        let a = 0.02
-        let b = 1.743192
-        let c = 1.836294
-        let d = 0.5250122
+        let a = 0.05015012 //0.02
+        let b = 2.646978 //1.743192
+        let c = 3.594851 //1.836294
+        let d = 1.021068 //0.5250122
         let x = area / c
         let size = d + ((a - d) / (1 + pow(x, b)))
         
@@ -248,7 +296,7 @@ class Board {
         return retArray.removeDuplicates()
     }
     
-    fileprivate func newPointInLine(_ a: SIMD2<Float>,_ b: SIMD2<Float>, distance: Float) -> SIMD2<Float> {
+    private func newPointInLine(_ a: SIMD2<Float>,_ b: SIMD2<Float>, distance: Float) -> SIMD2<Float> {
         let biggestPoint = b
         let smallestPoint = a
         
@@ -258,7 +306,7 @@ class Board {
         return smallestPoint + distanceVector
     }
     
-    fileprivate func calculateTriangles( points: [SIMD2<Float>], distancePins: Float, rotation: simd_float2x2) -> [SIMD2<Float>]{
+    private func calculateTriangles( points: [SIMD2<Float>], distancePins: Float, rotation: simd_float2x2) -> [SIMD2<Float>]{
         
         var currentPoints = points
         var totalPoints: [SIMD2<Float>] = []
@@ -304,7 +352,7 @@ class Board {
         return totalPoints
     }
     
-    fileprivate func calculateTriangleBottom(_ a: SIMD2<Float>,_ b: SIMD2<Float>, distance: Float, rotationMatrix: simd_float2x2) -> SIMD2<Float> {
+    private func calculateTriangleBottom(_ a: SIMD2<Float>,_ b: SIMD2<Float>, distance: Float, rotationMatrix: simd_float2x2) -> SIMD2<Float> {
         
         let normalizedVectorP = getNormalizedVector(b, a)
         let vector = normalizedVectorP * distance
@@ -314,7 +362,7 @@ class Board {
     }
     
     
-    fileprivate func calculateTriangleTop(_ a: SIMD2<Float>,_ b: SIMD2<Float>, distance: Float, rotationMatrix: simd_float2x2) -> SIMD2<Float> {
+    private func calculateTriangleTop(_ a: SIMD2<Float>,_ b: SIMD2<Float>, distance: Float, rotationMatrix: simd_float2x2) -> SIMD2<Float> {
         
         let normalizedVectorP = getNormalizedVector(b, a)
         
@@ -325,7 +373,7 @@ class Board {
     }
     
     
-    fileprivate func contains(polygon: [SIMD2<Float>], test: SIMD2<Float>) -> Bool {
+    private func contains(polygon: [SIMD2<Float>], test: SIMD2<Float>) -> Bool {
         if polygon.count <= 1 { return false }
         
         let p = UIBezierPath()
@@ -342,7 +390,7 @@ class Board {
         return p.contains(CGPoint(x: CGFloat(test.x), y: CGFloat(test.y)))
     }
     
-    fileprivate func getNormalizedVector(_ a: SIMD2<Float>,_ b: SIMD2<Float>) -> SIMD2<Float> {
+    private func getNormalizedVector(_ a: SIMD2<Float>,_ b: SIMD2<Float>) -> SIMD2<Float> {
         return simd_normalize(a - b)
     }
 }
