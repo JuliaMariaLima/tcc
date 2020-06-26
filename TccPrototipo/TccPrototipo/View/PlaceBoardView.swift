@@ -32,10 +32,21 @@ class PlaceBoardView: UIView {
         setUpExplanation()
         setUpPlaceButton()
         setUpHomeButton()
+        onboarding()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func onboarding() {
+        titleLabel.text = "Onboarding!"
+        explanationLabel.text = "Choose 4 points\nto delimit the\nboard space"
+    }
+    
+    func placeAgain() {
+        titleLabel.text = "Place Again!"
+        explanationLabel.text = "Please, choose\na bigger space\nto start playing"
     }
     
     private func setUpBackground() {
@@ -68,7 +79,6 @@ class PlaceBoardView: UIView {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont(name: "ChalkboardSE-Bold", size: 39)!
-        titleLabel.text = "Onboarding!"
         titleLabel.numberOfLines = 1
         titleLabel.textColor = .lightGreen
         titleLabel.textAlignment = .center
@@ -80,7 +90,6 @@ class PlaceBoardView: UIView {
         explanationLabel = UILabel(frame: .zero)
         explanationLabel.translatesAutoresizingMaskIntoConstraints = false
         explanationLabel.font = UIFont(name: "ChalkboardSE-Light", size: 26)!
-        explanationLabel.text = "Choose 4 points\nto delimit the\nboard space"
         explanationLabel.numberOfLines = 3
         explanationLabel.textColor = .lightGreen
         explanationLabel.textAlignment = .center

@@ -50,13 +50,13 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
         guard let scene = scene else { return }
 
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-            self.stopAllAnimations()
+//            self.stopAllAnimations()
 //            self.physicsBody?.mode = .dynamic //testar sem mudar
         })
         
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
-            self.stopAllAnimations()
-            self.physicsBody?.mode = .dynamic
+//            self.stopAllAnimations()
+//            self.physicsBody?.mode = .kinematic
         })
         
         collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in

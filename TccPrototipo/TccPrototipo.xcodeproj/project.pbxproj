@@ -50,6 +50,9 @@
 		96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563BA242576FC006D595B /* PentagonalPyramid.swift */; };
 		96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B563BC24297D90006D595B /* GeometryEntity.swift */; };
 		96B9AEAE24A4049700A230D0 /* matchForms.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 96B9AEAD24A4049700A230D0 /* matchForms.mp3 */; };
+		96B9AEB024A5183900A230D0 /* CodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */; };
+		96B9AEB424A66EAC00A230D0 /* OrientationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */; };
+		96B9AEB824A67AB800A230D0 /* arrows.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B9AEB724A67AB800A230D0 /* arrows.obj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +101,9 @@
 		96B563BA242576FC006D595B /* PentagonalPyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PentagonalPyramid.swift; sourceTree = "<group>"; };
 		96B563BC24297D90006D595B /* GeometryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryEntity.swift; sourceTree = "<group>"; };
 		96B9AEAD24A4049700A230D0 /* matchForms.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = matchForms.mp3; sourceTree = "<group>"; };
+		96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableExtensions.swift; sourceTree = "<group>"; };
+		96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationEntity.swift; sourceTree = "<group>"; };
+		96B9AEB724A67AB800A230D0 /* arrows.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arrows.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,7 @@
 				96B563A5242196BD006D595B /* tetrahedron.obj */,
 				96B563A724219AB3006D595B /* cone.obj */,
 				96B563A924219BD5006D595B /* pentagonalPyramid.obj */,
+				96B9AEB724A67AB800A230D0 /* arrows.obj */,
 				961720F42378905C008E1298 /* LaunchScreen.storyboard */,
 				961720F72378905C008E1298 /* Info.plist */,
 				96B9AEAD24A4049700A230D0 /* matchForms.mp3 */,
@@ -170,6 +177,7 @@
 				96B563BA242576FC006D595B /* PentagonalPyramid.swift */,
 				96B563BC24297D90006D595B /* GeometryEntity.swift */,
 				96581784239612FB004C90D0 /* Floor.swift */,
+				96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */,
 			);
 			path = Geometries;
 			sourceTree = "<group>";
@@ -206,6 +214,7 @@
 				963112A824A152E30080B421 /* Game.swift */,
 				963112AA24A15BB00080B421 /* GameDelegate.swift */,
 				963112AC24A15BCC0080B421 /* Board.swift */,
+				96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -274,6 +283,7 @@
 				9639DDBD243D5AE2000B309F /* cube.obj in Resources */,
 				96B563A6242196BD006D595B /* tetrahedron.obj in Resources */,
 				96B5639524218892006D595B /* semiSphere.obj in Resources */,
+				96B9AEB824A67AB800A230D0 /* arrows.obj in Resources */,
 				961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */,
 				961720F32378905C008E1298 /* Assets.xcassets in Resources */,
 				96B563A42421966A006D595B /* octahedron.obj in Resources */,
@@ -294,6 +304,7 @@
 			files = (
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
 				961720EC23789059008E1298 /* GameViewController.swift in Sources */,
+				96B9AEB024A5183900A230D0 /* CodableExtensions.swift in Sources */,
 				9639DDC524467331000B309F /* ConstructViewController.swift in Sources */,
 				963112B324A1B0EC0080B421 /* CountDownView.swift in Sources */,
 				96B563AD24256D4D006D595B /* TriangularPrism.swift in Sources */,
@@ -306,6 +317,7 @@
 				9639DDC82460F74B000B309F /* StartGameView.swift in Sources */,
 				9639DDC124453F6C000B309F /* PointsView.swift in Sources */,
 				96B563AF24256FFE006D595B /* SemiSphere.swift in Sources */,
+				96B9AEB424A66EAC00A230D0 /* OrientationEntity.swift in Sources */,
 				963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */,
 				96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */,
 				96B563B724257304006D595B /* Tetrahedron.swift in Sources */,

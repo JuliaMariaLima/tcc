@@ -17,7 +17,7 @@ class QuadrilateralPyramidEntity: GeometryEntity {
         let modelHolder = try! ModelEntity.loadModel(named: "quadrilateralPyramid.obj")
         let modelSize = 19.525
         let wantedSize = size
-        let scale: Float = Float(1 / (modelSize / wantedSize))
+        let scale: Float = Float(wantedSize / modelSize)
 
         self.setScale(SIMD3<Float>.init(scale, scale, scale), relativeTo: self)
 

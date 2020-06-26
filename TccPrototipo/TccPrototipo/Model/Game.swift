@@ -6,7 +6,8 @@
 //  Copyright © 2020 Julia Maria Santos. All rights reserved.
 //
 
-import Foundation
+import UIKit
+import RealityKit
 
 class Game {
     
@@ -19,33 +20,51 @@ class Game {
         case finished
     }
     
+    static let shared = Game()
+    
+    var board: Board!
+    
     var current: Step!
     
-    var viewController: GameViewController!
-
     var duration: Int = 60 // seconds
         
     var highScore: Int = 0
     
-    var moveDuration: TimeInterval = 30
+    private var score: Int = 0
     
-    var moveDistance: Float = 10
+    private var pointsPerCombination: Int = 10
+    
+    var moveDuration: TimeInterval!
+    
+    var moveDistance: Float!
 
-    var entitieTypes: [GeometryType] = []
+    private var entitieTypes: [GeometryType] = []
     
     var mapMatches: [GeometryType:[GeometryType]] = [:]
     
     var minimumArea: Double = 0.05
     
-    init(viewController: GameViewController) {
+    private var colors: [UIColor] = [.blue, .red, .yellow]
+    
+    private var mapMatchesNeeded: [GeometryType:Int] = [:]
+    
+    private init() {
         self.current = .waiting
-        self.viewController = viewController
         
         setUpEntitiesTypes()
         setUpMatches()
     }
     
-    func change(to next: Step) {
+    func createBoard(viewController: GameViewController, view: ARView) {
+        board = Board(view: view,
+                      entitieTypes: entitieTypes,
+                      colors: colors,
+                      mapMatches: mapMatches)
+        
+        board.delegate = viewController
+    }
+    
+    func change(viewController: GameViewController, to next: Step) {
         switch (current, next) {
         case (.waiting, .waiting):
             print("gave up")
@@ -68,8 +87,10 @@ class Game {
         case (.counting, .playing):
             print("counted -> playing")
             viewController.countingToPlaying()
+            configureMoveSpeed()
         case (.playing, .finished):
             print("played -> finished")
+            countScores(viewController: viewController)
             viewController.playingToFinished()
         case (.finished, .starting):
             print("finished -> starting")
@@ -83,8 +104,31 @@ class Game {
         current = next
     }
     
-    func updateHighScore(_ newHighScore: Int) {
-        highScore = newHighScore
+    func newCombination() -> Int {
+        score += pointsPerCombination
+        
+        return score
+    }
+    
+    func resetPoints() -> Int {
+        score = 0
+        
+        return score
+    }
+    
+    private func countScores(viewController: GameViewController) {
+        if score > highScore {
+            highScore = score
+        }
+        
+        viewController.updateScores(score: score, highScore: highScore)
+    }
+    
+    private func configureMoveSpeed() {
+        let size = board.getGeometriesSize()
+        
+        moveDistance = Float(200 * size)
+        moveDuration = TimeInterval(3 * moveDistance)
     }
     
     private func setUpEntitiesTypes() {

@@ -16,24 +16,22 @@ class GameViewController: UIViewController {
     // MARK: - Properties
     
     var entities: [GeometryEntity] = []
-
+    
     var selectedEntity: GeometryEntity?
-        
+    
+    var orientationAnchorEntity: AnchorEntity!
+    
     var animation: Cancellable!
     
-    var currentAnimation: AnimationPlaybackController!
+    var currentAnimationSelectedEntity: AnimationPlaybackController!
     
-    var geometriesSize: Double!
+    var currentAnimationOrientationAnchor: AnimationPlaybackController!
     
-    var points: Int = 0
+    var isRunningAnimation: Bool! = false
     
     var configuration: ARWorldTrackingConfiguration!
     
     var game: Game!
-    
-    var board: Board!
-    
-    var colors: [UIColor] = [.blue, .red, .yellow, .lightGreen]
     
     var generator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
     
@@ -100,7 +98,7 @@ class GameViewController: UIViewController {
         
         arView.addGestureRecognizer(tapRecognizer)
         
-        game = Game(viewController: self)
+        game = Game.shared
         
         setUpConfigurations()
         createBoard()
@@ -121,13 +119,12 @@ class GameViewController: UIViewController {
         configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         
-        //        arView.debugOptions = [.showAnchorGeometry, .showAnchorOrigins, .showPhysics]
+        // arView.debugOptions = [.showAnchorGeometry, .showAnchorOrigins, .showPhysics]
         arView.session.run(configuration)
     }
     
     func createBoard() {
-        board = Board(view: arView, entitieTypes: game.entitieTypes, colors: colors)
-        board!.delegate = self
+        game.createBoard(viewController: self, view: arView)
     }
     
     func setUpButtons() {
@@ -212,10 +209,27 @@ class GameViewController: UIViewController {
     func setUpSubscription() {
         animation = arView.scene.subscribe(to: AnimationEvents.PlaybackTerminated.self) { (event) in
             guard let movingEntity = event.playbackController.entity as? GeometryEntity else { return }
+            
             for entity in self.entities {
                 for match in self.game.mapMatches[movingEntity.type]! {
                     if entity.type == match && entity != movingEntity {
-                        self.calculateDistance(movingEntity: movingEntity, staticEntity: entity)
+                        if self.game.board.didCombine(movingEntity: movingEntity, staticEntity: entity) {
+                            
+                            self.selectedEntity = nil
+                            self.hideOrientationEntity()
+                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                                self.game.board.removePair(firstEntity: movingEntity, secondEntity: entity)
+                                self.game.board.addNewPair()
+                            }
+                            
+                            let points = self.game.newCombination()
+                            self.pointsView.update(points)
+                            
+                            self.generator.notificationOccurred(.success)
+                            self.matchFormSound.play()
+                            
+                            return
+                        }
                     }
                 }
             }
@@ -229,43 +243,14 @@ class GameViewController: UIViewController {
         matchFormSound = try! AVAudioPlayer(contentsOf: soundUrl)
     }
     
-    // MARK: - Actions
-    
-    func calculateDistance(movingEntity: GeometryEntity, staticEntity: GeometryEntity) {
-        let staticPosition = staticEntity.position(relativeTo: nil)
-        let movingPosition = movingEntity.position(relativeTo: nil)
-        print("static position: ", staticPosition)
-        print("moving position: ", movingPosition)
+    func setUpOrientationEntity() {
+        let oritentationEntity = OrientationEntity(size: 2 * game.board.getGeometriesSize())
         
-        var goalPosition = staticPosition
-        goalPosition.y += Float(geometriesSize)
-        
-        let dist = distance(staticPosition, movingPosition)
-        print("DIST (static: ", staticEntity, " - moving: ", movingEntity, ") = ", dist)
-        
-        let delta: Float = Float(geometriesSize + geometriesSize * 0.1)
-        print("Delta: \(delta)")
-        
-        if dist < delta && movingPosition.y - staticPosition.y < delta { // encaixou
-            
-            movingEntity.setPosition(goalPosition, relativeTo: nil)
-            
-            movingEntity.cancelCollision()
-            staticEntity.cancelCollision()
-            
-            selectedEntity = nil
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                self.board.removePair(firstEntity: movingEntity, secondEntity: staticEntity)
-                self.board.addNewPair()
-            }
-
-            points += 10
-            pointsView.update(points)
-            
-            generator.notificationOccurred(.success)
-            matchFormSound.play()
-        }
+        orientationAnchorEntity = AnchorEntity()
+        orientationAnchorEntity.addChild(oritentationEntity)
     }
+    
+    // MARK: - Actions
     
     func resetToInitialConfiguration() {
         arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
@@ -296,59 +281,94 @@ class GameViewController: UIViewController {
     
     func resetWidgets() {
         timerView.restart()
-        points = 0
+        
+        let points = game.resetPoints()
         pointsView.update(points)
+    }
+    
+    func getSelectedEntityTransform() -> Transform? {
+        guard let selectedEntity = selectedEntity else { return nil }
+        
+        let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
+        return Transform(matrix: transformMatrix)
+    }
+    
+    func moveAnimation(to transform: Transform) {
+        guard let selectedEntity = selectedEntity else { return }
+        
+        currentAnimationSelectedEntity = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        
+        currentAnimationOrientationAnchor = orientationAnchorEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        
+        isRunningAnimation = true
+    }
+    
+    func stopAnimation() {
+        currentAnimationSelectedEntity?.stop()
+        currentAnimationOrientationAnchor?.stop()
+        
+        isRunningAnimation = false
+    }
+    
+    func showOrientationEntity() {
+        guard let selectedEntity = selectedEntity else { return }
+        let size = game.board.getGeometriesSize()
+        var position = selectedEntity.position(relativeTo: nil)
+        position.y += Float(size / 2)
+        
+        orientationAnchorEntity.setPosition(position, relativeTo: nil)
+        arView.scene.addAnchor(orientationAnchorEntity)
+    }
+    
+    func hideOrientationEntity() {
+        orientationAnchorEntity.removeFromParent()
+    }
+    
+    func updateOrientationEntityRotation() {
+        orientationAnchorEntity?.setOrientation(cameraAnchor.orientation(relativeTo: cameraAnchor), relativeTo: cameraAnchor)
     }
     
     //MARK: - Objc actions
     
     @objc
     func buttonUpClicked() {
-        guard let selectedEntity = selectedEntity else { return }
+        guard var transform = getSelectedEntityTransform() else { return }
         
-        let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
-        var transform = Transform(matrix: transformMatrix)
         transform.translation.y += game.moveDistance
         
-        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        moveAnimation(to: transform)
     }
     
     @objc
     func buttonDownClicked() {
-        guard let selectedEntity = selectedEntity else { return }
+        guard var transform = getSelectedEntityTransform() else { return }
         
-        let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
-        var transform = Transform(matrix: transformMatrix)
         transform.translation.y -= game.moveDistance
         
-        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        moveAnimation(to: transform)
     }
     
     @objc
     func buttonLeftClicked() {
-        guard let selectedEntity = selectedEntity else { return }
+        guard var transform = getSelectedEntityTransform() else { return }
         
-        let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
-        var transform = Transform(matrix: transformMatrix)
         transform.translation.x -= game.moveDistance
         
-        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        moveAnimation(to: transform)
     }
     
     @objc
     func buttonRightClicked() {
-        guard let selectedEntity = selectedEntity else { return }
+        guard var transform = getSelectedEntityTransform() else { return }
         
-        let transformMatrix = selectedEntity.transformMatrix(relativeTo: cameraAnchor)
-        var transform = Transform(matrix: transformMatrix)
         transform.translation.x += game.moveDistance
         
-        currentAnimation = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        moveAnimation(to: transform)
     }
     
     @objc
     func buttonReleased() {
-        currentAnimation?.stop()
+        stopAnimation()
     }
     
     @objc
@@ -375,7 +395,7 @@ class GameViewController: UIViewController {
         let arAnchor = ARAnchor(name: "Anchor for cube", transform: result.worldTransform)
         
         arView.session.add(anchor: arAnchor)
-        board.addPoint(to: arAnchor)
+        game.board.addPoint(to: arAnchor)
         print("Botou")
     }
     
@@ -383,10 +403,11 @@ class GameViewController: UIViewController {
         let hits = arView.hitTest(location)
         
         for hit in hits {
-            print(hit.entity)
+            //            print(hit.entity)
             if hit.entity is GeometryEntity {
                 selectedEntity = hit.entity as? GeometryEntity
-                print("SELECTED ENTITY IS:::: ", selectedEntity as Any)
+                showOrientationEntity()
+                //                print("SELECTED ENTITY IS:::: ", selectedEntity as Any)
                 return
             }
         }
@@ -396,40 +417,44 @@ class GameViewController: UIViewController {
     
     @objc
     func place() {
-        game.change(to: .placing)
+        game.change(viewController: self,to: .placing)
     }
     
     @objc
     func start() {
-        game.change(to: .counting)
+        game.change(viewController: self,to: .counting)
     }
     
     @objc
     func playAgain() {
-        game.change(to: .starting)
+        game.change(viewController: self,to: .starting)
         start()
     }
     
     @objc
     func goHome() {
-        game.change(to: .waiting)
+        game.change(viewController: self,to: .waiting)
         self.navigationController?.popViewController(animated: true)
     }
     
     //MARK: - Game actions
     
-    func waitingToWaiting() {}
+    func waitingToWaiting() {
+        placeBoardView.onboarding()
+    }
     
     func waitingToPlacing() {
         placeBoardView.isHidden = true
+        placeBoardView.onboarding()
         setUpCoachingView()
         resetToInitialConfiguration()
         desappearWidgets()
     }
     
     func placingToWaiting() {
+        placeBoardView.placeAgain()
         placeBoardView.isHidden = false
-        board.restart()
+        game.board.restart()
     }
     
     func placingToStarting() {
@@ -437,7 +462,7 @@ class GameViewController: UIViewController {
     }
     
     func startingToCounting() {
-        board.clearBoard()
+        game.board.clearBoard()
         startGameView.isHidden = true
         countDownView.start()
         resetWidgets()
@@ -450,11 +475,12 @@ class GameViewController: UIViewController {
         startGameView.isHidden = true
         endGameView.isHidden = true
         placeBoardView.isHidden = false
-        board.restart()
+        game.board.restart()
     }
     
     func countingToPlaying() {
-        board.randomizeInitialBoard()
+        game.board.randomizeInitialBoard()
+        setUpOrientationEntity()
         appearWidgets()
         DispatchQueue.main.async { [unowned self] in
             self.timerView.startClock() {
@@ -465,13 +491,7 @@ class GameViewController: UIViewController {
     
     func playingToFinished() {
         desappearWidgets()
-        
-        if points > game.highScore {
-            game.updateHighScore(points)
-        }
-        
-        endGameView.present(score: points, highScore: game.highScore)
-        currentAnimation?.stop()
+        stopAnimation()
     }
     
     func finishedToStarting() {
@@ -488,7 +508,7 @@ class GameViewController: UIViewController {
         startGameView.isHidden = true
         endGameView.isHidden = true
         placeBoardView.isHidden = false
-        board.restart()
+        game.board.restart()
     }
 }
 
@@ -497,14 +517,14 @@ class GameViewController: UIViewController {
 extension GameViewController: GameDelegate {
     func placed(area: Double) {
         if area < game.minimumArea {
-            game.change(to: .waiting)
+            game.change(viewController: self,to: .waiting)
         } else {
-            game.change(to: .starting)
+            game.change(viewController: self,to: .starting)
         }
     }
     
     func counted() {
-        game.change(to: .playing)
+        game.change(viewController: self,to: .playing)
     }
     
     func updatedEntities(_ entities: [GeometryEntity]) {
@@ -512,13 +532,12 @@ extension GameViewController: GameDelegate {
         self.entities = entities
     }
     
-    func updateGeometriesSize(_ size: Double) {
-        print("Update geometries size!")
-        geometriesSize = size
+    func updateScores(score: Int, highScore: Int) {
+        endGameView.present(score: score, highScore: highScore)
     }
     
     func played() {
-        game.change(to: .finished)
+        game.change(viewController: self,to: .finished)
     }
 }
 
@@ -535,7 +554,7 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         coachingView.session = arView.session
         coachingView.translatesAutoresizingMaskIntoConstraints = false
         coachingView.activatesAutomatically = true
-
+        
         setUpConstraints()
     }
     
@@ -549,10 +568,15 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
     }
     
     func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-//        coachingView.activatesAutomatically = false
     }
 }
 
 // MARK:- AR Session Delegate
 
-extension GameViewController: ARSessionDelegate {}
+extension GameViewController: ARSessionDelegate {
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        if !isRunningAnimation {
+            updateOrientationEntityRotation()
+        }
+    }
+}

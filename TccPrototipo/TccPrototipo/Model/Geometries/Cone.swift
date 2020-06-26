@@ -21,9 +21,9 @@ class ConeEntity: GeometryEntity {
         let wantedSize = size
         
         self.setScale(SIMD3<Float>.init(
-            Float(1 / (modelWidthSize / wantedSize)),
-            Float(1 / (modelHeightSize / wantedSize)),
-            Float(1 / (modelDepthSize / wantedSize))),
+            Float(wantedSize / modelWidthSize),
+            Float(wantedSize / modelHeightSize),
+            Float(wantedSize / modelDepthSize)),
                       relativeTo: self)
 
         self.model = modelHolder.model

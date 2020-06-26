@@ -22,9 +22,9 @@ class TetrahedronEntity: GeometryEntity {
         let wantedSizeH = size
         
         self.setScale(SIMD3<Float>.init(
-            Float(1 / (modelWidthSize / wantedSizeWD)),
-            Float(1 / (modelHeightSize / wantedSizeH)),
-            Float(1 / (modelDepthSize / wantedSizeWD))),
+            Float(wantedSizeWD / modelWidthSize),
+            Float(wantedSizeH / modelHeightSize),
+            Float(wantedSizeWD / modelDepthSize)),
                       relativeTo: self)
 
         self.setOrientation(simd_quatf.init(angle: Float.pi / 2.4, axis: [0, 1, 0]), relativeTo: self)

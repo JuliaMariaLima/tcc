@@ -17,7 +17,7 @@ class CubeEntity: GeometryEntity {
         let modelHolder = try! ModelEntity.loadModel(named: "cube.obj")
         let modelSize = 1.0
         let wantedSize = size
-        let scale: Float = Float(1 / (modelSize / wantedSize))
+        let scale: Float = Float(wantedSize / modelSize)
 
         self.setScale(SIMD3<Float>.init(scale, scale, scale), relativeTo: self)
         

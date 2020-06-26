@@ -14,8 +14,8 @@ protocol GameDelegate: class {
     func counted()
         
     func updatedEntities(_ entities: [GeometryEntity])
-    
-    func updateGeometriesSize(_ size: Double)
+        
+    func updateScores(score: Int, highScore: Int)
     
     func played()
 }
