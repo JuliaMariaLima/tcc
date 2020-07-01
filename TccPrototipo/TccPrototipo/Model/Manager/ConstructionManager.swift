@@ -11,7 +11,7 @@ import RealityKit
 class ConstructionManager: Manager {
     
     enum Step {
-        case waiting
+        case initializing
         case placing
         case adding
         case classifying
@@ -30,7 +30,7 @@ class ConstructionManager: Manager {
     
     private override init() {
         super.init()
-        self.current = .waiting
+        self.current = .initializing
         set(moveDistance: 40)
     }
     
@@ -45,12 +45,12 @@ class ConstructionManager: Manager {
     
     func change(to next: Step) {
         switch (current, next) {
-        case (.waiting, .placing):
-            print("waiting -> placing")
-            delegate?.waitingToPlacing()
-        case (.waiting, .waiting):
-            print("waiting -> waiting")
-            delegate?.waitingToWaiting()
+        case (.initializing, .placing):
+            print("initializing -> placing")
+            delegate?.initializingToPlacing()
+        case (.initializing, .initializing):
+            print("initializing -> waiting")
+            delegate?.initializingToInitializing()
         case (.placing, .looking):
             print("placing -> looking")
             delegate?.placingToLooking()
@@ -81,9 +81,9 @@ class ConstructionManager: Manager {
         case (.classifying, .adding):
             print("classifying -> adding")
             delegate?.classifyingToAdding()
-        case (.leaving, .waiting):
-            print("leaving -> waiting")
-            delegate?.leavingToWaiting()
+        case (.leaving, .initializing):
+            print("leaving -> initializing")
+            delegate?.leavingToInitializing()
         case (.leaving, .looking):
             print("leaving -> looking")
             delegate?.leavingToLooking()

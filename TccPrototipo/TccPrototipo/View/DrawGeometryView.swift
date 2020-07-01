@@ -12,10 +12,10 @@ class DrawGeometryView: UIView {
     private var backgroundDrawGeometry: UIImageView!
     private var circleView: UIImageView!
     private var triangleView: UIImageView!
-    
     private var titleLabel: UILabel!
     private var canvas: Canvas!
-    private var addButton: UIButton!
+    
+    var addButton: UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)

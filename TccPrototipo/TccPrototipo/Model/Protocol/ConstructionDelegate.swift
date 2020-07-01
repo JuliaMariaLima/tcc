@@ -9,9 +9,9 @@
 import Foundation
 
 protocol ConstructionDelegate: class {
-    func waitingToPlacing()
+    func initializingToPlacing()
     
-    func waitingToWaiting()
+    func initializingToInitializing()
     
     func placingToLooking()
     
@@ -33,7 +33,7 @@ protocol ConstructionDelegate: class {
     
     func classifyingToAdding()
     
-    func leavingToWaiting()
+    func leavingToInitializing()
     
     func leavingToLooking()
 }

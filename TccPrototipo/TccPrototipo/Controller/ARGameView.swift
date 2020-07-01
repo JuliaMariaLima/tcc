@@ -11,30 +11,30 @@ import UIKit
 
 class ARGameView: UIView {
 
-    var timerView: TimerView!
+    private var timerView: TimerView!
     
-    var pointsView: PointsView!
+    private var pointsView: PointsView!
     
-    var placeBoardView: PlaceBoardView!
+    private var placeBoardView: PlaceBoardView!
     
-    var startGameView: StartGameView!
+    private var startGameView: StartGameView!
     
-    var endGameView: EndGameView!
+    private var endGameView: EndGameView!
     
-    var countDownView: CountDownView!
+    private var countDownView: CountDownView!
     
-    var buttonUp: ArrowButtonView!
+    private var buttonUp: ArrowButtonView!
     
-    var buttonDown: ArrowButtonView!
+    private var buttonDown: ArrowButtonView!
     
-    var buttonRight: ArrowButtonView!
+    private var buttonRight: ArrowButtonView!
     
-    var buttonLeft: ArrowButtonView!
+    private var buttonLeft: ArrowButtonView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.isHidden = false
+        self.isHidden = true
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .clear
         self.isUserInteractionEnabled = true

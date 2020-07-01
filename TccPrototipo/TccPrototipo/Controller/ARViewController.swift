@@ -11,8 +11,6 @@ import RealityKit
 import ARKit
 import Combine
 
-
-
 class ARViewController: UIViewController {
     
     // MARK: - Properties
@@ -94,6 +92,7 @@ class ARViewController: UIViewController {
     var arConstructionView: ARConstructionView!
     
     // MARK:- Life Cicle
+    
     override func viewWillAppear(_ animated: Bool) {
         setUpActionsMode()
     }
@@ -181,6 +180,8 @@ class ARViewController: UIViewController {
     func setUpARConstructionView() {
         arConstructionView = ARConstructionView(frame: self.view.frame)
         arView.addSubview(arConstructionView)
+        
+        arConstructionView.setUpConstraints()
     }
     
     func setUpSubscription() {
@@ -516,6 +517,10 @@ extension ARViewController: GameDelegate {
 // MARK:- Construcion Delegate
 
 extension ARViewController: ConstructionDelegate {
+    func initializingToPlacing() {}
+    
+    func initializingToInitializing() {}
+    
     func placingToLooking() {}
     
     func lookingToAdding() {}
@@ -536,7 +541,7 @@ extension ARViewController: ConstructionDelegate {
     
     func classifyingToAdding() {}
     
-    func leavingToWaiting() {}
+    func leavingToInitializing() {}
     
     func leavingToLooking() {}
 }
@@ -553,8 +558,6 @@ extension ARViewController: ARCoachingOverlayViewDelegate {
         coachingView.session = arView.session
         coachingView.translatesAutoresizingMaskIntoConstraints = false
         coachingView.activatesAutomatically = true
-        
-        
     }
     
     func addCoachingView() {

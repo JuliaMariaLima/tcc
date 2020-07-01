@@ -143,45 +143,45 @@ class ConstructViewController: UIViewController {
     }
     
     func setUpArrowButtons() {
-        self.buttonUp = ArrowButtonView(type: .up)
-        self.view.addSubview(buttonUp)
-        self.buttonUp.setUpConstraints()
-        self.buttonUp.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
-        self.buttonUp.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        buttonUp = ArrowButtonView(type: .up)
+        view.addSubview(buttonUp)
+        buttonUp.setUpConstraints()
+        buttonUp.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
+        buttonUp.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         
-        self.buttonDown = ArrowButtonView(type: .down)
-        self.view.addSubview(buttonDown)
-        self.buttonDown.setUpConstraints()
-        self.buttonDown.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
-        self.buttonDown.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        buttonDown = ArrowButtonView(type: .down)
+        view.addSubview(buttonDown)
+        buttonDown.setUpConstraints()
+        buttonDown.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
+        buttonDown.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         
-        self.buttonRight = ArrowButtonView(type: .right)
-        self.view.addSubview(buttonRight)
-        self.buttonRight.setUpConstraints()
-        self.buttonRight.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
-        self.buttonRight.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        buttonRight = ArrowButtonView(type: .right)
+        view.addSubview(buttonRight)
+        buttonRight.setUpConstraints()
+        buttonRight.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
+        buttonRight.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
         
-        self.buttonLeft = ArrowButtonView(type: .left)
-        self.view.addSubview(buttonLeft)
-        self.buttonLeft.setUpConstraints()
-        self.buttonLeft.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
-        self.buttonLeft.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        buttonLeft = ArrowButtonView(type: .left)
+        view.addSubview(buttonLeft)
+        buttonLeft.setUpConstraints()
+        buttonLeft.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
+        buttonLeft.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
     }
     
     func setUpBackButton() {
-        self.backButton = BackHomeView()
-        self.view.addSubview(self.backButton)
+        backButton = BackHomeView()
+        view.addSubview(backButton)
         
-        self.backButton.setUpConstraints()
-        self.backButton.addTarget(self, action: #selector(leave), for: .touchDown)
+        backButton.setUpConstraints()
+        backButton.addTarget(self, action: #selector(leave), for: .touchDown)
     }
     
     func setUpAddButton() {
-        self.addButton = AddGeometryView()
-        self.view.addSubview(self.addButton)
+        addButton = AddGeometryView()
+        view.addSubview(addButton)
         
-        self.addButton.setUpConstraints()
-        self.addButton.addTarget(self, action: #selector(startDrawing), for: .touchDown)
+        addButton.setUpConstraints()
+        addButton.addTarget(self, action: #selector(startDrawing), for: .touchDown)
     }
     
     func setUpRemoveButton() {
