@@ -9,7 +9,7 @@
 import UIKit
 import RealityKit
 
-class Game {
+class GameManager: Manager {
     
     enum Step {
         case waiting
@@ -20,9 +20,9 @@ class Game {
         case finished
     }
     
-    static let shared = Game()
+    static let shared = GameManager()
     
-    var board: Board!
+    var board: GameBoard!
     
     var current: Step!
     
@@ -38,28 +38,17 @@ class Game {
     
     var moveDistance: Float!
 
-    private var entitieTypes: [GeometryType] = []
-    
-    var mapMatches: [GeometryType:[GeometryType]] = [:]
-    
     var minimumArea: Double = 0.05
-    
-    private var colors: [UIColor] = [.blue, .red, .yellow]
-    
-    private var mapMatchesNeeded: [GeometryType:Int] = [:]
-    
-    private init() {
+            
+    private override init() {
         self.current = .waiting
-        
-        setUpEntitiesTypes()
-        setUpMatches()
     }
     
     func createBoard(viewController: GameViewController, view: ARView) {
-        board = Board(view: view,
-                      entitieTypes: entitieTypes,
-                      colors: colors,
-                      mapMatches: mapMatches)
+        board = GameBoard(view: view,
+                      entitieTypes: EntityProperties.shared.entitieTypes,
+                      colors: EntityProperties.shared.colors,
+                      mapMatches: EntityProperties.shared.mapMatches)
         
         board.delegate = viewController
     }
@@ -129,29 +118,5 @@ class Game {
         
         moveDistance = Float(200 * size)
         moveDuration = TimeInterval(3 * moveDistance)
-    }
-    
-    private func setUpEntitiesTypes() {
-        entitieTypes.append(.Cube)
-        entitieTypes.append(.QuadrilateralPyramid)
-        entitieTypes.append(.TriangularPrism)
-        entitieTypes.append(.SemiSphere)
-        entitieTypes.append(.Cylinder)
-        entitieTypes.append(.PentagonalPrism)
-        entitieTypes.append(.Tetrahedron)
-        entitieTypes.append(.Cone)
-        entitieTypes.append(.PentagonalPyramid)
-    }
-    
-    private func setUpMatches() {
-        mapMatches[.Cube] = [.Cube]
-        mapMatches[.QuadrilateralPyramid] = [.Cube]
-        mapMatches[.TriangularPrism] = [.TriangularPrism]
-        mapMatches[.SemiSphere] = [.Cylinder]
-        mapMatches[.Cylinder] = [.Cylinder]
-        mapMatches[.PentagonalPrism] = [.PentagonalPrism]
-        mapMatches[.Tetrahedron] = [.TriangularPrism]
-        mapMatches[.Cone] = [.Cylinder]
-        mapMatches[.PentagonalPyramid] = [.PentagonalPrism]
     }
 }

@@ -10,14 +10,16 @@
 		960ED8902392C3220037675A /* quadrilateralPyramid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 960ED88F2392C3220037675A /* quadrilateralPyramid.obj */; };
 		960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960ED8912392C3950037675A /* QuadrilateralPyramid.swift */; };
 		961720EA23789059008E1298 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720E923789059008E1298 /* AppDelegate.swift */; };
-		961720EC23789059008E1298 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720EB23789059008E1298 /* GameViewController.swift */; };
-		961720F123789059008E1298 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720EF23789059008E1298 /* Main.storyboard */; };
+		961720EC23789059008E1298 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720EB23789059008E1298 /* ARViewController.swift */; };
 		961720F32378905C008E1298 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 961720F22378905C008E1298 /* Assets.xcassets */; };
 		961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 961720F42378905C008E1298 /* LaunchScreen.storyboard */; };
 		961720FE2378906A008E1298 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720FD2378906A008E1298 /* Cube.swift */; };
-		963112A924A152E30080B421 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112A824A152E30080B421 /* Game.swift */; };
+		9624F3B124ABE71A00D7357A /* ConstructionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B024ABE71A00D7357A /* ConstructionManager.swift */; };
+		9624F3B324ABE76700D7357A /* ConstructionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */; };
+		9624F3B524ABEEED00D7357A /* DelegateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B424ABEEED00D7357A /* DelegateManager.swift */; };
+		9624F3B724AC08A500D7357A /* ARConstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B624AC08A500D7357A /* ARConstructionView.swift */; };
+		963112A924A152E30080B421 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112A824A152E30080B421 /* GameManager.swift */; };
 		963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AA24A15BB00080B421 /* GameDelegate.swift */; };
-		963112AD24A15BCC0080B421 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AC24A15BCC0080B421 /* Board.swift */; };
 		963112AF24A1695B0080B421 /* PlaceBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AE24A1695B0080B421 /* PlaceBoardView.swift */; };
 		963112B324A1B0EC0080B421 /* CountDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112B224A1B0EC0080B421 /* CountDownView.swift */; };
 		9639DDB6243BFA87000B309F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDB5243BFA87000B309F /* UIColor.swift */; };
@@ -31,6 +33,8 @@
 		9639DDC82460F74B000B309F /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC72460F74B000B309F /* StartGameView.swift */; };
 		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
 		965855E424A29A4600521454 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965855E324A29A4600521454 /* Array.swift */; };
+		9667A90624ABBDB000302EF6 /* ARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9667A90524ABBDB000302EF6 /* ARGameView.swift */; };
+		9667A90924ABE28300302EF6 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9667A90824ABE28300302EF6 /* Manager.swift */; };
 		969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CBC58243BF52B002152AA /* HomeViewController.swift */; };
 		96B5639324218707006D595B /* triangularPrism.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639224218707006D595B /* triangularPrism.obj */; };
 		96B5639524218892006D595B /* semiSphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639424218892006D595B /* semiSphere.obj */; };
@@ -53,6 +57,26 @@
 		96B9AEB024A5183900A230D0 /* CodableExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */; };
 		96B9AEB424A66EAC00A230D0 /* OrientationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */; };
 		96B9AEB824A67AB800A230D0 /* arrows.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B9AEB724A67AB800A230D0 /* arrows.obj */; };
+		96B9AEBA24A8DDD700A230D0 /* Sandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEB924A8DDD700A230D0 /* Sandbox.swift */; };
+		96B9AEBC24A8DDF000A230D0 /* Construction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEBB24A8DDF000A230D0 /* Construction.swift */; };
+		96B9AEBE24A8E9A900A230D0 /* SandboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEBD24A8E9A900A230D0 /* SandboxViewController.swift */; };
+		96B9AEC024A8ECAC00A230D0 /* SandboxCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEBF24A8ECAC00A230D0 /* SandboxCollectionView.swift */; };
+		96B9AEC224A8EE1800A230D0 /* SandboxCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEC124A8EE1800A230D0 /* SandboxCollectionViewCell.swift */; };
+		96B9AEC424A9020A00A230D0 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEC324A9020A00A230D0 /* Image.swift */; };
+		96B9AEC624A9290F00A230D0 /* BackHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEC524A9290F00A230D0 /* BackHomeView.swift */; };
+		96B9AEC824A938F600A230D0 /* AddGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEC724A938F600A230D0 /* AddGeometryView.swift */; };
+		96B9AECA24A9391F00A230D0 /* RemoveGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEC924A9391F00A230D0 /* RemoveGeometryView.swift */; };
+		96B9AECC24A9393900A230D0 /* CloseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AECB24A9393900A230D0 /* CloseView.swift */; };
+		96B9AECF24A940F100A230D0 /* LeaveConstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AECE24A940F100A230D0 /* LeaveConstructionView.swift */; };
+		96B9AED124A9430900A230D0 /* DrawGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AED024A9430900A230D0 /* DrawGeometryView.swift */; };
+		96B9AED524A96B0A00A230D0 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AED424A96B0A00A230D0 /* Canvas.swift */; };
+		96B9AED724A97FE000A230D0 /* LoadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AED624A97FE000A230D0 /* LoadView.swift */; };
+		96B9AED824AA296500A230D0 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AC24A15BCC0080B421 /* GameBoard.swift */; };
+		96B9AEDB24AA29C100A230D0 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEDA24AA29C100A230D0 /* Board.swift */; };
+		96B9AEDD24AA34E600A230D0 /* ConstructionBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEDC24AA34E600A230D0 /* ConstructionBoard.swift */; };
+		96B9AEDF24AA370100A230D0 /* GeometryType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEDE24AA370100A230D0 /* GeometryType.swift */; };
+		96B9AEE124AA43C900A230D0 /* EntityProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEE024AA43C900A230D0 /* EntityProperties.swift */; };
+		96B9AEE324AA66E600A230D0 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B9AEE224AA66E600A230D0 /* FeedbackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,15 +84,18 @@
 		960ED8912392C3950037675A /* QuadrilateralPyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrilateralPyramid.swift; sourceTree = "<group>"; };
 		961720E623789059008E1298 /* TccPrototipo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TccPrototipo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		961720E923789059008E1298 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		961720EB23789059008E1298 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		961720F023789059008E1298 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		961720EB23789059008E1298 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		961720F22378905C008E1298 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		961720F52378905C008E1298 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		961720F72378905C008E1298 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		961720FD2378906A008E1298 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
-		963112A824A152E30080B421 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
+		9624F3B024ABE71A00D7357A /* ConstructionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionManager.swift; sourceTree = "<group>"; };
+		9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionDelegate.swift; sourceTree = "<group>"; };
+		9624F3B424ABEEED00D7357A /* DelegateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateManager.swift; sourceTree = "<group>"; };
+		9624F3B624AC08A500D7357A /* ARConstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARConstructionView.swift; sourceTree = "<group>"; };
+		963112A824A152E30080B421 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		963112AA24A15BB00080B421 /* GameDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDelegate.swift; sourceTree = "<group>"; };
-		963112AC24A15BCC0080B421 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		963112AC24A15BCC0080B421 /* GameBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		963112AE24A1695B0080B421 /* PlaceBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceBoardView.swift; sourceTree = "<group>"; };
 		963112B224A1B0EC0080B421 /* CountDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountDownView.swift; sourceTree = "<group>"; };
 		9639DDB5243BFA87000B309F /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -82,6 +109,8 @@
 		9639DDC72460F74B000B309F /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
 		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
 		965855E324A29A4600521454 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		9667A90524ABBDB000302EF6 /* ARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameView.swift; sourceTree = "<group>"; };
+		9667A90824ABE28300302EF6 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		969CBC58243BF52B002152AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		96B5639224218707006D595B /* triangularPrism.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triangularPrism.obj; sourceTree = "<group>"; };
 		96B5639424218892006D595B /* semiSphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = semiSphere.obj; sourceTree = "<group>"; };
@@ -104,6 +133,25 @@
 		96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodableExtensions.swift; sourceTree = "<group>"; };
 		96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationEntity.swift; sourceTree = "<group>"; };
 		96B9AEB724A67AB800A230D0 /* arrows.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = arrows.obj; sourceTree = "<group>"; };
+		96B9AEB924A8DDD700A230D0 /* Sandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sandbox.swift; sourceTree = "<group>"; };
+		96B9AEBB24A8DDF000A230D0 /* Construction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Construction.swift; sourceTree = "<group>"; };
+		96B9AEBD24A8E9A900A230D0 /* SandboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxViewController.swift; sourceTree = "<group>"; };
+		96B9AEBF24A8ECAC00A230D0 /* SandboxCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxCollectionView.swift; sourceTree = "<group>"; };
+		96B9AEC124A8EE1800A230D0 /* SandboxCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxCollectionViewCell.swift; sourceTree = "<group>"; };
+		96B9AEC324A9020A00A230D0 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		96B9AEC524A9290F00A230D0 /* BackHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackHomeView.swift; sourceTree = "<group>"; };
+		96B9AEC724A938F600A230D0 /* AddGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGeometryView.swift; sourceTree = "<group>"; };
+		96B9AEC924A9391F00A230D0 /* RemoveGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveGeometryView.swift; sourceTree = "<group>"; };
+		96B9AECB24A9393900A230D0 /* CloseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseView.swift; sourceTree = "<group>"; };
+		96B9AECE24A940F100A230D0 /* LeaveConstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveConstructionView.swift; sourceTree = "<group>"; };
+		96B9AED024A9430900A230D0 /* DrawGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawGeometryView.swift; sourceTree = "<group>"; };
+		96B9AED424A96B0A00A230D0 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
+		96B9AED624A97FE000A230D0 /* LoadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadView.swift; sourceTree = "<group>"; };
+		96B9AEDA24AA29C100A230D0 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		96B9AEDC24AA34E600A230D0 /* ConstructionBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionBoard.swift; sourceTree = "<group>"; };
+		96B9AEDE24AA370100A230D0 /* GeometryType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryType.swift; sourceTree = "<group>"; };
+		96B9AEE024AA43C900A230D0 /* EntityProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityProperties.swift; sourceTree = "<group>"; };
+		96B9AEE224AA66E600A230D0 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +188,6 @@
 				969CBC57243BF4EE002152AA /* Controller */,
 				9639DDB7243BFC0C000B309F /* View */,
 				961720E923789059008E1298 /* AppDelegate.swift */,
-				961720EF23789059008E1298 /* Main.storyboard */,
 				961720F22378905C008E1298 /* Assets.xcassets */,
 				9639DDBC243D5AE2000B309F /* cube.obj */,
 				960ED88F2392C3220037675A /* quadrilateralPyramid.obj */,
@@ -176,6 +223,7 @@
 				96B563B82425758F006D595B /* Cone.swift */,
 				96B563BA242576FC006D595B /* PentagonalPyramid.swift */,
 				96B563BC24297D90006D595B /* GeometryEntity.swift */,
+				96B9AEDE24AA370100A230D0 /* GeometryType.swift */,
 				96581784239612FB004C90D0 /* Floor.swift */,
 				96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */,
 			);
@@ -193,16 +241,50 @@
 				9639DDC72460F74B000B309F /* StartGameView.swift */,
 				9639DDC224454708000B309F /* EndGameView.swift */,
 				963112B224A1B0EC0080B421 /* CountDownView.swift */,
+				96B9AEBF24A8ECAC00A230D0 /* SandboxCollectionView.swift */,
+				96B9AEC124A8EE1800A230D0 /* SandboxCollectionViewCell.swift */,
+				96B9AEC524A9290F00A230D0 /* BackHomeView.swift */,
+				96B9AEC724A938F600A230D0 /* AddGeometryView.swift */,
+				96B9AEC924A9391F00A230D0 /* RemoveGeometryView.swift */,
+				96B9AECB24A9393900A230D0 /* CloseView.swift */,
+				96B9AECE24A940F100A230D0 /* LeaveConstructionView.swift */,
+				96B9AED024A9430900A230D0 /* DrawGeometryView.swift */,
+				96B9AED424A96B0A00A230D0 /* Canvas.swift */,
+				96B9AED624A97FE000A230D0 /* LoadView.swift */,
+				96B9AEE224AA66E600A230D0 /* FeedbackView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		9667A90724ABE26A00302EF6 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				9667A90824ABE28300302EF6 /* Manager.swift */,
+				963112A824A152E30080B421 /* GameManager.swift */,
+				9624F3B024ABE71A00D7357A /* ConstructionManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		9667A90A24ABE46D00302EF6 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				9624F3B424ABEEED00D7357A /* DelegateManager.swift */,
+				963112AA24A15BB00080B421 /* GameDelegate.swift */,
+				9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		969CBC57243BF4EE002152AA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
 				969CBC58243BF52B002152AA /* HomeViewController.swift */,
-				961720EB23789059008E1298 /* GameViewController.swift */,
+				961720EB23789059008E1298 /* ARViewController.swift */,
+				96B9AEBD24A8E9A900A230D0 /* SandboxViewController.swift */,
 				9639DDC424467331000B309F /* ConstructViewController.swift */,
+				9667A90524ABBDB000302EF6 /* ARGameView.swift */,
+				9624F3B624AC08A500D7357A /* ARConstructionView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -210,13 +292,27 @@
 		96B563AB24256D29006D595B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9667A90A24ABE46D00302EF6 /* Protocol */,
+				9667A90724ABE26A00302EF6 /* Manager */,
+				96B9AED924AA29B000A230D0 /* Board */,
 				963112A724A152C90080B421 /* Geometries */,
-				963112A824A152E30080B421 /* Game.swift */,
-				963112AA24A15BB00080B421 /* GameDelegate.swift */,
-				963112AC24A15BCC0080B421 /* Board.swift */,
+				96B9AEE024AA43C900A230D0 /* EntityProperties.swift */,
+				96B9AEB924A8DDD700A230D0 /* Sandbox.swift */,
+				96B9AEBB24A8DDF000A230D0 /* Construction.swift */,
+				96B9AEC324A9020A00A230D0 /* Image.swift */,
 				96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		96B9AED924AA29B000A230D0 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				96B9AEDA24AA29C100A230D0 /* Board.swift */,
+				963112AC24A15BCC0080B421 /* GameBoard.swift */,
+				96B9AEDC24AA34E600A230D0 /* ConstructionBoard.swift */,
+			);
+			path = Board;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,7 +385,6 @@
 				96B563A42421966A006D595B /* octahedron.obj in Resources */,
 				960ED8902392C3220037675A /* quadrilateralPyramid.obj in Resources */,
 				96B5639324218707006D595B /* triangularPrism.obj in Resources */,
-				961720F123789059008E1298 /* Main.storyboard in Resources */,
 				96B9AEAE24A4049700A230D0 /* matchForms.mp3 in Resources */,
 				96B563A824219AB3006D595B /* cone.obj in Resources */,
 			);
@@ -302,34 +397,59 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96B9AED824AA296500A230D0 /* GameBoard.swift in Sources */,
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
-				961720EC23789059008E1298 /* GameViewController.swift in Sources */,
+				961720EC23789059008E1298 /* ARViewController.swift in Sources */,
 				96B9AEB024A5183900A230D0 /* CodableExtensions.swift in Sources */,
 				9639DDC524467331000B309F /* ConstructViewController.swift in Sources */,
+				96B9AEBE24A8E9A900A230D0 /* SandboxViewController.swift in Sources */,
 				963112B324A1B0EC0080B421 /* CountDownView.swift in Sources */,
+				9667A90924ABE28300302EF6 /* Manager.swift in Sources */,
+				96B9AEC624A9290F00A230D0 /* BackHomeView.swift in Sources */,
 				96B563AD24256D4D006D595B /* TriangularPrism.swift in Sources */,
 				96B563B1242570B2006D595B /* Cylinder.swift in Sources */,
 				96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */,
-				963112AD24A15BCC0080B421 /* Board.swift in Sources */,
+				96B9AEDF24AA370100A230D0 /* GeometryType.swift in Sources */,
+				96B9AEC024A8ECAC00A230D0 /* SandboxCollectionView.swift in Sources */,
 				9639DDB6243BFA87000B309F /* UIColor.swift in Sources */,
-				963112A924A152E30080B421 /* Game.swift in Sources */,
+				9624F3B524ABEEED00D7357A /* DelegateManager.swift in Sources */,
+				963112A924A152E30080B421 /* GameManager.swift in Sources */,
+				9624F3B124ABE71A00D7357A /* ConstructionManager.swift in Sources */,
+				96B9AED124A9430900A230D0 /* DrawGeometryView.swift in Sources */,
 				969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */,
+				9624F3B724AC08A500D7357A /* ARConstructionView.swift in Sources */,
+				96B9AECC24A9393900A230D0 /* CloseView.swift in Sources */,
 				9639DDC82460F74B000B309F /* StartGameView.swift in Sources */,
 				9639DDC124453F6C000B309F /* PointsView.swift in Sources */,
+				9667A90624ABBDB000302EF6 /* ARGameView.swift in Sources */,
+				96B9AEDD24AA34E600A230D0 /* ConstructionBoard.swift in Sources */,
+				9624F3B324ABE76700D7357A /* ConstructionDelegate.swift in Sources */,
 				96B563AF24256FFE006D595B /* SemiSphere.swift in Sources */,
 				96B9AEB424A66EAC00A230D0 /* OrientationEntity.swift in Sources */,
 				963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */,
+				96B9AEBC24A8DDF000A230D0 /* Construction.swift in Sources */,
+				96B9AED524A96B0A00A230D0 /* Canvas.swift in Sources */,
+				96B9AEC824A938F600A230D0 /* AddGeometryView.swift in Sources */,
 				96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */,
+				96B9AEDB24AA29C100A230D0 /* Board.swift in Sources */,
 				96B563B724257304006D595B /* Tetrahedron.swift in Sources */,
 				9639DDBF2445372B000B309F /* TimerView.swift in Sources */,
 				96B563B92425758F006D595B /* Cone.swift in Sources */,
 				9639DDC324454708000B309F /* EndGameView.swift in Sources */,
+				96B9AED724A97FE000A230D0 /* LoadView.swift in Sources */,
 				96581785239612FB004C90D0 /* Floor.swift in Sources */,
+				96B9AEBA24A8DDD700A230D0 /* Sandbox.swift in Sources */,
 				96B563B52425715E006D595B /* Octahedron.swift in Sources */,
 				963112AF24A1695B0080B421 /* PlaceBoardView.swift in Sources */,
+				96B9AEE124AA43C900A230D0 /* EntityProperties.swift in Sources */,
 				96B563B3242570F5006D595B /* PentagonalPrism.swift in Sources */,
+				96B9AECA24A9391F00A230D0 /* RemoveGeometryView.swift in Sources */,
+				96B9AEE324AA66E600A230D0 /* FeedbackView.swift in Sources */,
 				9639DDBB243C07B7000B309F /* ArrowButtonView.swift in Sources */,
+				96B9AEC424A9020A00A230D0 /* Image.swift in Sources */,
 				960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */,
+				96B9AECF24A940F100A230D0 /* LeaveConstructionView.swift in Sources */,
+				96B9AEC224A8EE1800A230D0 /* SandboxCollectionViewCell.swift in Sources */,
 				961720EA23789059008E1298 /* AppDelegate.swift in Sources */,
 				965855E424A29A4600521454 /* Array.swift in Sources */,
 				9639DDB9243BFC30000B309F /* HomeButtonView.swift in Sources */,
@@ -339,14 +459,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		961720EF23789059008E1298 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				961720F023789059008E1298 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		961720F42378905C008E1298 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -408,7 +520,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -462,7 +574,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -479,7 +591,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 98PH68S7E9;
 				INFOPLIST_FILE = TccPrototipo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,7 +610,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 98PH68S7E9;
 				INFOPLIST_FILE = TccPrototipo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

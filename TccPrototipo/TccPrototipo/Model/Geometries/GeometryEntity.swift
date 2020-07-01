@@ -11,19 +11,6 @@ import RealityKit
 import Combine
 
 
-enum GeometryType {
-    case Cube
-    case QuadrilateralPyramid
-    case TriangularPrism
-    case SemiSphere
-    case Cylinder
-    case PentagonalPrism
-    case Octahedron
-    case Tetrahedron
-    case Cone
-    case PentagonalPyramid
-}
-
 class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
     var collisionSubs: [Cancellable] = []
     var type: GeometryType!
@@ -38,7 +25,7 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
         self.physicsBody = PhysicsBodyComponent()
         self.physicsBody?.isTranslationLocked = (false, true, false)
         self.physicsBody?.mode = .kinematic
-        self.physicsBody?.isContinuousCollisionDetectionEnabled = true
+//        self.physicsBody?.isContinuousCollisionDetectionEnabled = true
         self.physicsBody?.isRotationLocked = (true, true, true)
     }
     

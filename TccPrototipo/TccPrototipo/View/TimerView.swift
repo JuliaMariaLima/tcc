@@ -15,8 +15,8 @@ class TimerView: UIView {
     private var duration: Int! //seconds
     private var currentTime: Int!
     
-    init(frame: CGRect, duration: Int) {
-        super.init(frame: frame)
+    init(duration: Int) {
+        super.init(frame: .zero)
         self.isHidden = true
         self.translatesAutoresizingMaskIntoConstraints = false
         self.duration = duration

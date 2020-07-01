@@ -11,7 +11,9 @@ import RealityKit
 import ARKit
 import Combine
 
-class GameViewController: UIViewController {
+
+
+class ARViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -31,12 +33,14 @@ class GameViewController: UIViewController {
     
     var configuration: ARWorldTrackingConfiguration!
     
-    var game: Game!
+    var game: GameManager!
+    
+    var manager: Manager!
     
     var generator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
     
     var matchFormSound: AVAudioPlayer!
-    
+        
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
         anchor.name = "cameraAnchor"
@@ -58,59 +62,34 @@ class GameViewController: UIViewController {
     
     var coachingView: ARCoachingOverlayView!
     
-    var timerView: TimerView!
-    
-    var pointsView: PointsView!
-    
-    var placeBoardView: PlaceBoardView!
-    
-    var startGameView: StartGameView!
-    
-    var endGameView: EndGameView!
-    
-    var countDownView: CountDownView!
-    
-    var buttonUp: ArrowButtonView!
-    
-    var buttonDown: ArrowButtonView!
-    
-    var buttonRight: ArrowButtonView!
-    
-    var buttonLeft: ArrowButtonView!
+    var arGameView: ARGameView!
     
     // MARK:- Life Cicle
     
-    override func loadView() {
-        let view = ARView(frame: UIScreen.main.bounds)
-        
-        self.view = view
-        self.navigationController?.isNavigationBarHidden = true
-    }
-    
     override func viewDidLoad() {
+        debugPrint(type(of:self), #function)
         super.viewDidLoad()
         
-        arView = self.view as? ARView
-        
+        arView = ARView(frame: UIScreen.main.bounds, cameraMode: .ar, automaticallyConfigureSession: true)
+
+        view.addSubview(arView)
+
         arView.session.delegate = self
-        
+       
         arView.scene.addAnchor(cameraAnchor)
-        
+       
         arView.addGestureRecognizer(tapRecognizer)
         
-        game = Game.shared
+        game = GameManager.shared
+        game.delegate = self
+        manager = game
         
         setUpConfigurations()
         createBoard()
-        setUpButtons()
-        setUpTimerView()
-        setUpPointsView()
-        setUpPlaceBoardView()
-        setUpCountDownView()
-        setUpStartGameView()
-        setUpEndGameView()
+        setUpARGameView()
         setUpSubscription()
         setUpMatchFormSound()
+        setUpCoachingView()
     }
     
     // MARK:- Set ups
@@ -124,86 +103,30 @@ class GameViewController: UIViewController {
     }
     
     func createBoard() {
-        game.createBoard(viewController: self, view: arView)
+        game.createBoard(delegate: self, view: arView)
     }
     
-    func setUpButtons() {
-        buttonUp = ArrowButtonView(type: .up)
-        view.addSubview(buttonUp)
-        buttonUp.setUpConstraints()
-        buttonUp.addTarget(self, action: #selector(buttonUpClicked), for: .touchDown)
-        buttonUp.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+    func setUpARGameView() {
+        arGameView = ARGameView(frame: self.view.frame)
+        arView.addSubview(arGameView)
         
-        buttonDown = ArrowButtonView(type: .down)
-        view.addSubview(buttonDown)
-        buttonDown.setUpConstraints()
-        buttonDown.addTarget(self, action: #selector(buttonDownClicked), for: .touchDown)
-        buttonDown.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        arGameView.setUpConstraints()
         
-        buttonRight = ArrowButtonView(type: .right)
-        view.addSubview(buttonRight)
-        buttonRight.setUpConstraints()
-        buttonRight.addTarget(self, action: #selector(buttonRightClicked), for: .touchDown)
-        buttonRight.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        arGameView.addButtonsAction(
+            buttonUpAction: #selector(buttonUpClicked),
+            buttonDownAction: #selector(buttonDownClicked),
+            buttonLeftAction: #selector(buttonLeftClicked),
+            buttonRightAction: #selector(buttonRightClicked),
+            buttonReleasedAction: #selector(buttonReleased),
+            target: self)
         
-        buttonLeft = ArrowButtonView(type: .left)
-        view.addSubview(buttonLeft)
-        buttonLeft.setUpConstraints()
-        buttonLeft.addTarget(self, action: #selector(buttonLeftClicked), for: .touchDown)
-        buttonLeft.addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
-    }
-    
-    func setUpTimerView() {
-        timerView = TimerView(frame: .zero, duration: game.duration)
-        view.addSubview(timerView)
+        arGameView.addCountDownViewDelegate(delegate: self)
         
-        timerView.setUpConstraints()
-    }
-    
-    func setUpPointsView() {
-        pointsView = PointsView(frame: .zero)
-        view.addSubview(pointsView)
+        arGameView.addPlaceViewActions(placeAction: #selector(place), homeAction: #selector(goHome), target: self)
         
-        pointsView.setUpConstraints()
-    }
-    
-    func setUpEndGameView() {
-        endGameView = EndGameView(frame: .zero)
-        view.addSubview(endGameView)
+        arGameView.addStartViewActions(startAction: #selector(start), homeAction: #selector(goHome), target: self)
         
-        endGameView.setUpConstraints()
-        
-        endGameView.playButton.addTarget(self, action: #selector(playAgain), for: .touchDown)
-        endGameView.homeButton.addTarget(self, action: #selector(goHome), for: .touchDown)
-    }
-    
-    func setUpStartGameView() {
-        startGameView = StartGameView(frame: .zero)
-        view.addSubview(startGameView)
-        
-        startGameView.setUpConstraints()
-        
-        startGameView.playButton.addTarget(self, action: #selector(start), for: .touchDown)
-        startGameView.homeButton.addTarget(self, action: #selector(goHome), for: .touchDown)
-    }
-    
-    func setUpPlaceBoardView() {
-        placeBoardView = PlaceBoardView(frame: .zero)
-        view.addSubview(placeBoardView)
-        
-        placeBoardView.setUpConstraints()
-        
-        placeBoardView.placeButton.addTarget(self, action: #selector(place), for: .touchDown)
-        placeBoardView.homeButton.addTarget(self, action: #selector(goHome), for: .touchDown)
-    }
-    
-    func setUpCountDownView() {
-        countDownView = CountDownView()
-        view.addSubview(countDownView)
-        
-        countDownView.setUpConstraints()
-        
-        countDownView.delegate = self
+        arGameView.addEndViewActions(playAction: #selector(playAgain), homeAction: #selector(goHome), target: self)
     }
     
     func setUpSubscription() {
@@ -211,7 +134,7 @@ class GameViewController: UIViewController {
             guard let movingEntity = event.playbackController.entity as? GeometryEntity else { return }
             
             for entity in self.entities {
-                for match in self.game.mapMatches[movingEntity.type]! {
+                for match in EntityProperties.shared.mapMatches[movingEntity.type]! {
                     if entity.type == match && entity != movingEntity {
                         if self.game.board.didCombine(movingEntity: movingEntity, staticEntity: entity) {
                             
@@ -223,7 +146,7 @@ class GameViewController: UIViewController {
                             }
                             
                             let points = self.game.newCombination()
-                            self.pointsView.update(points)
+                            self.arGameView.updatePoints(points)
                             
                             self.generator.notificationOccurred(.success)
                             self.matchFormSound.play()
@@ -257,33 +180,28 @@ class GameViewController: UIViewController {
         resetWidgets()
     }
     
+    func gameWidgetsIsHidden(_ isHidden: Bool) {
+        arGameView.timerIsHidden(isHidden)
+        
+        arGameView.buttonsIsHidden(isHidden)
+        
+        arGameView.pointsIsHidden(isHidden)
+    }
+    
     func appearWidgets() {
-        timerView.isHidden = false
-        
-        buttonUp.isHidden = false
-        buttonDown.isHidden = false
-        buttonRight.isHidden = false
-        buttonLeft.isHidden = false
-        
-        pointsView.isHidden = false
+        gameWidgetsIsHidden(false)
     }
     
     func desappearWidgets() {
-        timerView.isHidden = true
+        hideOrientationEntity()
         
-        buttonUp.isHidden = true
-        buttonDown.isHidden = true
-        buttonRight.isHidden = true
-        buttonLeft.isHidden = true
-        
-        pointsView.isHidden = true
+        gameWidgetsIsHidden(true)
     }
     
     func resetWidgets() {
-        timerView.restart()
-        
         let points = game.resetPoints()
-        pointsView.update(points)
+        arGameView.updatePoints(points)
+        arGameView.restartTimer()
     }
     
     func getSelectedEntityTransform() -> Transform? {
@@ -296,9 +214,9 @@ class GameViewController: UIViewController {
     func moveAnimation(to transform: Transform) {
         guard let selectedEntity = selectedEntity else { return }
         
-        currentAnimationSelectedEntity = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        currentAnimationSelectedEntity = selectedEntity.move(to: transform, relativeTo: cameraAnchor, duration: manager.getMoveDuration())
         
-        currentAnimationOrientationAnchor = orientationAnchorEntity.move(to: transform, relativeTo: cameraAnchor, duration: game.moveDuration)
+        currentAnimationOrientationAnchor = orientationAnchorEntity.move(to: transform, relativeTo: cameraAnchor, duration: manager.getMoveDuration())
         
         isRunningAnimation = true
     }
@@ -321,20 +239,20 @@ class GameViewController: UIViewController {
     }
     
     func hideOrientationEntity() {
-        orientationAnchorEntity.removeFromParent()
+        orientationAnchorEntity?.removeFromParent()
     }
     
     func updateOrientationEntityRotation() {
         orientationAnchorEntity?.setOrientation(cameraAnchor.orientation(relativeTo: cameraAnchor), relativeTo: cameraAnchor)
     }
     
-    //MARK: - Objc actions
+    // MARK: - Objc actions
     
     @objc
     func buttonUpClicked() {
         guard var transform = getSelectedEntityTransform() else { return }
         
-        transform.translation.y += game.moveDistance
+        transform.translation.y += manager.getMoveDistance()
         
         moveAnimation(to: transform)
     }
@@ -343,7 +261,7 @@ class GameViewController: UIViewController {
     func buttonDownClicked() {
         guard var transform = getSelectedEntityTransform() else { return }
         
-        transform.translation.y -= game.moveDistance
+        transform.translation.y -= manager.getMoveDistance()
         
         moveAnimation(to: transform)
     }
@@ -352,7 +270,7 @@ class GameViewController: UIViewController {
     func buttonLeftClicked() {
         guard var transform = getSelectedEntityTransform() else { return }
         
-        transform.translation.x -= game.moveDistance
+        transform.translation.x -= manager.getMoveDistance()
         
         moveAnimation(to: transform)
     }
@@ -361,7 +279,7 @@ class GameViewController: UIViewController {
     func buttonRightClicked() {
         guard var transform = getSelectedEntityTransform() else { return }
         
-        transform.translation.x += game.moveDistance
+        transform.translation.x += manager.getMoveDistance()
         
         moveAnimation(to: transform)
     }
@@ -403,11 +321,9 @@ class GameViewController: UIViewController {
         let hits = arView.hitTest(location)
         
         for hit in hits {
-            //            print(hit.entity)
             if hit.entity is GeometryEntity {
                 selectedEntity = hit.entity as? GeometryEntity
                 showOrientationEntity()
-                //                print("SELECTED ENTITY IS:::: ", selectedEntity as Any)
                 return
             }
         }
@@ -417,64 +333,63 @@ class GameViewController: UIViewController {
     
     @objc
     func place() {
-        game.change(viewController: self,to: .placing)
+        game.change(to: .placing)
     }
     
     @objc
     func start() {
-        game.change(viewController: self,to: .counting)
+        game.change(to: .counting)
     }
     
     @objc
     func playAgain() {
-        game.change(viewController: self,to: .starting)
+        game.change(to: .starting)
         start()
     }
     
     @objc
     func goHome() {
-        game.change(viewController: self,to: .waiting)
+        game.change(to: .waiting)
         self.navigationController?.popViewController(animated: true)
     }
-    
-    //MARK: - Game actions
-    
+}
+
+//MARK: - Game Delegate
+
+extension ARViewController: GameDelegate {
     func waitingToWaiting() {
-        placeBoardView.onboarding()
+        arGameView.showPlaceBoardViewOnboarding()
     }
     
     func waitingToPlacing() {
-        placeBoardView.isHidden = true
-        placeBoardView.onboarding()
-        setUpCoachingView()
+        arGameView.hidePlaceBoardView()
+        addCoachingView()
         resetToInitialConfiguration()
         desappearWidgets()
     }
     
     func placingToWaiting() {
-        placeBoardView.placeAgain()
-        placeBoardView.isHidden = false
+        arGameView.showPlaceBoardViewPlaceAgain()
         game.board.restart()
     }
     
     func placingToStarting() {
-        startGameView.isHidden = false
+        arGameView.showStartGameView()
     }
     
     func startingToCounting() {
         game.board.clearBoard()
-        startGameView.isHidden = true
-        countDownView.start()
+        arGameView.hideStartGameView()
+        arGameView.countDownStart()
         resetWidgets()
     }
     
     func startingToWaiting() {
         desappearWidgets()
         coachingView?.removeFromSuperview()
-        coachingView = nil
-        startGameView.isHidden = true
-        endGameView.isHidden = true
-        placeBoardView.isHidden = false
+        arGameView.hideStartGameView()
+        arGameView.hideEndGameView()
+        arGameView.showPlaceBoardViewOnboarding()
         game.board.restart()
     }
     
@@ -483,7 +398,7 @@ class GameViewController: UIViewController {
         setUpOrientationEntity()
         appearWidgets()
         DispatchQueue.main.async { [unowned self] in
-            self.timerView.startClock() {
+            self.arGameView.startTimer {
                 self.played()
             }
         }
@@ -496,58 +411,78 @@ class GameViewController: UIViewController {
     
     func finishedToStarting() {
         coachingView?.removeFromSuperview()
-        coachingView = nil
         selectedEntity = nil
-        endGameView.isHidden = true
+        arGameView.hideEndGameView()
     }
     
     func finishedToWaiting() {
         desappearWidgets()
         coachingView?.removeFromSuperview()
-        coachingView = nil
-        startGameView.isHidden = true
-        endGameView.isHidden = true
-        placeBoardView.isHidden = false
+        arGameView.hideStartGameView()
+        arGameView.hideEndGameView()
+        arGameView.showPlaceBoardViewOnboarding()
         game.board.restart()
     }
-}
-
-//MARK: - Game Delegate
-
-extension GameViewController: GameDelegate {
+    
     func placed(area: Double) {
         if area < game.minimumArea {
-            game.change(viewController: self,to: .waiting)
+            game.change(to: .waiting)
         } else {
-            game.change(viewController: self,to: .starting)
+            game.change(to: .starting)
         }
     }
     
     func counted() {
-        game.change(viewController: self,to: .playing)
+        game.change(to: .playing)
     }
     
     func updatedEntities(_ entities: [GeometryEntity]) {
-        print("Update entities!")
         self.entities = entities
     }
     
     func updateScores(score: Int, highScore: Int) {
-        endGameView.present(score: score, highScore: highScore)
+        arGameView.showEndGameView(score: score, highScore: highScore)
     }
     
     func played() {
-        game.change(viewController: self,to: .finished)
+        game.change(to: .finished)
     }
+}
+
+// MARK:- Construcion Delegate
+
+extension ARViewController: ConstructionDelegate {
+    func placingToLooking() {}
+    
+    func lookingToAdding() {}
+    
+    func lookingToConstructing() {}
+    
+    func lookingToLeaving() {}
+    
+    func addingToLooking() {}
+    
+    func addingToClassifying() {}
+    
+    func constructingToLooking() {}
+    
+    func constructingToLeaving() {}
+    
+    func classifyingToConstructing() {}
+    
+    func classifyingToAdding() {}
+    
+    func leavingToWaiting() {}
+    
+    func leavingToLooking() {}
 }
 
 //MARK: - AR Coaching Overlay View Delegate
 
-extension GameViewController: ARCoachingOverlayViewDelegate {
+extension ARViewController: ARCoachingOverlayViewDelegate {
     
     func setUpCoachingView() {
         coachingView = ARCoachingOverlayView()
-        view.addSubview(coachingView)
         
         coachingView.delegate = self
         coachingView.goal = .horizontalPlane
@@ -555,6 +490,11 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         coachingView.translatesAutoresizingMaskIntoConstraints = false
         coachingView.activatesAutomatically = true
         
+        
+    }
+    
+    func addCoachingView() {
+        view.addSubview(coachingView)
         setUpConstraints()
     }
     
@@ -567,13 +507,13 @@ extension GameViewController: ARCoachingOverlayViewDelegate {
         ])
     }
     
-    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-    }
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {}
 }
+
 
 // MARK:- AR Session Delegate
 
-extension GameViewController: ARSessionDelegate {
+extension ARViewController: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         if !isRunningAnimation {
             updateOrientationEntityRotation()

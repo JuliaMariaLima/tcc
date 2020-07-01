@@ -9,6 +9,26 @@
 import RealityKit
 
 protocol GameDelegate: class {
+    func waitingToWaiting()
+    
+    func waitingToPlacing()
+    
+    func placingToWaiting()
+    
+    func placingToStarting()
+    
+    func startingToCounting()
+    
+    func startingToWaiting()
+    
+    func countingToPlaying()
+    
+    func playingToFinished()
+    
+    func finishedToStarting()
+    
+    func finishedToWaiting()
+    
     func placed(area: Double)
     
     func counted()

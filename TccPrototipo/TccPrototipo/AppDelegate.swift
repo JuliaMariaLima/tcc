@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        try? Game.shared.highScore.save()
+        try? GameManager.shared.highScore.save()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        try? Game.shared.highScore.load()
+        try? GameManager.shared.highScore.load()
     }
 
 

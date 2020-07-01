@@ -9,9 +9,11 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    var gameViewController = GameViewController()
+    let arViewController = ARViewController()
+    let sandboxViewController = SandboxViewController()
     
     override func viewDidLoad() {
+        debugPrint(type(of:self), #function)
         super.viewDidLoad()
         
         view.backgroundColor = .lightGreen
@@ -35,13 +37,15 @@ class HomeViewController: UIViewController {
     @objc
     func play() {
         print("play")
-        self.navigationController?.pushViewController(gameViewController, animated: true)
+        arViewController.action = .game
+        self.navigationController?.pushViewController(arViewController, animated: true)
     }
     
     @objc
     func construct() {
         print("construct")
-        //self.navigationController?.pushViewController(ConstructViewController(), animated: true)
+        sandboxViewController.arViewController = arViewController
+        self.navigationController?.pushViewController(sandboxViewController, animated: true)
     }
 }
 

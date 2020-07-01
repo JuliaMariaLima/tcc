@@ -59,10 +59,10 @@ class PlaceBoardView: UIView {
     
     private func setUpCircleView() {
         let image = UIImage(named: "circleEndGame")
-        let mirrorImage = UIImage(cgImage: (image?.cgImage)!, scale: 1, orientation: .downMirrored)
+        let mirrorImage = UIImage(cgImage: (image?.cgImage)!, scale: 1, orientation: .leftMirrored)
         circleView = UIImageView(image: mirrorImage)
         circleView.translatesAutoresizingMaskIntoConstraints = false
-        circleView.transform = circleView.transform.rotated(by: .pi / 2)
+//        circleView.transform = circleView.transform.rotated(by: .pi / 2)
         
         addSubview(circleView)
     }
@@ -149,17 +149,17 @@ class PlaceBoardView: UIView {
     
     private func setUpCircleViewConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
-            circleView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            circleView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 1),
             circleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30),
-            circleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1514),
-            circleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0959)
+            circleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0959),
+            circleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1514)
         ])
     }
     
     private func setUpTriangleViewConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
             triangleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -60),
-            triangleView.leftAnchor.constraint(equalTo: self.rightAnchor),
+            triangleView.leftAnchor.constraint(equalTo: self.rightAnchor, constant: -1),
             triangleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1094),
             triangleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1094)
         ])
