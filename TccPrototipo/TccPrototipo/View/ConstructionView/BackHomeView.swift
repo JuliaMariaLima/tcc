@@ -16,6 +16,8 @@ class BackHomeView: UIButton {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         self.setImage(UIImage(named: "backButton")!, for: .normal)
+        
+        self.isHidden = true
     }
     
     required init?(coder: NSCoder) {

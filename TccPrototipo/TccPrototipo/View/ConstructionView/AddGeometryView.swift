@@ -16,6 +16,8 @@ class AddGeometryView: UIButton {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         self.setImage(UIImage(named: "add")!, for: .normal)
+        
+        self.isHidden = true
     }
     
     required init?(coder: NSCoder) {

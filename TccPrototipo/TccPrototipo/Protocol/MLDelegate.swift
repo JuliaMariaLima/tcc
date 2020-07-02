@@ -1,5 +1,5 @@
 //
-//  DelegateManager.swift
+//  MLDelegate.swift
 //  TccPrototipo
 //
 //  Created by Julia Maria Santos on 30/06/20.
@@ -8,4 +8,6 @@
 
 import Foundation
 
-protocol DelegateManager: class {}
+protocol MLDelegate: class {
+    func result(identifier: String, confidence: Float)
+}

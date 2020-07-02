@@ -14,6 +14,7 @@ class EntityProperties {
     private var _entitieTypes: [GeometryType] = []
     private var _mapMatches: [GeometryType:[GeometryType]] = [:]
     private var _colors: [UIColor] = []
+    private var _mapFaceToTypes: [String:[GeometryType]] = [:]
     
     var entitieTypes: [GeometryType] {
         return _entitieTypes
@@ -26,11 +27,33 @@ class EntityProperties {
     var colors: [UIColor] {
         return _colors
     }
+    
+    var mapFaceToTypes: [String:[GeometryType]] {
+        return _mapFaceToTypes
+    }
 
     private init() {
         _entitieTypes = setUpEntitiesTypes()
         _mapMatches = setUpMatches()
         _colors = setUpColors()
+        _mapFaceToTypes = setUpFaceToTypes()
+    }
+    
+    func randomGeometry(by name: String) -> GeometryType? {
+        switch name {
+        case "circle":
+            break
+        case "square":
+            break
+        case "triangle":
+            break
+        case "pentagon":
+            break
+        default:
+            return nil
+        }
+        
+        return .Cone
     }
     
     private func setUpEntitiesTypes() -> [GeometryType] {
@@ -73,5 +96,16 @@ class EntityProperties {
         c.append(.labelYellow)
         
         return c
+    }
+    
+    private func setUpFaceToTypes() -> [String:[GeometryType]] {
+        var map: [String:[GeometryType]] = [:]
+        
+        map["circle"] = [.SemiSphere, .Cylinder, .Cone]
+        map["square"] = [.Cube, .QuadrilateralPyramid]
+        map["triangle"] = [.TriangularPrism, .Tetrahedron]
+        map["pentagon"] = [.PentagonalPrism, .PentagonalPyramid]
+        
+        return map
     }
 }

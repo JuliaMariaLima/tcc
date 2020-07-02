@@ -16,8 +16,10 @@ class ConstructionManager: Manager {
         case adding
         case classifying
         case constructing
+        case removing
         case looking
         case leaving
+        case saving
     }
     
     static let shared = ConstructionManager()
@@ -48,9 +50,6 @@ class ConstructionManager: Manager {
         case (.initializing, .placing):
             print("initializing -> placing")
             delegate?.initializingToPlacing()
-        case (.initializing, .initializing):
-            print("initializing -> waiting")
-            delegate?.initializingToInitializing()
         case (.placing, .looking):
             print("placing -> looking")
             delegate?.placingToLooking()
@@ -75,6 +74,14 @@ class ConstructionManager: Manager {
         case (.constructing, .leaving):
             print("constructing -> leaving")
             delegate?.constructingToLeaving()
+        case (.constructing, .removing):
+            print("constructing -> removing")
+            delegate?.removeSelectedEntity()
+        case (.constructing, .constructing):
+            print("constructing -> constructing")
+        case (.removing, .looking):
+            print("removing -> looking")
+            delegate?.constructingToLooking()
         case (.classifying, .constructing):
             print("classifying -> constructing")
             delegate?.classifyingToConstructing()
@@ -87,6 +94,12 @@ class ConstructionManager: Manager {
         case (.leaving, .looking):
             print("leaving -> looking")
             delegate?.leavingToLooking()
+        case (.leaving, .saving):
+            print("leaving -> saving")
+            delegate?.saveProgress()
+        case (.saving, .initializing):
+            print("saving -> initializing")
+            delegate?.leavingToInitializing()
         default:
             fatalError("Went from  \(current!) to \(next)")
         }

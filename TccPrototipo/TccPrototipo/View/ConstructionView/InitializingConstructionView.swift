@@ -1,86 +1,56 @@
 //
-//  DrawGeometryView.swift
+//  InitializingConstructionView.swift
 //  TccPrototipo
 //
-//  Created by Julia Maria Santos on 28/06/20.
+//  Created by Julia Maria Santos on 01/07/20.
 //  Copyright © 2020 Julia Maria Santos. All rights reserved.
 //
 
 import UIKit
 
-class DrawGeometryView: UIView {
-    private var backgroundDrawGeometry: UIImageView!
+class InitializingConstructionView: UIView {
+    private var backgroundInitializing: UIImageView!
     private var circleView: UIImageView!
     private var triangleView: UIImageView!
     private var titleLabel: UILabel!
-    private var canvas: Canvas!
     
-    var addButton: UIButton!
+    var okButton: UIButton!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.isHidden = true
+        self.isHidden = false
         self.translatesAutoresizingMaskIntoConstraints = false
         
         setUpBackground()
-        setUpTitle()
-        setUpCanvas()
-        setUpAddButton()
         setUpCircleView()
         setUpTriangleView()
-        start()
+        setUpTitle()
+        setUpOKButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func retry() {
-        canvas.clear()
-        titleLabel.text = "Not a match :(\nDraw again!"
-    }
-    
-    func start() {
-        canvas.clear()
-        titleLabel.text = "Draw the form\nthat you want!"
-    }
-    
-    private func setUpCanvas() {
-        canvas = Canvas()
-        
-        addSubview(canvas)
-    }
-    
-    private func setUpAddButton() {
-        let image = UIImage(named: "addButton")
-        
-        addButton = UIButton()
-        addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.setImage(image, for: .normal)
-        
-        addSubview(addButton)
-    }
-    
     private func setUpBackground() {
-        let image = UIImage(named: "backgroundLeaveConstruction")
-        backgroundDrawGeometry = UIImageView(image: image)
-        backgroundDrawGeometry.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "backgroundInitializing")
+        backgroundInitializing = UIImageView(image: image)
+        backgroundInitializing.translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(backgroundDrawGeometry)
+        addSubview(backgroundInitializing)
     }
     
     private func setUpCircleView() {
         let image = UIImage(named: "circleEndGame")
-        let mirrorImage = UIImage(cgImage: (image?.cgImage)!, scale: 1, orientation: .upMirrored)
-        circleView = UIImageView(image: mirrorImage)
+        circleView = UIImageView(image: image)
         circleView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(circleView)
     }
     private func setUpTriangleView() {
         let image = UIImage(named: "triangleEndGame")
-        let mirrorImage = UIImage(cgImage: (image?.cgImage)!, scale: 1, orientation: .upMirrored)
+        let mirrorImage = UIImage(cgImage: (image?.cgImage)!, scale: 1, orientation: .downMirrored)
         triangleView = UIImageView(image: mirrorImage)
         triangleView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -91,31 +61,40 @@ class DrawGeometryView: UIView {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont(name: "ChalkboardSE-Light", size: 26)!
-        titleLabel.numberOfLines = 2
+        titleLabel.numberOfLines = 4
         titleLabel.textColor = .lightGreen
         titleLabel.textAlignment = .center
+        titleLabel.text = "First, find a\nplan where\nyou want to\nstart building!"
         
         addSubview(titleLabel)
     }
     
+    private func setUpOKButton() {
+        let image = UIImage(named: "okButton")
+        
+        okButton = UIButton()
+        okButton.translatesAutoresizingMaskIntoConstraints = false
+        okButton.setImage(image, for: .normal)
+        
+        addSubview(okButton)
+    }
+    
     func setUpConstraints() {
         guard let superview = self.superview else {
-            fatalError("The DrawGeometryView is not a subview of any UIView")
+            fatalError("The InitializingConstructionView is not a subview of any UIView")
         }
         
         NSLayoutConstraint.activate([
             self.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
             self.centerYAnchor.constraint(equalTo: superview.centerYAnchor),
-            self.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.6177),
+            self.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.3583),
             self.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.3658)
         ])
         
-        canvas.setUpConstraints()
-        
         setUpTitleConstraints()
-        setUpAddButtonConstraints(superview)
         setUpCircleViewConstraints(superview)
         setUpTriangleViewConstraints(superview)
+        setUpOKButtonConstraints(superview)
     }
     
     private func setUpTitleConstraints() {
@@ -125,19 +104,10 @@ class DrawGeometryView: UIView {
         ])
     }
     
-    private func setUpAddButtonConstraints(_ superview: UIView) {
-        NSLayoutConstraint.activate([
-            addButton.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
-            addButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            addButton.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0873),
-            addButton.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1994)
-        ])
-    }
-    
     private func setUpCircleViewConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
-            circleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 60),
-            circleView.leftAnchor.constraint(equalTo: self.rightAnchor, constant: -1),
+            circleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+            circleView.rightAnchor.constraint(equalTo: self.leftAnchor, constant: 1),
             circleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1514),
             circleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0959)
         ])
@@ -145,10 +115,19 @@ class DrawGeometryView: UIView {
     
     private func setUpTriangleViewConstraints(_ superview: UIView) {
         NSLayoutConstraint.activate([
-            triangleView.bottomAnchor.constraint(equalTo: self.topAnchor, constant: 1),
-            triangleView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 30),
+            triangleView.topAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+            triangleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -60),
             triangleView.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1094),
             triangleView.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1094)
+        ])
+    }
+    
+    private func setUpOKButtonConstraints(_ superview: UIView) {
+        NSLayoutConstraint.activate([
+            okButton.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
+            okButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            okButton.heightAnchor.constraint(equalToConstant: superview.frame.size.height * 0.0873),
+            okButton.widthAnchor.constraint(equalToConstant: superview.frame.size.height * 0.1994)
         ])
     }
 }

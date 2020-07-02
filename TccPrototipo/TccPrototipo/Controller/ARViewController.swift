@@ -66,6 +66,8 @@ class ARViewController: UIViewController {
     
     var matchFormSound: AVAudioPlayer!
         
+    var modelClassifier: ModelClassifier!
+    
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
         anchor.name = "cameraAnchor"
@@ -111,19 +113,19 @@ class ARViewController: UIViewController {
        
         arView.addGestureRecognizer(tapRecognizer)
 
+        createBoard()
         setUpConfigurations()
         setUpARGameView()
         setUpARConstructionView()
         setUpSubscription()
         setUpMatchFormSound()
         setUpCoachingView()
+        setUpModelClassifier()
     }
     
     // MARK:- Set ups
     
     func setUpActionsMode() {
-        createBoard()
-        
         switch action {
         case .game:
             gameManager = GameManager.shared
@@ -160,7 +162,7 @@ class ARViewController: UIViewController {
         
         arGameView.setUpConstraints()
         
-        arGameView.addButtonsAction(
+        arGameView.allArrowButtonsView.addButtonsAction(
             buttonUpAction: #selector(buttonUpClicked),
             buttonDownAction: #selector(buttonDownClicked),
             buttonLeftAction: #selector(buttonLeftClicked),
@@ -169,12 +171,6 @@ class ARViewController: UIViewController {
             target: self)
         
         arGameView.addCountDownViewDelegate(delegate: self)
-        
-        arGameView.addPlaceViewActions(placeAction: #selector(place), homeAction: #selector(goHome), target: self)
-        
-        arGameView.addStartViewActions(startAction: #selector(start), homeAction: #selector(goHome), target: self)
-        
-        arGameView.addEndViewActions(playAction: #selector(playAgain), homeAction: #selector(goHome), target: self)
     }
     
     func setUpARConstructionView() {
@@ -182,19 +178,30 @@ class ARViewController: UIViewController {
         arView.addSubview(arConstructionView)
         
         arConstructionView.setUpConstraints()
+        
+        arConstructionView.allArrowButtonsView.addButtonsAction(
+            buttonUpAction: #selector(buttonUpClicked),
+            buttonDownAction: #selector(buttonDownClicked),
+            buttonLeftAction: #selector(buttonLeftClicked),
+            buttonRightAction: #selector(buttonRightClicked),
+            buttonReleasedAction: #selector(buttonReleased),
+            target: self)
+        
+        arConstructionView.addClassifyButtonTarget(target: self, action: #selector(startClassify))
     }
     
     func setUpSubscription() {
         animation = arView.scene.subscribe(to: AnimationEvents.PlaybackTerminated.self) { (event) in
             guard let movingEntity = event.playbackController.entity as? GeometryEntity else { return }
             
-            for entity in self.entities {
+            for entity in self.board.entities {
                 for match in EntityProperties.shared.mapMatches[movingEntity.type]! {
                     if entity.type == match && entity != movingEntity {
                         if self.board.didCombine(movingEntity: movingEntity, staticEntity: entity) {
                             
                             self.selectedEntity = nil
                             self.hideOrientationEntity()
+                            self.constructionManager?.change(to: .looking)
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                                 self.gameManager?.board.removePair(firstEntity: movingEntity, secondEntity: entity)
                                 self.gameManager?.board.addNewPair()
@@ -234,6 +241,11 @@ class ARViewController: UIViewController {
         orientationAnchorEntity.addChild(oritentationEntity)
     }
     
+    func setUpModelClassifier() {
+        modelClassifier = ModelClassifier()
+        modelClassifier.delegate = self
+    }
+    
     // MARK: - Actions
     
     func resetToInitialConfiguration() {
@@ -244,7 +256,7 @@ class ARViewController: UIViewController {
     func gameWidgetsIsHidden(_ isHidden: Bool) {
         arGameView.timerIsHidden(isHidden)
         
-        arGameView.buttonsIsHidden(isHidden)
+        arGameView.allArrowButtonsView.buttonsIsHidden(isHidden)
         
         arGameView.pointsIsHidden(isHidden)
     }
@@ -311,6 +323,40 @@ class ARViewController: UIViewController {
         orientationAnchorEntity?.setOrientation(cameraAnchor.orientation(relativeTo: cameraAnchor), relativeTo: cameraAnchor)
     }
     
+    func saveImage(choosenImage: UIImage) -> UIImage? {
+        return resizeImage(image: choosenImage, newWidth: 200.0)
+    }
+    
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage? {
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        let size = CGSize(width: newWidth, height: newHeight)
+        
+        UIGraphicsBeginImageContext(size)
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+    
+    func addEntity(of type: GeometryType) {
+        DispatchQueue.main.async {
+            let location = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2)
+            
+            guard let result = self.arView.raycast(from: location,
+                                              allowing: .existingPlaneGeometry,
+                                              alignment: .horizontal).first else { return }
+            
+            let arAnchor = ARAnchor(name: "New Anchor", transform: result.worldTransform)
+            let anchorEntity = AnchorEntity(world: arAnchor.transform)
+            self.selectedEntity = self.constructionManager?.board.createEntity(in: anchorEntity, type)
+            self.showOrientationEntity()
+        }
+    }
+    
     // MARK: - Objc actions
     
     @objc
@@ -355,15 +401,37 @@ class ARViewController: UIViewController {
     }
     
     @objc
+    func startClassify() {
+        guard let canvas = arConstructionView.drawGeometryView.canvas else { return }
+        
+        let renderer = UIGraphicsImageRenderer(size: canvas.bounds.size)
+        let image = renderer.image { rendererContext in
+            canvas.layer.render(in: rendererContext.cgContext)
+        }
+        
+        guard let classifyImage = saveImage(choosenImage: image) else { return }
+        
+        modelClassifier.updateClassifications(for: classifyImage)
+
+        arConstructionView.classify()
+    }
+    
+    @objc
     private func handleTap(recognizer: UITapGestureRecognizer) {
-        print(">>>> TAP <<<<")
         let tapLocation = recognizer.location(in: arView)
         
-        switch gameManager?.current {
+        gameHandleTap(location: tapLocation)
+        constructionHandleTap(location: tapLocation)
+    }
+    
+    func gameHandleTap(location: CGPoint) {
+        guard let gameManager = gameManager else { return }
+        
+        switch gameManager.current {
         case .placing:
-            handleTapPlacing(location: tapLocation)
+            handleTapPlacing(location: location)
         case .playing:
-            handleTapPlaying(location: tapLocation)
+            handleTapPlaying(location: location)
         default:
             break
         }
@@ -372,14 +440,12 @@ class ARViewController: UIViewController {
     func handleTapPlacing(location: CGPoint) {
         guard let result = arView.raycast(from: location,
                                           allowing: .existingPlaneGeometry,
-                                          alignment: .horizontal).first
-            else { return }
+                                          alignment: .horizontal).first else { return }
         
         let arAnchor = ARAnchor(name: "Anchor for cube", transform: result.worldTransform)
         
         arView.session.add(anchor: arAnchor)
         gameManager?.board.addPoint(to: arAnchor)
-        print("Botou")
     }
     
     func handleTapPlaying(location: CGPoint) {
@@ -392,29 +458,38 @@ class ARViewController: UIViewController {
                 return
             }
         }
+    }
+    
+    func constructionHandleTap(location: CGPoint) {
+        guard let constructionManager = constructionManager else { return }
+                
+        if !board.haveReference() {
+            guard let result = arView.raycast(from: location,
+                                              allowing: .existingPlaneGeometry,
+                                              alignment: .horizontal).first else { return }
+            
+            let arAnchor = ARAnchor(name: "Reference", transform: result.worldTransform)
+//            board.createEntity(from: arAnchor)
+            constructionManager.board.decode(map: construction!.map,
+                                             reference:AnchorEntity(anchor: arAnchor))
+            constructionManager.change(to: .looking)
+            return
+        }
         
-        print("Achou nada")
+        
+        let hits = arView.hitTest(location)
+        
+        for hit in hits {
+            if hit.entity is GeometryEntity {
+                selectedEntity = hit.entity as? GeometryEntity
+                showOrientationEntity()
+                constructionManager.change(to: .constructing)
+                return
+            }
+        }
     }
     
-    @objc
-    func place() {
-        gameManager?.change(to: .placing)
-    }
-    
-    @objc
-    func start() {
-        gameManager?.change(to: .counting)
-    }
-    
-    @objc
-    func playAgain() {
-        gameManager?.change(to: .starting)
-        start()
-    }
-    
-    @objc
     func goHome() {
-        gameManager?.change(to: .waiting)
         self.navigationController?.popViewController(animated: true)
     }
 }
@@ -423,11 +498,10 @@ class ARViewController: UIViewController {
 
 extension ARViewController: GameDelegate {
     func waitingToWaiting() {
-        arGameView.showPlaceBoardViewOnboarding()
+        goHome()
     }
     
     func waitingToPlacing() {
-        arGameView.hidePlaceBoardView()
         addCoachingView()
         resetToInitialConfiguration()
         desappearWidgets()
@@ -443,25 +517,20 @@ extension ARViewController: GameDelegate {
     }
     
     func startingToCounting() {
-        gameManager?.board.clearBoard()
-        arGameView.hideStartGameView()
-        arGameView.countDownStart()
         resetWidgets()
     }
     
     func startingToWaiting() {
         desappearWidgets()
         coachingView?.removeFromSuperview()
-        arGameView.hideStartGameView()
-        arGameView.hideEndGameView()
-        arGameView.showPlaceBoardViewOnboarding()
-        gameManager?.board.restart()
+        goHome()
     }
     
     func countingToPlaying() {
         gameManager?.board.randomizeInitialBoard()
         setUpOrientationEntity()
         appearWidgets()
+        
         DispatchQueue.main.async { [unowned self] in
             self.arGameView.startTimer {
                 self.played()
@@ -474,19 +543,15 @@ extension ARViewController: GameDelegate {
         stopAnimation()
     }
     
-    func finishedToStarting() {
+    func finishedToCounting() {
         coachingView?.removeFromSuperview()
         selectedEntity = nil
-        arGameView.hideEndGameView()
     }
     
     func finishedToWaiting() {
         desappearWidgets()
         coachingView?.removeFromSuperview()
-        arGameView.hideStartGameView()
-        arGameView.hideEndGameView()
-        arGameView.showPlaceBoardViewOnboarding()
-        gameManager?.board.restart()
+        goHome()
     }
     
     func placed(area: Double) {
@@ -517,33 +582,83 @@ extension ARViewController: GameDelegate {
 // MARK:- Construcion Delegate
 
 extension ARViewController: ConstructionDelegate {
-    func initializingToPlacing() {}
-    
-    func initializingToInitializing() {}
-    
-    func placingToLooking() {}
+    func initializingToPlacing() {
+        addCoachingView()
+        arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+    }
+        
+    func placingToLooking() {
+        arConstructionView.looking()
+        setUpOrientationEntity()
+    }
     
     func lookingToAdding() {}
     
-    func lookingToConstructing() {}
+    func lookingToConstructing() {
+        arConstructionView.constructing()
+    }
     
     func lookingToLeaving() {}
     
     func addingToLooking() {}
     
-    func addingToClassifying() {}
+    // TODO: send to ml
+    func addingToClassifying() {
+       
+    }
     
-    func constructingToLooking() {}
+    func constructingToLooking() {
+        selectedEntity = nil
+        hideOrientationEntity()
+        arConstructionView.looking()
+    }
     
-    func constructingToLeaving() {}
+    func constructingToLeaving() {
+        selectedEntity = nil
+        hideOrientationEntity()
+    }
     
-    func classifyingToConstructing() {}
+    // TODO: draw the result
+    func classifyingToConstructing() {
+        arConstructionView.constructing()
+    }
     
-    func classifyingToAdding() {}
+    func classifyingToAdding() {
+        arConstructionView.addingAgain()
+    }
     
-    func leavingToInitializing() {}
+    func leavingToInitializing() {
+        coachingView?.removeFromSuperview()
+        board.restart()
+        goHome()
+    }
     
     func leavingToLooking() {}
+    
+    func removeSelectedEntity() {
+        board.removeEntity(selectedEntity!)
+    }
+    
+    func saveProgress() {
+        construction!.map = constructionManager!.board.encode()
+        Sandbox.shared.add(construction!)
+    }
+}
+
+extension ARViewController: MLDelegate {
+    func result(identifier: String, confidence: Float) {
+        debugPrint(type(of:self), #function)
+        if EntityProperties.shared.mapFaceToTypes[identifier] != nil && confidence > 0.75 {
+            let faces = EntityProperties.shared.mapFaceToTypes[identifier]
+            let randomFace = Int.random(in: 0..<faces!.count)
+            
+            addEntity(of: faces![randomFace])
+            constructionManager?.change(to: .constructing)
+            return
+        }
+
+        constructionManager?.change(to: .adding)
+    }
 }
 
 //MARK: - AR Coaching Overlay View Delegate
@@ -574,9 +689,12 @@ extension ARViewController: ARCoachingOverlayViewDelegate {
         ])
     }
     
-    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {}
+    func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        if constructionManager != nil && constructionManager?.current == .placing {
+            arConstructionView.showFeedBackView()
+        }
+    }
 }
-
 
 // MARK:- AR Session Delegate
 

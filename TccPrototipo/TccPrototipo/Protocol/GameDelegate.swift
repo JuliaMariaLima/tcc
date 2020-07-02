@@ -25,7 +25,7 @@ protocol GameDelegate: class {
     
     func playingToFinished()
     
-    func finishedToStarting()
+    func finishedToCounting()
     
     func finishedToWaiting()
     

@@ -65,16 +65,16 @@ class Board {
         let anchorEntity = AnchorEntity()
         anchorEntity.setPosition(position, relativeTo: reference)
         
-        createEntity(in: anchorEntity, type)
+        let _ = createEntity(in: anchorEntity, type)
     }
     
     func createEntity(from arAnchor: ARAnchor, _ type: GeometryType? = nil) {
         let anchorEntity = AnchorEntity(world: arAnchor.transform)
         
-        createEntity(in: anchorEntity, type)
+        let _ = createEntity(in: anchorEntity, type)
     }
     
-    private func createEntity(in anchorEntity: AnchorEntity, _ type: GeometryType? = nil) {
+    func createEntity(in anchorEntity: AnchorEntity, _ type: GeometryType? = nil) -> GeometryEntity {
         let randomColor = Int.random(in: 0..<colors.count)
         let randomType = Int.random(in: 0..<entitieTypes.count)
         
@@ -87,7 +87,13 @@ class Board {
         entities.append(entity)
         entity.addCollision()
         
+        if let reference = reference {
+            entity.setOrientation(reference.orientation(relativeTo: reference), relativeTo: reference)
+        }
+        
         updateMap(type: entity.type, isAdding: true)
+        
+        return entity
     }
     
     func removeEntity(_ entity: GeometryEntity) {

@@ -50,6 +50,7 @@ class SandboxViewController: UIViewController {
         view.addSubview(backButton)
         
         backButton.setUpConstraints()
+        backButton.isHidden = false
         backButton.addTarget(self, action: #selector(back), for: .touchDown)
     }
     

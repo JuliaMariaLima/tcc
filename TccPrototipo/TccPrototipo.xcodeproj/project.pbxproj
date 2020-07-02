@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		960ED8902392C3220037675A /* quadrilateralPyramid.obj in Resources */ = {isa = PBXBuildFile; fileRef = 960ED88F2392C3220037675A /* quadrilateralPyramid.obj */; };
 		960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960ED8912392C3950037675A /* QuadrilateralPyramid.swift */; };
+		9616D6D324AD0D8F006823DF /* AllArrowButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9616D6D224AD0D8F006823DF /* AllArrowButtonsView.swift */; };
+		9616D6D924AD1A60006823DF /* InitializingConstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9616D6D824AD1A60006823DF /* InitializingConstructionView.swift */; };
+		9616D6DB24AD410D006823DF /* GeometryModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9616D6DA24AD410D006823DF /* GeometryModel.mlmodel */; };
+		9616D6DD24AD42CB006823DF /* ModelClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9616D6DC24AD42CB006823DF /* ModelClassifier.swift */; };
 		961720EA23789059008E1298 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720E923789059008E1298 /* AppDelegate.swift */; };
 		961720EC23789059008E1298 /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720EB23789059008E1298 /* ARViewController.swift */; };
 		961720F32378905C008E1298 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 961720F22378905C008E1298 /* Assets.xcassets */; };
@@ -16,7 +20,7 @@
 		961720FE2378906A008E1298 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961720FD2378906A008E1298 /* Cube.swift */; };
 		9624F3B124ABE71A00D7357A /* ConstructionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B024ABE71A00D7357A /* ConstructionManager.swift */; };
 		9624F3B324ABE76700D7357A /* ConstructionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */; };
-		9624F3B524ABEEED00D7357A /* DelegateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B424ABEEED00D7357A /* DelegateManager.swift */; };
+		9624F3B524ABEEED00D7357A /* MLDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B424ABEEED00D7357A /* MLDelegate.swift */; };
 		9624F3B724AC08A500D7357A /* ARConstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9624F3B624AC08A500D7357A /* ARConstructionView.swift */; };
 		963112A924A152E30080B421 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112A824A152E30080B421 /* GameManager.swift */; };
 		963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963112AA24A15BB00080B421 /* GameDelegate.swift */; };
@@ -29,7 +33,6 @@
 		9639DDBF2445372B000B309F /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDBE2445372B000B309F /* TimerView.swift */; };
 		9639DDC124453F6C000B309F /* PointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC024453F6C000B309F /* PointsView.swift */; };
 		9639DDC324454708000B309F /* EndGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC224454708000B309F /* EndGameView.swift */; };
-		9639DDC524467331000B309F /* ConstructViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC424467331000B309F /* ConstructViewController.swift */; };
 		9639DDC82460F74B000B309F /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC72460F74B000B309F /* StartGameView.swift */; };
 		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
 		965855E424A29A4600521454 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965855E324A29A4600521454 /* Array.swift */; };
@@ -82,6 +85,10 @@
 /* Begin PBXFileReference section */
 		960ED88F2392C3220037675A /* quadrilateralPyramid.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = quadrilateralPyramid.obj; sourceTree = "<group>"; };
 		960ED8912392C3950037675A /* QuadrilateralPyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrilateralPyramid.swift; sourceTree = "<group>"; };
+		9616D6D224AD0D8F006823DF /* AllArrowButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllArrowButtonsView.swift; sourceTree = "<group>"; };
+		9616D6D824AD1A60006823DF /* InitializingConstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializingConstructionView.swift; sourceTree = "<group>"; };
+		9616D6DA24AD410D006823DF /* GeometryModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = GeometryModel.mlmodel; sourceTree = "<group>"; };
+		9616D6DC24AD42CB006823DF /* ModelClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelClassifier.swift; sourceTree = "<group>"; };
 		961720E623789059008E1298 /* TccPrototipo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TccPrototipo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		961720E923789059008E1298 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		961720EB23789059008E1298 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
@@ -91,7 +98,7 @@
 		961720FD2378906A008E1298 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
 		9624F3B024ABE71A00D7357A /* ConstructionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionManager.swift; sourceTree = "<group>"; };
 		9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructionDelegate.swift; sourceTree = "<group>"; };
-		9624F3B424ABEEED00D7357A /* DelegateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegateManager.swift; sourceTree = "<group>"; };
+		9624F3B424ABEEED00D7357A /* MLDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MLDelegate.swift; sourceTree = "<group>"; };
 		9624F3B624AC08A500D7357A /* ARConstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARConstructionView.swift; sourceTree = "<group>"; };
 		963112A824A152E30080B421 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		963112AA24A15BB00080B421 /* GameDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDelegate.swift; sourceTree = "<group>"; };
@@ -105,7 +112,6 @@
 		9639DDBE2445372B000B309F /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		9639DDC024453F6C000B309F /* PointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsView.swift; sourceTree = "<group>"; };
 		9639DDC224454708000B309F /* EndGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGameView.swift; sourceTree = "<group>"; };
-		9639DDC424467331000B309F /* ConstructViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructViewController.swift; sourceTree = "<group>"; };
 		9639DDC72460F74B000B309F /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
 		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
 		965855E324A29A4600521454 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -165,6 +171,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9616D6D424AD18B4006823DF /* GameView */ = {
+			isa = PBXGroup;
+			children = (
+				9639DDBE2445372B000B309F /* TimerView.swift */,
+				9639DDC024453F6C000B309F /* PointsView.swift */,
+				963112AE24A1695B0080B421 /* PlaceBoardView.swift */,
+				9639DDC72460F74B000B309F /* StartGameView.swift */,
+				9639DDC224454708000B309F /* EndGameView.swift */,
+				963112B224A1B0EC0080B421 /* CountDownView.swift */,
+			);
+			path = GameView;
+			sourceTree = "<group>";
+		};
+		9616D6D524AD18C2006823DF /* ConstructionView */ = {
+			isa = PBXGroup;
+			children = (
+				96B9AEC524A9290F00A230D0 /* BackHomeView.swift */,
+				96B9AEC724A938F600A230D0 /* AddGeometryView.swift */,
+				96B9AEC924A9391F00A230D0 /* RemoveGeometryView.swift */,
+				96B9AECB24A9393900A230D0 /* CloseView.swift */,
+				96B9AECE24A940F100A230D0 /* LeaveConstructionView.swift */,
+				96B9AED024A9430900A230D0 /* DrawGeometryView.swift */,
+				96B9AED424A96B0A00A230D0 /* Canvas.swift */,
+				96B9AED624A97FE000A230D0 /* LoadView.swift */,
+				96B9AEE224AA66E600A230D0 /* FeedbackView.swift */,
+				9616D6D824AD1A60006823DF /* InitializingConstructionView.swift */,
+			);
+			path = ConstructionView;
+			sourceTree = "<group>";
+		};
+		9616D6D624AD18F5006823DF /* ArrowButtons */ = {
+			isa = PBXGroup;
+			children = (
+				9616D6D224AD0D8F006823DF /* AllArrowButtonsView.swift */,
+				9639DDBA243C07B7000B309F /* ArrowButtonView.swift */,
+			);
+			path = ArrowButtons;
+			sourceTree = "<group>";
+		};
+		9616D6D724AD1918006823DF /* SandboxCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				96B9AEBF24A8ECAC00A230D0 /* SandboxCollectionView.swift */,
+				96B9AEC124A8EE1800A230D0 /* SandboxCollectionViewCell.swift */,
+			);
+			path = SandboxCollectionView;
+			sourceTree = "<group>";
+		};
+		9616D6DE24AD4AC5006823DF /* ML */ = {
+			isa = PBXGroup;
+			children = (
+				9616D6DC24AD42CB006823DF /* ModelClassifier.swift */,
+				9616D6DA24AD410D006823DF /* GeometryModel.mlmodel */,
+			);
+			path = ML;
+			sourceTree = "<group>";
+		};
 		961720DD23789059008E1298 = {
 			isa = PBXGroup;
 			children = (
@@ -184,6 +247,7 @@
 		961720E823789059008E1298 /* TccPrototipo */ = {
 			isa = PBXGroup;
 			children = (
+				9667A90A24ABE46D00302EF6 /* Protocol */,
 				96B563AB24256D29006D595B /* Model */,
 				969CBC57243BF4EE002152AA /* Controller */,
 				9639DDB7243BFC0C000B309F /* View */,
@@ -234,24 +298,10 @@
 			isa = PBXGroup;
 			children = (
 				9639DDB8243BFC30000B309F /* HomeButtonView.swift */,
-				9639DDBA243C07B7000B309F /* ArrowButtonView.swift */,
-				9639DDBE2445372B000B309F /* TimerView.swift */,
-				9639DDC024453F6C000B309F /* PointsView.swift */,
-				963112AE24A1695B0080B421 /* PlaceBoardView.swift */,
-				9639DDC72460F74B000B309F /* StartGameView.swift */,
-				9639DDC224454708000B309F /* EndGameView.swift */,
-				963112B224A1B0EC0080B421 /* CountDownView.swift */,
-				96B9AEBF24A8ECAC00A230D0 /* SandboxCollectionView.swift */,
-				96B9AEC124A8EE1800A230D0 /* SandboxCollectionViewCell.swift */,
-				96B9AEC524A9290F00A230D0 /* BackHomeView.swift */,
-				96B9AEC724A938F600A230D0 /* AddGeometryView.swift */,
-				96B9AEC924A9391F00A230D0 /* RemoveGeometryView.swift */,
-				96B9AECB24A9393900A230D0 /* CloseView.swift */,
-				96B9AECE24A940F100A230D0 /* LeaveConstructionView.swift */,
-				96B9AED024A9430900A230D0 /* DrawGeometryView.swift */,
-				96B9AED424A96B0A00A230D0 /* Canvas.swift */,
-				96B9AED624A97FE000A230D0 /* LoadView.swift */,
-				96B9AEE224AA66E600A230D0 /* FeedbackView.swift */,
+				9616D6D724AD1918006823DF /* SandboxCollectionView */,
+				9616D6D624AD18F5006823DF /* ArrowButtons */,
+				9616D6D424AD18B4006823DF /* GameView */,
+				9616D6D524AD18C2006823DF /* ConstructionView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -269,7 +319,7 @@
 		9667A90A24ABE46D00302EF6 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				9624F3B424ABEEED00D7357A /* DelegateManager.swift */,
+				9624F3B424ABEEED00D7357A /* MLDelegate.swift */,
 				963112AA24A15BB00080B421 /* GameDelegate.swift */,
 				9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */,
 			);
@@ -280,9 +330,8 @@
 			isa = PBXGroup;
 			children = (
 				969CBC58243BF52B002152AA /* HomeViewController.swift */,
-				961720EB23789059008E1298 /* ARViewController.swift */,
 				96B9AEBD24A8E9A900A230D0 /* SandboxViewController.swift */,
-				9639DDC424467331000B309F /* ConstructViewController.swift */,
+				961720EB23789059008E1298 /* ARViewController.swift */,
 				9667A90524ABBDB000302EF6 /* ARGameView.swift */,
 				9624F3B624AC08A500D7357A /* ARConstructionView.swift */,
 			);
@@ -292,10 +341,10 @@
 		96B563AB24256D29006D595B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9667A90A24ABE46D00302EF6 /* Protocol */,
 				9667A90724ABE26A00302EF6 /* Manager */,
 				96B9AED924AA29B000A230D0 /* Board */,
 				963112A724A152C90080B421 /* Geometries */,
+				9616D6DE24AD4AC5006823DF /* ML */,
 				96B9AEE024AA43C900A230D0 /* EntityProperties.swift */,
 				96B9AEB924A8DDD700A230D0 /* Sandbox.swift */,
 				96B9AEBB24A8DDF000A230D0 /* Construction.swift */,
@@ -401,8 +450,8 @@
 				961720FE2378906A008E1298 /* Cube.swift in Sources */,
 				961720EC23789059008E1298 /* ARViewController.swift in Sources */,
 				96B9AEB024A5183900A230D0 /* CodableExtensions.swift in Sources */,
-				9639DDC524467331000B309F /* ConstructViewController.swift in Sources */,
 				96B9AEBE24A8E9A900A230D0 /* SandboxViewController.swift in Sources */,
+				9616D6DB24AD410D006823DF /* GeometryModel.mlmodel in Sources */,
 				963112B324A1B0EC0080B421 /* CountDownView.swift in Sources */,
 				9667A90924ABE28300302EF6 /* Manager.swift in Sources */,
 				96B9AEC624A9290F00A230D0 /* BackHomeView.swift in Sources */,
@@ -411,9 +460,11 @@
 				96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */,
 				96B9AEDF24AA370100A230D0 /* GeometryType.swift in Sources */,
 				96B9AEC024A8ECAC00A230D0 /* SandboxCollectionView.swift in Sources */,
+				9616D6D324AD0D8F006823DF /* AllArrowButtonsView.swift in Sources */,
 				9639DDB6243BFA87000B309F /* UIColor.swift in Sources */,
-				9624F3B524ABEEED00D7357A /* DelegateManager.swift in Sources */,
+				9624F3B524ABEEED00D7357A /* MLDelegate.swift in Sources */,
 				963112A924A152E30080B421 /* GameManager.swift in Sources */,
+				9616D6D924AD1A60006823DF /* InitializingConstructionView.swift in Sources */,
 				9624F3B124ABE71A00D7357A /* ConstructionManager.swift in Sources */,
 				96B9AED124A9430900A230D0 /* DrawGeometryView.swift in Sources */,
 				969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */,
@@ -432,6 +483,7 @@
 				96B9AEC824A938F600A230D0 /* AddGeometryView.swift in Sources */,
 				96B563BB242576FC006D595B /* PentagonalPyramid.swift in Sources */,
 				96B9AEDB24AA29C100A230D0 /* Board.swift in Sources */,
+				9616D6DD24AD42CB006823DF /* ModelClassifier.swift in Sources */,
 				96B563B724257304006D595B /* Tetrahedron.swift in Sources */,
 				9639DDBF2445372B000B309F /* TimerView.swift in Sources */,
 				96B563B92425758F006D595B /* Cone.swift in Sources */,

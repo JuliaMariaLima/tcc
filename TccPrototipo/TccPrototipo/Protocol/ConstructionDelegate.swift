@@ -10,9 +10,7 @@ import Foundation
 
 protocol ConstructionDelegate: class {
     func initializingToPlacing()
-    
-    func initializingToInitializing()
-    
+        
     func placingToLooking()
     
     func lookingToAdding()
@@ -36,4 +34,8 @@ protocol ConstructionDelegate: class {
     func leavingToInitializing()
     
     func leavingToLooking()
+    
+    func removeSelectedEntity()
+    
+    func saveProgress()
 }

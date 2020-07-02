@@ -24,15 +24,15 @@ class Canvas: UIView {
     }
     
     func setUpConstraints() {
-        guard let superview = self.superview else {
+        guard let superview = self.superview?.superview else {
             fatalError("The Canvas is not a subview of any UIView")
         }
         
         NSLayoutConstraint.activate([
             self.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
             self.centerYAnchor.constraint(equalTo: superview.centerYAnchor),
-            self.heightAnchor.constraint(equalToConstant: 200),
-            self.widthAnchor.constraint(equalToConstant: 200)
+            self.heightAnchor.constraint(equalToConstant: superview.frame.size.width * 0.5334),
+            self.widthAnchor.constraint(equalToConstant: superview.frame.size.width * 0.5334)
         ])
     }
     
@@ -78,7 +78,9 @@ class Canvas: UIView {
     }
     
     func clear() {
-        lines.removeAll()
-        setNeedsDisplay()
+        DispatchQueue.main.async {
+            self.lines.removeAll()
+            self.setNeedsDisplay()
+        }
     }
 }

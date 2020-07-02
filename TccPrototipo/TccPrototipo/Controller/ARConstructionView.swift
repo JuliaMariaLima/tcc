@@ -10,6 +10,8 @@ import UIKit
 
 class ARConstructionView: UIView {
     
+    // MARK: Properties
+    
     private var backButton: BackHomeView!
     
     private var addButton: AddGeometryView!
@@ -18,31 +20,29 @@ class ARConstructionView: UIView {
     
     private var closeButton: CloseView!
     
-    private var buttonUp: ArrowButtonView!
-    
-    private var buttonDown: ArrowButtonView!
-    
-    private var buttonRight: ArrowButtonView!
-    
-    private var buttonLeft: ArrowButtonView!
-    
     private var leaveConstructionView: LeaveConstructionView!
-    
-    private var drawGeometryView: DrawGeometryView!
-    
+        
     private var loadingView: LoadView!
     
     private var feedbackView: FeedbackView!
     
+    private var initializingView: InitializingConstructionView!
+    
+    var drawGeometryView: DrawGeometryView!
+
+    var allArrowButtonsView: AllArrowButtonsView!
+    
+    // MARK: Life Cicle
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.isHidden = false
+        self.isHidden = true
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .clear
         self.isUserInteractionEnabled = true
         
-        setUpArrowButtons()
+        setUpAllArrowButtons()
         setUpBackButton()
         setUpAddButton()
         setUpRemoveButton()
@@ -51,24 +51,18 @@ class ARConstructionView: UIView {
         setUpDrawGeometryView()
         setUpLoadingView()
         setUpFeedbackView()
+        setUpInitializingView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUpArrowButtons() {
-        buttonUp = ArrowButtonView(type: .up)
-        addSubview(buttonUp)
-        
-        buttonDown = ArrowButtonView(type: .down)
-        addSubview(buttonDown)
-        
-        buttonRight = ArrowButtonView(type: .right)
-        addSubview(buttonRight)
-        
-        buttonLeft = ArrowButtonView(type: .left)
-        addSubview(buttonLeft)
+    // MARK: Set Up
+    
+    private func setUpAllArrowButtons() {
+        allArrowButtonsView = AllArrowButtonsView(frame: .zero)
+        addSubview(allArrowButtonsView)
     }
     
     private func setUpBackButton() {
@@ -104,15 +98,13 @@ class ARConstructionView: UIView {
         addSubview(leaveConstructionView)
         
         leaveConstructionView.cancelButton.addTarget(self, action: #selector(cancel), for: .touchDown)
-        leaveConstructionView.yesButton.addTarget(self, action: #selector(leave), for: .touchDown)
+        leaveConstructionView.yesButton.addTarget(self, action: #selector(save), for: .touchDown)
         leaveConstructionView.noButton.addTarget(self, action: #selector(leave), for: .touchDown)
     }
     
     private func setUpDrawGeometryView() {
         drawGeometryView = DrawGeometryView()
         addSubview(drawGeometryView)
-        
-        drawGeometryView.addButton.addTarget(self, action: #selector(classify), for: .touchDown)
     }
     
     private func setUpLoadingView() {
@@ -124,6 +116,15 @@ class ARConstructionView: UIView {
         feedbackView = FeedbackView()
         addSubview(feedbackView)
     }
+    
+    private func setUpInitializingView() {
+        initializingView = InitializingConstructionView()
+        addSubview(initializingView)
+        
+        initializingView.okButton.addTarget(self, action: #selector(ok), for: .touchDown)
+    }
+    
+    // MARK: Constraints
     
     func setUpConstraints() {
         guard let superview = self.superview else {
@@ -137,27 +138,72 @@ class ARConstructionView: UIView {
             self.bottomAnchor.constraint(equalTo: superview.bottomAnchor)
         ])
         
-        buttonUp.setUpConstraints()
-        buttonDown.setUpConstraints()
-        buttonRight.setUpConstraints()
-        buttonLeft.setUpConstraints()
-        
         backButton.setUpConstraints()
         addButton.setUpConstraints()
         removeButton.setUpConstraints()
         closeButton.setUpConstraints()
+        
+        allArrowButtonsView.setUpConstraints()
         leaveConstructionView.setUpConstraints()
         drawGeometryView.setUpConstraints()
         loadingView.setUpConstraints()
         feedbackView.setUpConstraints()
+        initializingView.setUpConstraints()
     }
     
-    func arrowButtonsIsHidden(_ isHidden: Bool) {
-        buttonUp.isHidden = isHidden
-        buttonDown.isHidden = isHidden
-        buttonLeft.isHidden = isHidden
-        buttonRight.isHidden = isHidden
+    // MARK: Actions
+    
+    func showFeedBackView() {
+        feedbackView.isHidden = false
     }
+    
+    func looking() {
+        removeButton.isHidden = true
+        closeButton.isHidden = true
+        drawGeometryView.isHidden = true
+        feedbackView.isHidden = true
+        allArrowButtonsView.buttonsIsHidden(true)
+        
+        addButton.isHidden = false
+        backButton.isHidden = false
+    }
+    
+    func addingAgain() {
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = true
+            
+            self.closeButton.isHidden = false
+            self.drawGeometryView.isHidden = false
+            self.drawGeometryView.retry()
+        }
+    }
+    
+    func constructing() {
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = true
+            self.addButton.isHidden = true
+            
+            self.backButton.isHidden = false
+            self.removeButton.isHidden = false
+            self.closeButton.isHidden = false
+            self.allArrowButtonsView.buttonsIsHidden(false)
+        }
+    }
+    
+    func addClassifyButtonTarget(target: Any, action: Selector) {
+        drawGeometryView.addButton.addTarget(target, action: action, for: .touchDown)
+    }
+    
+    func classify() {
+        drawGeometryView.isHidden = true
+        closeButton.isHidden = true
+        
+        loadingView.isHidden = false
+        
+        ConstructionManager.shared.change(to: .classifying)
+    }
+    
+    // MARK: Objc Actions
     
     @objc
     private func add() {
@@ -177,7 +223,7 @@ class ARConstructionView: UIView {
         addButton.isHidden = true
         closeButton.isHidden = true
         removeButton.isHidden = true
-        arrowButtonsIsHidden(true)
+        allArrowButtonsView.buttonsIsHidden(true)
         
         leaveConstructionView.isHidden = false
         
@@ -195,8 +241,17 @@ class ARConstructionView: UIView {
     }
     
     @objc
+    private func save() {
+        ConstructionManager.shared.change(to: .saving)
+        
+        leave()
+    }
+    
+    @objc
     private func leave() {
         leaveConstructionView.isHidden = true
+        
+        initializingView.isHidden = false
         
         ConstructionManager.shared.change(to: .initializing)
     }
@@ -205,33 +260,25 @@ class ARConstructionView: UIView {
     private func remove() {
         removeButton.isHidden = true
         closeButton.isHidden = true
-        arrowButtonsIsHidden(true)
+        allArrowButtonsView.buttonsIsHidden(true)
         
         addButton.isHidden = false
         
+        ConstructionManager.shared.change(to: .removing)
         ConstructionManager.shared.change(to: .looking)
     }
     
     @objc
     private func close() {
-        removeButton.isHidden = true
-        closeButton.isHidden = true
-        drawGeometryView.isHidden = true
-        arrowButtonsIsHidden(true)
-        
-        addButton.isHidden = false
-        backButton.isHidden = false
+        looking()
         
         ConstructionManager.shared.change(to: .looking)
     }
     
     @objc
-    private func classify() {
-        drawGeometryView.isHidden = true
-        closeButton.isHidden = true
+    private func ok() {
+        initializingView.isHidden = true
         
-        loadingView.isHidden = false
-        
-        ConstructionManager.shared.change(to: .classifying)
+        ConstructionManager.shared.change(to: .placing)
     }
 }

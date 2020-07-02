@@ -23,13 +23,7 @@ class ARGameView: UIView {
     
     private var countDownView: CountDownView!
     
-    private var buttonUp: ArrowButtonView!
-    
-    private var buttonDown: ArrowButtonView!
-    
-    private var buttonRight: ArrowButtonView!
-    
-    private var buttonLeft: ArrowButtonView!
+    var allArrowButtonsView: AllArrowButtonsView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +33,7 @@ class ARGameView: UIView {
         self.backgroundColor = .clear
         self.isUserInteractionEnabled = true
         
-        setUpButtons()
+        setUpAllArrowButtonsView()
         setUpTimerView()
         setUpPointsView()
         setUpCountDownView()
@@ -52,18 +46,9 @@ class ARGameView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setUpButtons() {
-        buttonUp = ArrowButtonView(type: .up)
-        self.addSubview(buttonUp)
-        
-        buttonDown = ArrowButtonView(type: .down)
-        self.addSubview(buttonDown)
-        
-        buttonLeft = ArrowButtonView(type: .left)
-        self.addSubview(buttonLeft)
-        
-        buttonRight = ArrowButtonView(type: .right)
-        self.addSubview(buttonRight)
+    private func setUpAllArrowButtonsView() {
+        allArrowButtonsView = AllArrowButtonsView(frame: .zero)
+        self.addSubview(allArrowButtonsView)
     }
     
     private func setUpTimerView() {
@@ -84,51 +69,26 @@ class ARGameView: UIView {
     private func setUpPlaceBoardView() {
         placeBoardView = PlaceBoardView(frame: .zero)
         self.addSubview(placeBoardView)
+        
+        placeBoardView.placeButton.addTarget(target, action: #selector(place), for: .touchDown)
+        placeBoardView.homeButton.addTarget(target, action: #selector(goHome), for: .touchDown)
+
     }
     
     private func setUpStartGameView() {
         startGameView = StartGameView(frame: .zero)
         self.addSubview(startGameView)
+        
+        startGameView.playButton.addTarget(target, action: #selector(start), for: .touchDown)
+        startGameView.homeButton.addTarget(target, action: #selector(goHome), for: .touchDown)
     }
     
     private func setUpEndGameView() {
         endGameView = EndGameView(frame: .zero)
         self.addSubview(endGameView)
-    }
-    
-    func addButtonsAction(buttonUpAction: Selector,
-                          buttonDownAction: Selector,
-                          buttonLeftAction: Selector,
-                          buttonRightAction: Selector,
-                          buttonReleasedAction: Selector,
-                          target: Any) {
         
-        buttonUp.addTarget(target, action: buttonUpAction, for: .touchDown)
-        buttonUp.addTarget(target, action: buttonReleasedAction, for: .touchUpInside)
-        
-        buttonDown.addTarget(target, action: buttonDownAction, for: .touchDown)
-        buttonDown.addTarget(target, action: buttonReleasedAction, for: .touchUpInside)
-        
-        buttonLeft.addTarget(target, action: buttonLeftAction, for: .touchDown)
-        buttonLeft.addTarget(target, action: buttonReleasedAction, for: .touchUpInside)
-        
-        buttonRight.addTarget(target, action: buttonRightAction, for: .touchDown)
-        buttonRight.addTarget(target, action: buttonReleasedAction, for: .touchUpInside)
-    }
-    
-    func addPlaceViewActions(placeAction: Selector, homeAction: Selector, target: Any) {
-        placeBoardView.placeButton.addTarget(target, action: placeAction, for: .touchDown)
-        placeBoardView.homeButton.addTarget(target, action: homeAction, for: .touchDown)
-    }
-    
-    func addStartViewActions(startAction: Selector, homeAction: Selector, target: Any) {
-        startGameView.playButton.addTarget(target, action: startAction, for: .touchDown)
-        startGameView.homeButton.addTarget(target, action: homeAction, for: .touchDown)
-    }
-    
-    func addEndViewActions(playAction: Selector, homeAction: Selector, target: Any) {
-        endGameView.playButton.addTarget(target, action: playAction, for: .touchDown)
-        endGameView.homeButton.addTarget(target, action: homeAction, for: .touchDown)
+        endGameView.playButton.addTarget(target, action: #selector(playAgain), for: .touchDown)
+        endGameView.homeButton.addTarget(target, action: #selector(goHome), for: .touchDown)
     }
     
     func addCountDownViewDelegate(delegate: GameDelegate?) {
@@ -137,13 +97,6 @@ class ARGameView: UIView {
     
     func updatePoints(_ points: Int) {
        pointsView.update(points)
-    }
-    
-    func buttonsIsHidden(_ isHidden: Bool) {
-        buttonUp.isHidden = isHidden
-        buttonDown.isHidden = isHidden
-        buttonLeft.isHidden = isHidden
-        buttonRight.isHidden = isHidden
     }
     
     func timerIsHidden(_ isHidden: Bool) {
@@ -171,20 +124,9 @@ class ARGameView: UIView {
     func showStartGameView() {
         startGameView.isHidden = false
     }
+    
     func showEndGameView(score: Int, highScore: Int) {
         endGameView.present(score: score, highScore: highScore)
-    }
-    
-    func hidePlaceBoardView() {
-        placeBoardView.isHidden = true
-    }
-    
-    func hideStartGameView() {
-        startGameView.isHidden = true
-    }
-    
-    func hideEndGameView() {
-        endGameView.isHidden = true
     }
     
     func startTimer(_ completion: @escaping () -> Void) {
@@ -206,12 +148,8 @@ class ARGameView: UIView {
             self.trailingAnchor.constraint(equalTo: superview.trailingAnchor),
             self.bottomAnchor.constraint(equalTo: superview.bottomAnchor)
         ])
-
-        buttonUp.setUpConstraints()
-        buttonDown.setUpConstraints()
-        buttonRight.setUpConstraints()
-        buttonLeft.setUpConstraints()
         
+        allArrowButtonsView.setUpConstraints()
         timerView.setUpConstraints()
         pointsView.setUpConstraints()
         countDownView.setUpConstraints()
@@ -219,5 +157,47 @@ class ARGameView: UIView {
         placeBoardView.setUpConstraints()
         startGameView.setUpConstraints()
         endGameView.setUpConstraints()
+    }
+    
+    @objc
+    private func place() {
+        placeBoardView.isHidden = true
+        
+        GameManager.shared.change(to: .placing)
+    }
+    
+    @objc
+    private func start() {
+        startGameView.isHidden = true
+        
+        countDownView.start()
+        
+        GameManager.shared.board.clearBoard()
+        GameManager.shared.change(to: .counting)
+    }
+    
+    @objc
+    private func playAgain() {
+        endGameView.isHidden = true
+        
+        countDownView.start()
+        
+        pointsView.update(GameManager.shared.resetPoints())
+        timerView.restart()
+        
+        GameManager.shared.board.clearBoard()
+        GameManager.shared.change(to: .counting)
+    }
+    
+    @objc
+    private func goHome() {
+        startGameView.isHidden = true
+        endGameView.isHidden = true
+        
+        placeBoardView.isHidden = false
+        placeBoardView.onboarding()
+                
+        GameManager.shared.board.restart()
+        GameManager.shared.change(to: .waiting)
     }
 }

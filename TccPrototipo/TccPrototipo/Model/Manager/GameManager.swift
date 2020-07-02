@@ -73,8 +73,8 @@ class GameManager: Manager {
         case (.playing, .finished):
             countScores()
             delegate?.playingToFinished()
-        case (.finished, .starting):
-            delegate?.finishedToStarting()
+        case (.finished, .counting):
+            delegate?.finishedToCounting()
         case (.finished, .waiting):
             delegate?.finishedToWaiting()
         default:

@@ -62,7 +62,7 @@ class FeedbackView: UIView {
         titleLabel.numberOfLines = 3
         titleLabel.textColor = .lightGreen
         titleLabel.textAlignment = .center
-        titleLabel.text = "Click on a\nplane to start\nthe construction!"
+        titleLabel.text = "Click on a\nplan to start\nthe construction!"
         
         addSubview(titleLabel)
     }
