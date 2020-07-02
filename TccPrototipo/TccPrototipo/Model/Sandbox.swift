@@ -9,7 +9,7 @@
 import Foundation
 
 class Sandbox: Codable {
-    static let shared = Sandbox()
+    static var shared = Sandbox()
     
     private var constructions: [UUID:Construction] = [:]
     

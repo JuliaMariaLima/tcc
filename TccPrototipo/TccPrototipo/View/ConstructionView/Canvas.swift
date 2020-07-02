@@ -13,8 +13,6 @@ class Canvas: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.layer.borderColor = UIColor.borderRed.cgColor
-        self.layer.borderWidth = 6
         self.backgroundColor = .white
         self.translatesAutoresizingMaskIntoConstraints = false
     }

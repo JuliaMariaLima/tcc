@@ -72,7 +72,8 @@ extension SandboxViewController: UICollectionViewDataSource {
         if indexPath.item == 0 {
             cell.icon = UIImage(named: "newConstruction")
         } else {
-            cell.icon = constructions[indexPath.item - 1].image?.getImage()
+            cell.icon = constructions[indexPath.item - 1].image!.getImage()!
+            print("======= iconeeeee")
         }
         
         return cell

@@ -21,6 +21,25 @@ enum GeometryType {
     case PentagonalPyramid
 }
 
+extension GeometryType {
+    func next() -> GeometryType? {
+        guard let face = EntityProperties.shared.mapTypeToFace[self] else { return nil }
+        guard let types = EntityProperties.shared.mapFaceToTypes[face] else { return nil }
+        var next: Int = 0
+        
+        for i in 0..<types.count {
+            if types[i] == self {
+                next = i + 1
+                break
+            }
+        }
+        
+        next = next % types.count
+        
+        return types[next]
+    }
+}
+
 extension GeometryType: Codable {
     enum CodingKeys: CodingKey {
         case rawValue

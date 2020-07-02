@@ -26,14 +26,15 @@ class SandboxCollectionViewCell: UICollectionViewCell {
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.borderWidth = 0.0
+        view.contentMode = .scaleAspectFill
         
         // FIXME: Remove color
-         view.backgroundColor = .blue
+//         view.backgroundColor = .borderRed
         return view
     }()
     
     /// Use this property to set the cell icon.
-    var icon: UIImage? {
+    var icon: UIImage! {
         get {
             return imageView.image
         } set {
@@ -48,8 +49,11 @@ class SandboxCollectionViewCell: UICollectionViewCell {
         
         self.translatesAutoresizingMaskIntoConstraints = false
         
+        self.contentMode = .scaleAspectFill
+        
         setupViews()
         addShadow()
+        setUpConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -77,5 +81,19 @@ class SandboxCollectionViewCell: UICollectionViewCell {
         self.layer.shadowOpacity = 0.5
         self.layer.masksToBounds = false
         self.layer.shadowPath = UIBezierPath(roundedRect: imageView.bounds, cornerRadius: self.imageView.layer.cornerRadius).cgPath
+    }
+    
+    func setUpConstraints() {
+        NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: 138.0),
+            self.widthAnchor.constraint(equalToConstant: 138.0),
+        ])
+        
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 138.0),
+            imageView.widthAnchor.constraint(equalToConstant: 138.0),
+            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        ])
     }
 }

@@ -12,7 +12,7 @@ class Construction: Codable {
     
     var id: UUID!
     
-    var image: Image!
+    var image: Image?
     
     var map: [SIMD3<Float>:GeometryType] = [:]
     

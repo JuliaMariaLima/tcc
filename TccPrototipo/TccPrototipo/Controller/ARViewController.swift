@@ -61,11 +61,11 @@ class ARViewController: UIViewController {
     }
     
     var construction: Construction?
-        
+    
     var generator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
     
     var matchFormSound: AVAudioPlayer!
-        
+    
     var modelClassifier: ModelClassifier!
     
     lazy var cameraAnchor: AnchorEntity! = {
@@ -79,6 +79,13 @@ class ARViewController: UIViewController {
     
     private lazy var tapRecognizer: UITapGestureRecognizer = {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(recognizer:)))
+        
+        return recognizer
+    }()
+    
+    private lazy var swipeRecognizer: UISwipeGestureRecognizer = {
+        let recognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(recognizer:)))
+        recognizer.direction = [.right, .left]
         
         return recognizer
     }()
@@ -104,15 +111,16 @@ class ARViewController: UIViewController {
         super.viewDidLoad()
         
         arView = ARView(frame: UIScreen.main.bounds, cameraMode: .ar, automaticallyConfigureSession: true)
-
+        
         view.addSubview(arView)
-
+        
         arView.session.delegate = self
-       
+        
         arView.scene.addAnchor(cameraAnchor)
-       
+        
         arView.addGestureRecognizer(tapRecognizer)
-
+        arView.addGestureRecognizer(swipeRecognizer)
+        
         createBoard()
         setUpConfigurations()
         setUpARGameView()
@@ -202,6 +210,7 @@ class ARViewController: UIViewController {
                             self.selectedEntity = nil
                             self.hideOrientationEntity()
                             self.constructionManager?.change(to: .looking)
+                            
                             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                                 self.gameManager?.board.removePair(firstEntity: movingEntity, secondEntity: entity)
                                 self.gameManager?.board.addNewPair()
@@ -311,8 +320,10 @@ class ARViewController: UIViewController {
         var position = selectedEntity.position(relativeTo: nil)
         position.y += Float(size / 2)
         
-        orientationAnchorEntity?.setPosition(position, relativeTo: nil)
-        arView.scene.addAnchor(orientationAnchorEntity)
+        DispatchQueue.main.async {
+            self.orientationAnchorEntity?.setPosition(position, relativeTo: nil)
+            self.arView.scene.addAnchor(self.orientationAnchorEntity)
+        }
     }
     
     func hideOrientationEntity() {
@@ -321,10 +332,6 @@ class ARViewController: UIViewController {
     
     func updateOrientationEntityRotation() {
         orientationAnchorEntity?.setOrientation(cameraAnchor.orientation(relativeTo: cameraAnchor), relativeTo: cameraAnchor)
-    }
-    
-    func saveImage(choosenImage: UIImage) -> UIImage? {
-        return resizeImage(image: choosenImage, newWidth: 200.0)
     }
     
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage? {
@@ -342,18 +349,21 @@ class ARViewController: UIViewController {
         return newImage
     }
     
-    func addEntity(of type: GeometryType) {
-        DispatchQueue.main.async {
+    func addEntity(of type: GeometryType) -> GeometryEntity? {
+        DispatchQueue.main.sync {
             let location = CGPoint(x: self.view.frame.size.width / 2, y: self.view.frame.size.height / 2)
             
             guard let result = self.arView.raycast(from: location,
-                                              allowing: .existingPlaneGeometry,
-                                              alignment: .horizontal).first else { return }
+                                                   allowing: .existingPlaneGeometry,
+                                                   alignment: .horizontal).first
+                else {
+                    print("Nao achei nenhum plano")
+                    return nil
+            }
             
             let arAnchor = ARAnchor(name: "New Anchor", transform: result.worldTransform)
             let anchorEntity = AnchorEntity(world: arAnchor.transform)
-            self.selectedEntity = self.constructionManager?.board.createEntity(in: anchorEntity, type)
-            self.showOrientationEntity()
+            return self.constructionManager?.board.createEntity(in: anchorEntity, type)
         }
     }
     
@@ -409,19 +419,51 @@ class ARViewController: UIViewController {
             canvas.layer.render(in: rendererContext.cgContext)
         }
         
-        guard let classifyImage = saveImage(choosenImage: image) else { return }
+        guard let classifyImage = resizeImage(image: image, newWidth: 200.0) else { return }
         
         modelClassifier.updateClassifications(for: classifyImage)
-
+        
         arConstructionView.classify()
+    }
+    
+    @objc
+    private func handleSwipe(recognizer: UISwipeGestureRecognizer) {
+        guard let constructionManager = constructionManager else { return }
+        guard constructionManager.current == .looking ||  constructionManager.current == .constructing else {
+            return
+        }
+        
+        let swipeLocation = recognizer.location(in: arView)
+        
+        let hits = arView.hitTest(swipeLocation)
+        debugPrint(type(of:self), #function)
+        for hit in hits {
+            if hit.entity is GeometryEntity {
+                let entity = hit.entity as! GeometryEntity
+                guard let type = entity.type.next(), let reference = board.getReference() else { return }
+                print("Entrou aqui com \(type), \(entity.position(relativeTo: reference))")
+                let anchorEntity = AnchorEntity(world: entity.position(relativeTo: reference))
+                let newEntity = board.createEntity(in: anchorEntity, type)
+                board.removeEntity(entity)
+                
+                guard let _ = selectedEntity else { return }
+                
+                selectedEntity = newEntity
+                
+                return
+            }
+        }
     }
     
     @objc
     private func handleTap(recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: arView)
         
-        gameHandleTap(location: tapLocation)
-        constructionHandleTap(location: tapLocation)
+        if let _ = gameManager {
+            gameHandleTap(location: tapLocation)
+        } else if let _ = constructionManager {
+            constructionHandleTap(location: tapLocation)
+        }
     }
     
     func gameHandleTap(location: CGPoint) {
@@ -429,15 +471,15 @@ class ARViewController: UIViewController {
         
         switch gameManager.current {
         case .placing:
-            handleTapPlacing(location: location)
+            handleTapGamePlacing(location: location)
         case .playing:
-            handleTapPlaying(location: location)
+            handleTapGamePlaying(location: location)
         default:
             break
         }
     }
     
-    func handleTapPlacing(location: CGPoint) {
+    func handleTapGamePlacing(location: CGPoint) {
         guard let result = arView.raycast(from: location,
                                           allowing: .existingPlaneGeometry,
                                           alignment: .horizontal).first else { return }
@@ -448,7 +490,7 @@ class ARViewController: UIViewController {
         gameManager?.board.addPoint(to: arAnchor)
     }
     
-    func handleTapPlaying(location: CGPoint) {
+    func handleTapGamePlaying(location: CGPoint) {
         let hits = arView.hitTest(location)
         
         for hit in hits {
@@ -462,21 +504,36 @@ class ARViewController: UIViewController {
     
     func constructionHandleTap(location: CGPoint) {
         guard let constructionManager = constructionManager else { return }
-                
+        
+        switch constructionManager.current {
+        case .placing:
+            handleTapConstructionPlacing(location: location)
+        case .constructing, .looking:
+            handleTapConstructing(location: location)
+        default:
+            break
+        }
+    }
+    
+    func handleTapConstructionPlacing(location: CGPoint) {
+        guard let constructionManager = constructionManager else { return }
+        
         if !board.haveReference() {
             guard let result = arView.raycast(from: location,
                                               allowing: .existingPlaneGeometry,
                                               alignment: .horizontal).first else { return }
             
             let arAnchor = ARAnchor(name: "Reference", transform: result.worldTransform)
-//            board.createEntity(from: arAnchor)
+
             constructionManager.board.decode(map: construction!.map,
                                              reference:AnchorEntity(anchor: arAnchor))
             constructionManager.change(to: .looking)
-            return
         }
-        
-        
+    }
+    
+    func handleTapConstructing(location: CGPoint) {
+        guard let constructionManager = constructionManager else { return }
+
         let hits = arView.hitTest(location)
         
         for hit in hits {
@@ -586,7 +643,7 @@ extension ARViewController: ConstructionDelegate {
         addCoachingView()
         arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
-        
+    
     func placingToLooking() {
         arConstructionView.looking()
         setUpOrientationEntity()
@@ -604,7 +661,7 @@ extension ARViewController: ConstructionDelegate {
     
     // TODO: send to ml
     func addingToClassifying() {
-       
+        
     }
     
     func constructingToLooking() {
@@ -640,23 +697,32 @@ extension ARViewController: ConstructionDelegate {
     }
     
     func saveProgress() {
-        construction!.map = constructionManager!.board.encode()
-        Sandbox.shared.add(construction!)
+        arView.snapshot(saveToHDR: false) { (image) in
+            if let imageReceived = image {
+                self.construction!.image = Image(withImage: imageReceived)
+            }
+            self.construction!.map = self.constructionManager!.board.encode()
+            
+            Sandbox.shared.add(self.construction!)
+            self.arConstructionView.leave()
+        }
     }
 }
 
 extension ARViewController: MLDelegate {
     func result(identifier: String, confidence: Float) {
-        debugPrint(type(of:self), #function)
         if EntityProperties.shared.mapFaceToTypes[identifier] != nil && confidence > 0.75 {
             let faces = EntityProperties.shared.mapFaceToTypes[identifier]
             let randomFace = Int.random(in: 0..<faces!.count)
             
-            addEntity(of: faces![randomFace])
-            constructionManager?.change(to: .constructing)
-            return
+            if let entity = addEntity(of: faces![randomFace]) {
+                selectedEntity = entity
+                showOrientationEntity()
+                constructionManager?.change(to: .constructing)
+                return
+            }
         }
-
+        
         constructionManager?.change(to: .adding)
     }
 }

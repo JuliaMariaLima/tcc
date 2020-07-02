@@ -9,10 +9,10 @@
 import UIKit
 
 struct Image: Codable {
-    let imageData: Data?
+    var imageData: Data?
     
-    init(withImage image: UIImage) {
-        self.imageData = image.pngData()
+    init(withImage image: UIImage?) {
+        self.imageData = image?.pngData()
     }
 
     func getImage() -> UIImage? {

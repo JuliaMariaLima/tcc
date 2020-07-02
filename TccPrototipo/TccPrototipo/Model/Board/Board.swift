@@ -89,6 +89,10 @@ class Board {
         
         if let reference = reference {
             entity.setOrientation(reference.orientation(relativeTo: reference), relativeTo: reference)
+
+            if entity.type == .Tetrahedron {
+                entity.setOrientation(simd_quatf.init(angle: Float.pi / 2.4, axis: [0, 1, 0]), relativeTo: entity)
+            }
         }
         
         updateMap(type: entity.type, isAdding: true)

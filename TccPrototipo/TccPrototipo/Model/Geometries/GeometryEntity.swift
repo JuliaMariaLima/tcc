@@ -34,21 +34,21 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
     }
     
     func addCollision() {
-        guard let scene = scene else { return }
+//        guard let scene = scene else { return }
 
-        collisionSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-//            self.stopAllAnimations()
-//            self.physicsBody?.mode = .dynamic //testar sem mudar
-        })
-        
-        collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
-//            self.stopAllAnimations()
+//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
+////            self.stopAllAnimations()
+////            self.physicsBody?.mode = .dynamic //testar sem mudar
+//        })
+//
+//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
+////            self.stopAllAnimations()
+////            self.physicsBody?.mode = .kinematic
+//        })
+//
+//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
 //            self.physicsBody?.mode = .kinematic
-        })
-        
-        collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
-            self.physicsBody?.mode = .kinematic
-        })
+//        })
     }
     
     func cancelCollision() {

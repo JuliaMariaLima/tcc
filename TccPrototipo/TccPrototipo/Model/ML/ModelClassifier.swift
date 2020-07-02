@@ -20,7 +20,7 @@ class ModelClassifier {
     }
     
     private func setUpRequest() {
-        let model = try! VNCoreMLModel(for: GeometryModel().model)
+        let model = try! VNCoreMLModel(for: GeometryClassifier().model)
         classificationRequest = VNCoreMLRequest(model: model, completionHandler: {
             [weak self] request, error in
             self?.processClassifications(for: request, error: error)

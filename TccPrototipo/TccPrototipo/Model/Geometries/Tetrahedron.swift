@@ -27,7 +27,7 @@ class TetrahedronEntity: GeometryEntity {
             Float(wantedSizeWD / modelDepthSize)),
                       relativeTo: self)
 
-        self.setOrientation(simd_quatf.init(angle: Float.pi / 2.4, axis: [0, 1, 0]), relativeTo: self)
+//        self.setOrientation(simd_quatf.init(angle: Float.pi / 2.4, axis: [0, 1, 0]), relativeTo: self)
         
         self.model = modelHolder.model
         self.model?.materials = [SimpleMaterial(color: color, isMetallic: false)]

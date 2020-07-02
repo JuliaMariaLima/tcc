@@ -242,18 +242,25 @@ class ARConstructionView: UIView {
     
     @objc
     private func save() {
+        leaveConstructionView.isHidden = true
+                
         ConstructionManager.shared.change(to: .saving)
         
-        leave()
+        loadingView.isHidden = false
+        
+//        leave()
     }
     
     @objc
-    private func leave() {
-        leaveConstructionView.isHidden = true
-        
-        initializingView.isHidden = false
-        
-        ConstructionManager.shared.change(to: .initializing)
+    func leave() {
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = true
+            self.leaveConstructionView.isHidden = true
+            
+            self.initializingView.isHidden = false
+            
+            ConstructionManager.shared.change(to: .initializing)
+        }
     }
     
     @objc
