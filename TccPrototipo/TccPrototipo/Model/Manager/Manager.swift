@@ -17,7 +17,7 @@ class Manager {
             moveDuration = TimeInterval(3 * moveDistance)
         }
     }
-    
+        
     func set(moveDistance: Float) {
         self.moveDistance = moveDistance
     }

@@ -12,7 +12,7 @@ import Combine
 
 
 class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
-    var collisionSubs: [Cancellable] = []
+    var collisionSubs: Cancellable?
     var type: GeometryType!
     
     required init(type: GeometryType) {
@@ -25,7 +25,7 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
         self.physicsBody = PhysicsBodyComponent()
         self.physicsBody?.isTranslationLocked = (false, true, false)
         self.physicsBody?.mode = .kinematic
-//        self.physicsBody?.isContinuousCollisionDetectionEnabled = true
+        //        self.physicsBody?.isContinuousCollisionDetectionEnabled = true
         self.physicsBody?.isRotationLocked = (true, true, true)
     }
     
@@ -35,26 +35,32 @@ class GeometryEntity: Entity, HasModel, HasCollision, HasPhysics {
     
     func addCollision() {
 //        guard let scene = scene else { return }
-
-//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Began.self, on: self) { event in
-////            self.stopAllAnimations()
-////            self.physicsBody?.mode = .dynamic //testar sem mudar
+        
+//        collisionSubs = scene.subscribe(to: CollisionEvents.Began.self, on: self) {
+//            [weak self] (event) in
+//            guard let self = self else {return}
+//            self.stopAllAnimations()
+//            self.physicsBody?.mode = .dynamic //testar sem mudar
+//        }
+        
+//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) {
+//            [weak self] (event) in
+//            guard let self = self else {return}
+//            self.stopAllAnimations()
+//            self.physicsBody?.mode = .dynamic
 //        })
 //
-//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Updated.self, on: self) { event in
-////            self.stopAllAnimations()
-////            self.physicsBody?.mode = .kinematic
-//        })
-//
-//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) { event in
+//        collisionSubs.append(scene.subscribe(to: CollisionEvents.Ended.self, on: self) {
+//            [weak self] (event) in
+//            guard let self = self else {return}
 //            self.physicsBody?.mode = .kinematic
 //        })
     }
     
     func cancelCollision() {
-        for collision in collisionSubs {
-            collision.cancel()
-        }
-        self.physicsBody?.mode = .kinematic
+//        for collision in collisionSubs {
+//        collisionSubs?.cancel()
+//        }
+//        self.physicsBody?.mode = .kinematic
     }
 }

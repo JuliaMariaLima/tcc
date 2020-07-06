@@ -80,9 +80,9 @@ class EntityProperties {
     private func setUpColors() -> [UIColor] {
         var c: [UIColor] = []
         
-        c.append(.blue)
-        c.append(.borderRed)
-        c.append(.labelYellow)
+        c.append(.circleBlue)
+        c.append(.squareRed)
+        c.append(.triangleYellow)
         
         return c
     }

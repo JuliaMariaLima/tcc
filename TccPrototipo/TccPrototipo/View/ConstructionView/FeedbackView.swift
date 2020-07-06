@@ -31,6 +31,18 @@ class FeedbackView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func clickFeedback() {
+        titleLabel.text = "Click on a plan to start the construction!"
+    }
+    
+    func swapFeedback() {
+        titleLabel.text = "Swap to see other shapes of the drawing!"
+    }
+    
+    func set(text: String) {
+        titleLabel.text = text
+    }
+    
     private func setUpBackground() {
         let image = UIImage(named: "backgroundFeedback")
         backgroundFeedback = UIImageView(image: image)
@@ -59,10 +71,9 @@ class FeedbackView: UIView {
         titleLabel = UILabel(frame: .zero)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont(name: "ChalkboardSE-Light", size: 26)!
-        titleLabel.numberOfLines = 3
+        titleLabel.numberOfLines = 4
         titleLabel.textColor = .lightGreen
         titleLabel.textAlignment = .center
-        titleLabel.text = "Click on a\nplan to start\nthe construction!"
         
         addSubview(titleLabel)
     }
@@ -87,8 +98,9 @@ class FeedbackView: UIView {
     
     private func setUpTitleConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+            titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.widthAnchor.constraint(equalTo: self.widthAnchor)
         ])
     }
     

@@ -32,10 +32,10 @@ protocol GameDelegate: class {
     func placed(area: Double)
     
     func counted()
-        
-    func updatedEntities(_ entities: [GeometryEntity])
-        
+                
     func updateScores(score: Int, highScore: Int)
     
     func played()
+    
+    func nextLevel(_ level: Int)
 }

@@ -36,14 +36,12 @@ class HomeViewController: UIViewController {
     
     @objc
     func play() {
-        print("play")
         arViewController.action = .game
         self.navigationController?.pushViewController(arViewController, animated: true)
     }
     
     @objc
     func construct() {
-        print("construct")
         sandboxViewController.arViewController = arViewController
         self.navigationController?.pushViewController(sandboxViewController, animated: true)
     }

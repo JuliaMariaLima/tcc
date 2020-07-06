@@ -33,11 +33,25 @@
 		9639DDC124453F6C000B309F /* PointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC024453F6C000B309F /* PointsView.swift */; };
 		9639DDC324454708000B309F /* EndGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC224454708000B309F /* EndGameView.swift */; };
 		9639DDC82460F74B000B309F /* StartGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9639DDC72460F74B000B309F /* StartGameView.swift */; };
-		96581785239612FB004C90D0 /* Floor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96581784239612FB004C90D0 /* Floor.swift */; };
 		965855E424A29A4600521454 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965855E324A29A4600521454 /* Array.swift */; };
 		9667A90624ABBDB000302EF6 /* ARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9667A90524ABBDB000302EF6 /* ARGameView.swift */; };
 		9667A90924ABE28300302EF6 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9667A90824ABE28300302EF6 /* Manager.swift */; };
 		9688BA6424AE3B50009ACFF5 /* GeometryClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA6324AE3B50009ACFF5 /* GeometryClassifier.mlmodel */; };
+		9688BA7124AF82B4009ACFF5 /* finished.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6924AF82B4009ACFF5 /* finished.mp3 */; };
+		9688BA7224AF82B4009ACFF5 /* remove.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6A24AF82B4009ACFF5 /* remove.mp3 */; };
+		9688BA7324AF82B4009ACFF5 /* gameMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6B24AF82B4009ACFF5 /* gameMusic.mp3 */; };
+		9688BA7424AF82B4009ACFF5 /* add.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6C24AF82B4009ACFF5 /* add.mp3 */; };
+		9688BA7524AF82B4009ACFF5 /* swap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6D24AF82B4009ACFF5 /* swap.mp3 */; };
+		9688BA7624AF82B4009ACFF5 /* wrongAdd.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6E24AF82B4009ACFF5 /* wrongAdd.mp3 */; };
+		9688BA7724AF82B4009ACFF5 /* sandboxMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA6F24AF82B4009ACFF5 /* sandboxMusic.mp3 */; };
+		9688BA7824AF82B4009ACFF5 /* countDown.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9688BA7024AF82B4009ACFF5 /* countDown.mp3 */; };
+		9688BA7A24AF82C9009ACFF5 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA7924AF82C9009ACFF5 /* AudioManager.swift */; };
+		9688BA7E24B11F60009ACFF5 /* LevelUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA7D24B11F60009ACFF5 /* LevelUpView.swift */; };
+		9688BA8024B22A93009ACFF5 /* TutorialDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA7F24B22A93009ACFF5 /* TutorialDelegate.swift */; };
+		9688BA8324B22C29009ACFF5 /* ARTutorialGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA8224B22C29009ACFF5 /* ARTutorialGameView.swift */; };
+		9688BA8524B24337009ACFF5 /* FadeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA8424B24337009ACFF5 /* FadeView.swift */; };
+		9688BA8724B243E9009ACFF5 /* ImagesTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA8624B243E9009ACFF5 /* ImagesTutorialView.swift */; };
+		9688BA8924B26E70009ACFF5 /* TutorialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688BA8824B26E70009ACFF5 /* TutorialManager.swift */; };
 		969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969CBC58243BF52B002152AA /* HomeViewController.swift */; };
 		96B5639324218707006D595B /* triangularPrism.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639224218707006D595B /* triangularPrism.obj */; };
 		96B5639524218892006D595B /* semiSphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 96B5639424218892006D595B /* semiSphere.obj */; };
@@ -88,7 +102,7 @@
 		9616D6D224AD0D8F006823DF /* AllArrowButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllArrowButtonsView.swift; sourceTree = "<group>"; };
 		9616D6D824AD1A60006823DF /* InitializingConstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitializingConstructionView.swift; sourceTree = "<group>"; };
 		9616D6DC24AD42CB006823DF /* ModelClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelClassifier.swift; sourceTree = "<group>"; };
-		961720E623789059008E1298 /* TccPrototipo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TccPrototipo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		961720E623789059008E1298 /* TheRightShape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheRightShape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		961720E923789059008E1298 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		961720EB23789059008E1298 /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 		961720F22378905C008E1298 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -112,11 +126,25 @@
 		9639DDC024453F6C000B309F /* PointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsView.swift; sourceTree = "<group>"; };
 		9639DDC224454708000B309F /* EndGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGameView.swift; sourceTree = "<group>"; };
 		9639DDC72460F74B000B309F /* StartGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartGameView.swift; sourceTree = "<group>"; };
-		96581784239612FB004C90D0 /* Floor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Floor.swift; sourceTree = "<group>"; };
 		965855E324A29A4600521454 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		9667A90524ABBDB000302EF6 /* ARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameView.swift; sourceTree = "<group>"; };
 		9667A90824ABE28300302EF6 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		9688BA6324AE3B50009ACFF5 /* GeometryClassifier.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = GeometryClassifier.mlmodel; sourceTree = "<group>"; };
+		9688BA6924AF82B4009ACFF5 /* finished.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = finished.mp3; sourceTree = "<group>"; };
+		9688BA6A24AF82B4009ACFF5 /* remove.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = remove.mp3; sourceTree = "<group>"; };
+		9688BA6B24AF82B4009ACFF5 /* gameMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameMusic.mp3; sourceTree = "<group>"; };
+		9688BA6C24AF82B4009ACFF5 /* add.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = add.mp3; sourceTree = "<group>"; };
+		9688BA6D24AF82B4009ACFF5 /* swap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swap.mp3; sourceTree = "<group>"; };
+		9688BA6E24AF82B4009ACFF5 /* wrongAdd.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wrongAdd.mp3; sourceTree = "<group>"; };
+		9688BA6F24AF82B4009ACFF5 /* sandboxMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sandboxMusic.mp3; sourceTree = "<group>"; };
+		9688BA7024AF82B4009ACFF5 /* countDown.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = countDown.mp3; sourceTree = "<group>"; };
+		9688BA7924AF82C9009ACFF5 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		9688BA7D24B11F60009ACFF5 /* LevelUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUpView.swift; sourceTree = "<group>"; };
+		9688BA7F24B22A93009ACFF5 /* TutorialDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDelegate.swift; sourceTree = "<group>"; };
+		9688BA8224B22C29009ACFF5 /* ARTutorialGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARTutorialGameView.swift; sourceTree = "<group>"; };
+		9688BA8424B24337009ACFF5 /* FadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeView.swift; sourceTree = "<group>"; };
+		9688BA8624B243E9009ACFF5 /* ImagesTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesTutorialView.swift; sourceTree = "<group>"; };
+		9688BA8824B26E70009ACFF5 /* TutorialManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialManager.swift; sourceTree = "<group>"; };
 		969CBC58243BF52B002152AA /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		96B5639224218707006D595B /* triangularPrism.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triangularPrism.obj; sourceTree = "<group>"; };
 		96B5639424218892006D595B /* semiSphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = semiSphere.obj; sourceTree = "<group>"; };
@@ -180,6 +208,7 @@
 				9639DDC72460F74B000B309F /* StartGameView.swift */,
 				9639DDC224454708000B309F /* EndGameView.swift */,
 				963112B224A1B0EC0080B421 /* CountDownView.swift */,
+				9688BA7D24B11F60009ACFF5 /* LevelUpView.swift */,
 			);
 			path = GameView;
 			sourceTree = "<group>";
@@ -239,7 +268,7 @@
 		961720E723789059008E1298 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				961720E623789059008E1298 /* TccPrototipo.app */,
+				961720E623789059008E1298 /* TheRightShape.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,22 +282,8 @@
 				9639DDB7243BFC0C000B309F /* View */,
 				961720E923789059008E1298 /* AppDelegate.swift */,
 				961720F22378905C008E1298 /* Assets.xcassets */,
-				9639DDBC243D5AE2000B309F /* cube.obj */,
-				960ED88F2392C3220037675A /* quadrilateralPyramid.obj */,
-				96B5639224218707006D595B /* triangularPrism.obj */,
-				96B5639424218892006D595B /* semiSphere.obj */,
-				96B5639D24219398006D595B /* cylinder.obj */,
-				96B563A124219637006D595B /* pentagonalPrism.obj */,
-				96B563A32421966A006D595B /* octahedron.obj */,
-				96B563A5242196BD006D595B /* tetrahedron.obj */,
-				96B563A724219AB3006D595B /* cone.obj */,
-				96B563A924219BD5006D595B /* pentagonalPyramid.obj */,
-				96B9AEB724A67AB800A230D0 /* arrows.obj */,
 				961720F42378905C008E1298 /* LaunchScreen.storyboard */,
 				961720F72378905C008E1298 /* Info.plist */,
-				96B9AEAD24A4049700A230D0 /* matchForms.mp3 */,
-				9639DDB5243BFA87000B309F /* UIColor.swift */,
-				965855E324A29A4600521454 /* Array.swift */,
 			);
 			path = TccPrototipo;
 			sourceTree = "<group>";
@@ -276,6 +291,9 @@
 		963112A724A152C90080B421 /* Geometries */ = {
 			isa = PBXGroup;
 			children = (
+				9688BA6524AF820D009ACFF5 /* Model */,
+				96B563BC24297D90006D595B /* GeometryEntity.swift */,
+				96B9AEDE24AA370100A230D0 /* GeometryType.swift */,
 				961720FD2378906A008E1298 /* Cube.swift */,
 				960ED8912392C3950037675A /* QuadrilateralPyramid.swift */,
 				96B563AC24256D4D006D595B /* TriangularPrism.swift */,
@@ -286,9 +304,6 @@
 				96B563B624257304006D595B /* Tetrahedron.swift */,
 				96B563B82425758F006D595B /* Cone.swift */,
 				96B563BA242576FC006D595B /* PentagonalPyramid.swift */,
-				96B563BC24297D90006D595B /* GeometryEntity.swift */,
-				96B9AEDE24AA370100A230D0 /* GeometryType.swift */,
-				96581784239612FB004C90D0 /* Floor.swift */,
 				96B9AEB324A66EAC00A230D0 /* OrientationEntity.swift */,
 			);
 			path = Geometries;
@@ -302,6 +317,7 @@
 				9616D6D624AD18F5006823DF /* ArrowButtons */,
 				9616D6D424AD18B4006823DF /* GameView */,
 				9616D6D524AD18C2006823DF /* ConstructionView */,
+				9688BA8124B22AC3009ACFF5 /* TutorialView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -312,6 +328,7 @@
 				9667A90824ABE28300302EF6 /* Manager.swift */,
 				963112A824A152E30080B421 /* GameManager.swift */,
 				9624F3B024ABE71A00D7357A /* ConstructionManager.swift */,
+				9688BA8824B26E70009ACFF5 /* TutorialManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -322,8 +339,71 @@
 				9624F3B424ABEEED00D7357A /* MLDelegate.swift */,
 				963112AA24A15BB00080B421 /* GameDelegate.swift */,
 				9624F3B224ABE76700D7357A /* ConstructionDelegate.swift */,
+				9688BA7F24B22A93009ACFF5 /* TutorialDelegate.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		9688BA6524AF820D009ACFF5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9639DDBC243D5AE2000B309F /* cube.obj */,
+				960ED88F2392C3220037675A /* quadrilateralPyramid.obj */,
+				96B5639224218707006D595B /* triangularPrism.obj */,
+				96B5639424218892006D595B /* semiSphere.obj */,
+				96B5639D24219398006D595B /* cylinder.obj */,
+				96B563A124219637006D595B /* pentagonalPrism.obj */,
+				96B563A32421966A006D595B /* octahedron.obj */,
+				96B563A5242196BD006D595B /* tetrahedron.obj */,
+				96B563A724219AB3006D595B /* cone.obj */,
+				96B563A924219BD5006D595B /* pentagonalPyramid.obj */,
+				96B9AEB724A67AB800A230D0 /* arrows.obj */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9688BA6624AF823E009ACFF5 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */,
+				9639DDB5243BFA87000B309F /* UIColor.swift */,
+				965855E324A29A4600521454 /* Array.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		9688BA6724AF8277009ACFF5 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				9688BA6824AF82A1009ACFF5 /* Sounds */,
+				9688BA7924AF82C9009ACFF5 /* AudioManager.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		9688BA6824AF82A1009ACFF5 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				96B9AEAD24A4049700A230D0 /* matchForms.mp3 */,
+				9688BA6C24AF82B4009ACFF5 /* add.mp3 */,
+				9688BA7024AF82B4009ACFF5 /* countDown.mp3 */,
+				9688BA6924AF82B4009ACFF5 /* finished.mp3 */,
+				9688BA6B24AF82B4009ACFF5 /* gameMusic.mp3 */,
+				9688BA6A24AF82B4009ACFF5 /* remove.mp3 */,
+				9688BA6F24AF82B4009ACFF5 /* sandboxMusic.mp3 */,
+				9688BA6D24AF82B4009ACFF5 /* swap.mp3 */,
+				9688BA6E24AF82B4009ACFF5 /* wrongAdd.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		9688BA8124B22AC3009ACFF5 /* TutorialView */ = {
+			isa = PBXGroup;
+			children = (
+				9688BA8424B24337009ACFF5 /* FadeView.swift */,
+				9688BA8624B243E9009ACFF5 /* ImagesTutorialView.swift */,
+			);
+			path = TutorialView;
 			sourceTree = "<group>";
 		};
 		969CBC57243BF4EE002152AA /* Controller */ = {
@@ -334,6 +414,7 @@
 				961720EB23789059008E1298 /* ARViewController.swift */,
 				9667A90524ABBDB000302EF6 /* ARGameView.swift */,
 				9624F3B624AC08A500D7357A /* ARConstructionView.swift */,
+				9688BA8224B22C29009ACFF5 /* ARTutorialGameView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -341,15 +422,16 @@
 		96B563AB24256D29006D595B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9688BA6724AF8277009ACFF5 /* Audio */,
 				9667A90724ABE26A00302EF6 /* Manager */,
 				96B9AED924AA29B000A230D0 /* Board */,
 				963112A724A152C90080B421 /* Geometries */,
 				9616D6DE24AD4AC5006823DF /* ML */,
+				9688BA6624AF823E009ACFF5 /* Extension */,
 				96B9AEE024AA43C900A230D0 /* EntityProperties.swift */,
 				96B9AEB924A8DDD700A230D0 /* Sandbox.swift */,
 				96B9AEBB24A8DDF000A230D0 /* Construction.swift */,
 				96B9AEC324A9020A00A230D0 /* Image.swift */,
-				96B9AEAF24A5183900A230D0 /* CodableExtensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -381,7 +463,7 @@
 			);
 			name = TccPrototipo;
 			productName = TccPrototipo;
-			productReference = 961720E623789059008E1298 /* TccPrototipo.app */;
+			productReference = 961720E623789059008E1298 /* TheRightShape.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -422,19 +504,27 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9688BA7724AF82B4009ACFF5 /* sandboxMusic.mp3 in Resources */,
+				9688BA7624AF82B4009ACFF5 /* wrongAdd.mp3 in Resources */,
+				9688BA7424AF82B4009ACFF5 /* add.mp3 in Resources */,
 				96B563A224219637006D595B /* pentagonalPrism.obj in Resources */,
 				96B563AA24219BD5006D595B /* pentagonalPyramid.obj in Resources */,
 				96B5639E24219398006D595B /* cylinder.obj in Resources */,
 				9639DDBD243D5AE2000B309F /* cube.obj in Resources */,
+				9688BA7124AF82B4009ACFF5 /* finished.mp3 in Resources */,
 				96B563A6242196BD006D595B /* tetrahedron.obj in Resources */,
+				9688BA7224AF82B4009ACFF5 /* remove.mp3 in Resources */,
 				96B5639524218892006D595B /* semiSphere.obj in Resources */,
 				96B9AEB824A67AB800A230D0 /* arrows.obj in Resources */,
+				9688BA7824AF82B4009ACFF5 /* countDown.mp3 in Resources */,
+				9688BA7324AF82B4009ACFF5 /* gameMusic.mp3 in Resources */,
 				961720F62378905C008E1298 /* LaunchScreen.storyboard in Resources */,
 				961720F32378905C008E1298 /* Assets.xcassets in Resources */,
 				96B563A42421966A006D595B /* octahedron.obj in Resources */,
 				960ED8902392C3220037675A /* quadrilateralPyramid.obj in Resources */,
 				96B5639324218707006D595B /* triangularPrism.obj in Resources */,
 				96B9AEAE24A4049700A230D0 /* matchForms.mp3 in Resources */,
+				9688BA7524AF82B4009ACFF5 /* swap.mp3 in Resources */,
 				96B563A824219AB3006D595B /* cone.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +545,7 @@
 				9667A90924ABE28300302EF6 /* Manager.swift in Sources */,
 				96B9AEC624A9290F00A230D0 /* BackHomeView.swift in Sources */,
 				96B563AD24256D4D006D595B /* TriangularPrism.swift in Sources */,
+				9688BA8524B24337009ACFF5 /* FadeView.swift in Sources */,
 				96B563B1242570B2006D595B /* Cylinder.swift in Sources */,
 				96B563BD24297D90006D595B /* GeometryEntity.swift in Sources */,
 				96B9AEDF24AA370100A230D0 /* GeometryType.swift in Sources */,
@@ -464,6 +555,7 @@
 				9624F3B524ABEEED00D7357A /* MLDelegate.swift in Sources */,
 				963112A924A152E30080B421 /* GameManager.swift in Sources */,
 				9616D6D924AD1A60006823DF /* InitializingConstructionView.swift in Sources */,
+				9688BA7A24AF82C9009ACFF5 /* AudioManager.swift in Sources */,
 				9624F3B124ABE71A00D7357A /* ConstructionManager.swift in Sources */,
 				96B9AED124A9430900A230D0 /* DrawGeometryView.swift in Sources */,
 				969CBC59243BF52B002152AA /* HomeViewController.swift in Sources */,
@@ -477,6 +569,7 @@
 				9624F3B324ABE76700D7357A /* ConstructionDelegate.swift in Sources */,
 				96B563AF24256FFE006D595B /* SemiSphere.swift in Sources */,
 				96B9AEB424A66EAC00A230D0 /* OrientationEntity.swift in Sources */,
+				9688BA8924B26E70009ACFF5 /* TutorialManager.swift in Sources */,
 				963112AB24A15BB00080B421 /* GameDelegate.swift in Sources */,
 				96B9AEBC24A8DDF000A230D0 /* Construction.swift in Sources */,
 				96B9AED524A96B0A00A230D0 /* Canvas.swift in Sources */,
@@ -489,7 +582,7 @@
 				96B563B92425758F006D595B /* Cone.swift in Sources */,
 				9639DDC324454708000B309F /* EndGameView.swift in Sources */,
 				96B9AED724A97FE000A230D0 /* LoadView.swift in Sources */,
-				96581785239612FB004C90D0 /* Floor.swift in Sources */,
+				9688BA7E24B11F60009ACFF5 /* LevelUpView.swift in Sources */,
 				96B9AEBA24A8DDD700A230D0 /* Sandbox.swift in Sources */,
 				96B563B52425715E006D595B /* Octahedron.swift in Sources */,
 				963112AF24A1695B0080B421 /* PlaceBoardView.swift in Sources */,
@@ -498,6 +591,9 @@
 				96B9AECA24A9391F00A230D0 /* RemoveGeometryView.swift in Sources */,
 				96B9AEE324AA66E600A230D0 /* FeedbackView.swift in Sources */,
 				9639DDBB243C07B7000B309F /* ArrowButtonView.swift in Sources */,
+				9688BA8324B22C29009ACFF5 /* ARTutorialGameView.swift in Sources */,
+				9688BA8024B22A93009ACFF5 /* TutorialDelegate.swift in Sources */,
+				9688BA8724B243E9009ACFF5 /* ImagesTutorialView.swift in Sources */,
 				96B9AEC424A9020A00A230D0 /* Image.swift in Sources */,
 				960ED8922392C3950037675A /* QuadrilateralPyramid.swift in Sources */,
 				96B9AECF24A940F100A230D0 /* LeaveConstructionView.swift in Sources */,
@@ -641,6 +737,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 98PH68S7E9;
 				INFOPLIST_FILE = TccPrototipo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
@@ -648,8 +745,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.TccPrototipo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.juliamaria.therightshae;
+				PRODUCT_NAME = TheRightShape;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -660,6 +757,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 98PH68S7E9;
 				INFOPLIST_FILE = TccPrototipo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
@@ -667,8 +765,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.TccPrototipo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.juliamaria.therightshae;
+				PRODUCT_NAME = TheRightShape;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -21,7 +21,7 @@ class TimerView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.duration = duration
         self.currentTime = self.duration
-
+        
         setUpBackground()
         setUpLabel()
     }
@@ -35,7 +35,7 @@ class TimerView: UIView {
         labelTimer.translatesAutoresizingMaskIntoConstraints = false
         labelTimer.font = UIFont(name: "ChalkboardSE-Regular", size: 30)!
         labelTimer.numberOfLines = 1
-        labelTimer.textColor = .labelYellow
+        labelTimer.textColor = .triangleYellow
         labelTimer.textAlignment = .center
         
         addSubview(labelTimer)
@@ -59,7 +59,7 @@ class TimerView: UIView {
         let padding: CGFloat = 20
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 62),
-            self.widthAnchor.constraint(equalToConstant: 96),
+            self.widthAnchor.constraint(equalToConstant: 111),
             self.rightAnchor.constraint(equalTo: superview.rightAnchor, constant: -padding),
             self.topAnchor.constraint(equalTo: superview.topAnchor, constant: padding)
         ])
@@ -112,11 +112,14 @@ class TimerView: UIView {
         timer!.fire()
     }
     
-    func restart() {
-        self.timer?.invalidate()
+    func restart() -> Int {
+        timer?.invalidate()
         
-        self.currentTime = self.duration
+        let timeLeft = currentTime!
+        currentTime = duration
         
         updateLabel()
+        
+        return timeLeft
     }
 }

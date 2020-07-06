@@ -37,7 +37,21 @@ class GameManager: Manager {
     private var pointsPerCombination: Int = 10
     
     var minimumArea: Double = 0.05
-            
+    
+    var level: Int! = 1
+    
+    var matchesNeeded: Int {
+        return level
+    }
+    
+    var currentMatches: Int = 0 {
+        didSet {
+            if currentMatches == matchesNeeded {
+                nextLevel()
+            }
+        }
+    }
+    
     private override init() {
         super.init()
         self.current = .waiting
@@ -85,14 +99,26 @@ class GameManager: Manager {
     
     func newCombination() -> Int {
         score += pointsPerCombination
+        currentMatches += 1
         
         return score
     }
     
+    func addMore(points: Int) {
+        score += points
+    }
+    
     func resetPoints() -> Int {
+        restartGame()
+        
         score = 0
         
         return score
+    }
+    
+    private func restartGame() {
+        level = 1
+        currentMatches = 0
     }
     
     private func countScores() {
@@ -107,5 +133,14 @@ class GameManager: Manager {
         let size = board.getGeometriesSize()
         
         set(moveDistance: Float(200 * size))
+    }
+    
+    private func nextLevel() {
+        delegate?.nextLevel(level)
+        level += 1
+        currentMatches = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            self.board.createNewBoard()
+        }
     }
 }

@@ -20,7 +20,6 @@ class SandboxViewController: UIViewController {
     var arViewController: ARViewController!
     
     override func viewWillAppear(_ animated: Bool) {
-        print("appeareing???????")
         constructions = Sandbox.shared.getAll()
         collectionView?.reloadData()
     }
@@ -73,15 +72,12 @@ extension SandboxViewController: UICollectionViewDataSource {
             cell.icon = UIImage(named: "newConstruction")
         } else {
             cell.icon = constructions[indexPath.item - 1].image!.getImage()!
-            print("======= iconeeeee")
         }
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("clicou em \(indexPath.item)")
-        
         if indexPath.item == 0 {
             arViewController.construction = Construction()
         } else {

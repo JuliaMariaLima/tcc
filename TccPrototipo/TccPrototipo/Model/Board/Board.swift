@@ -114,17 +114,13 @@ class Board {
     func didCombine(movingEntity: GeometryEntity, staticEntity: GeometryEntity) -> Bool {
         let staticPosition = staticEntity.position(relativeTo: nil)
         let movingPosition = movingEntity.position(relativeTo: nil)
-        //        print("static position: ", staticPosition)
-        //        print("moving position: ", movingPosition)
         
         var goalPosition = staticPosition
         goalPosition.y += Float(geometriesSize)
         
         let dist = distance(staticPosition, movingPosition)
-        //        print("DIST (static: ", staticEntity.type!, " - moving: ", movingEntity.type!, ") = ", dist)
         
         let delta: Float = Float(geometriesSize + geometriesSize * 0.1)
-        //        print("Delta: \(delta)")
         
         if dist < delta &&
             movingPosition.y > staticPosition.y + Float(geometriesSize - geometriesSize * 0.1) { // encaixou
@@ -156,10 +152,11 @@ class Board {
     func haveACombination() -> Bool {
         for entity in entities {
             if haveAPair(entity) {
+                print("have a combination")
                 return true
             }
         }
-        
+        print("dont have a combination")
         return false
     }
     

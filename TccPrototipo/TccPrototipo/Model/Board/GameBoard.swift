@@ -21,12 +21,6 @@ class GameBoard: Board {
     private var initialGamePositions: [SIMD2<Float>] = []
     private var backupGamePositions: [SIMD2<Float>] = []
     private var availablePositions: [SIMD2<Float>] = []
-    override var entities: [GeometryEntity] {
-        didSet {
-            delegate?.updatedEntities(entities)
-            print("Have combination: \(haveACombination())")
-        }
-    }
     
     private var area: Double!
     private var vertices: [SIMD2<Float>] = []
@@ -64,6 +58,10 @@ class GameBoard: Board {
         
         for position in initialGamePositions {
             createEntity(in: position)
+        }
+        
+        if !haveACombination() {
+            createACombination()
         }
     }
     
@@ -122,7 +120,7 @@ class GameBoard: Board {
         delegate?.placed(area: area)
     }
     
-    private func createNewBoard() {
+    func createNewBoard() {
         clearBoard()
         randomizeInitialBoard()
     }
@@ -189,12 +187,16 @@ class GameBoard: Board {
     }
     
     private func setGeometriesSize(area: Double) {
-        let a = 0.05015012 //0.02
-        let b = 2.646978 //1.743192
-        let c = 3.594851 //1.836294
-        let d = 1.021068 //0.5250122
+        let a = 0.05412485 // 0.05015012 //0.02
+        let b = 1.559054 // 2.646978 //1.743192
+        let c = 10109.99 // 3.594851 //1.836294
+        let d = 264589.6 // 1.021068 //0.5250122
         let x = area / c
-        let size = d + ((a - d) / (1 + pow(x, b)))
+        var size = d + ((a - d) / (1 + pow(x, b)))
+        
+        if size > 0.6 {
+            size = 0.6
+        }
         
         set(geometriesSize: size)
         print("SIZEE: \(size)")

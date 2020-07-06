@@ -22,8 +22,6 @@ class ARViewController: UIViewController {
     
     var action: Action!
     
-    var entities: [GeometryEntity] = []
-    
     var selectedEntity: GeometryEntity?
     
     var orientationAnchorEntity: AnchorEntity!
@@ -47,6 +45,7 @@ class ARViewController: UIViewController {
             guard let gameManager = gameManager else { return }
             manager = gameManager
             constructionManager = nil
+            tutorialManager = nil
             board = gameManager.board
         }
     }
@@ -56,7 +55,18 @@ class ARViewController: UIViewController {
             guard let constructionManager = constructionManager else { return }
             manager = constructionManager
             gameManager = nil
+            tutorialManager = nil
             board = constructionManager.board
+        }
+    }
+    
+    var tutorialManager: TutorialManager? {
+        didSet {
+            guard let tutorialManager = tutorialManager else { return }
+            manager = tutorialManager
+            gameManager = nil
+            constructionManager = nil
+            board = tutorialManager.board
         }
     }
     
@@ -64,9 +74,9 @@ class ARViewController: UIViewController {
     
     var generator: UINotificationFeedbackGenerator = UINotificationFeedbackGenerator()
     
-    var matchFormSound: AVAudioPlayer!
-    
     var modelClassifier: ModelClassifier!
+    
+    var audio: AudioManager! = AudioManager()
     
     lazy var cameraAnchor: AnchorEntity! = {
         var anchor = AnchorEntity(.camera)
@@ -100,6 +110,8 @@ class ARViewController: UIViewController {
     
     var arConstructionView: ARConstructionView!
     
+    var arTutorialGameView: ARTutorialGameView!
+    
     // MARK:- Life Cicle
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,7 +119,6 @@ class ARViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        debugPrint(type(of:self), #function)
         super.viewDidLoad()
         
         arView = ARView(frame: UIScreen.main.bounds, cameraMode: .ar, automaticallyConfigureSession: true)
@@ -125,8 +136,8 @@ class ARViewController: UIViewController {
         setUpConfigurations()
         setUpARGameView()
         setUpARConstructionView()
+        setUpARTutorialGameView()
         setUpSubscription()
-        setUpMatchFormSound()
         setUpCoachingView()
         setUpModelClassifier()
     }
@@ -136,32 +147,56 @@ class ARViewController: UIViewController {
     func setUpActionsMode() {
         switch action {
         case .game:
-            gameManager = GameManager.shared
-            gameManager!.delegate = self
-            arGameView.isHidden = false
-            arConstructionView.isHidden = true
+            setUpGameManager()
         case .sandbox:
-            guard let _ = construction else { fatalError("Didn't find any construction!") }
-            constructionManager = ConstructionManager.shared
-            constructionManager!.delegate = self
-            arConstructionView.isHidden = false
-            arGameView.isHidden = true
+            setUpSandboxManager()
         case .none:
             fatalError("Didn't find any action!")
         }
+    }
+    
+    func setUpGameManager() {
+        if TutorialManager.shared.isFirstTime {
+            tutorialManager = TutorialManager.shared
+            arGameView.isHidden = true
+            arTutorialGameView.isHidden = false
+            arConstructionView.isHidden = true
+            arTutorialGameView.arView = arView
+            arTutorialGameView.delegate = self
+            return
+        }
+        
+        gameManager = GameManager.shared
+        gameManager!.delegate = self
+        arGameView.isHidden = false
+        arTutorialGameView.isHidden = true
+        arConstructionView.isHidden = true
+    }
+    
+    func setUpSandboxManager() {
+        guard let _ = construction else { fatalError("Didn't find any construction!") }
+        constructionManager = ConstructionManager.shared
+        constructionManager!.delegate = self
+        arConstructionView.isHidden = false
+        arGameView.isHidden = true
+        arTutorialGameView.isHidden = true
     }
     
     func setUpConfigurations() {
         configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         
-        // arView.debugOptions = [.showAnchorGeometry, .showAnchorOrigins, .showPhysics]
+        if ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth) {
+            configuration.frameSemantics.insert(.personSegmentationWithDepth)
+        }
+        
         arView.session.run(configuration)
     }
     
     func createBoard() {
         GameManager.shared.createBoard(delegate: self, view: arView)
         ConstructionManager.shared.createBoard(delegate: self, view: arView)
+        TutorialManager.shared.createBoard(view: arView)
     }
     
     func setUpARGameView() {
@@ -198,6 +233,21 @@ class ARViewController: UIViewController {
         arConstructionView.addClassifyButtonTarget(target: self, action: #selector(startClassify))
     }
     
+    func setUpARTutorialGameView() {
+        arTutorialGameView = ARTutorialGameView(frame: self.view.frame)
+        arView.addSubview(arTutorialGameView)
+        
+        arTutorialGameView.setUpConstraints()
+        
+        arTutorialGameView.allArrowButtonsView.addButtonsAction(
+            buttonUpAction: #selector(buttonUpClicked),
+            buttonDownAction: #selector(buttonDownClicked),
+            buttonLeftAction: #selector(buttonLeftClicked),
+            buttonRightAction: #selector(buttonRightClicked),
+            buttonReleasedAction: #selector(buttonReleased),
+            target: self)
+    }
+    
     func setUpSubscription() {
         animation = arView.scene.subscribe(to: AnimationEvents.PlaybackTerminated.self) { (event) in
             guard let movingEntity = event.playbackController.entity as? GeometryEntity else { return }
@@ -209,17 +259,16 @@ class ARViewController: UIViewController {
                             
                             self.selectedEntity = nil
                             self.hideOrientationEntity()
-                            self.constructionManager?.change(to: .looking)
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                                self.gameManager?.board.removePair(firstEntity: movingEntity, secondEntity: entity)
-                                self.gameManager?.board.addNewPair()
-                            }
-                            
-                            self.changeGamePoints(self.gameManager?.newCombination())
-                            
                             self.generator.notificationOccurred(.success)
-                            self.matchFormSound.play()
+                            self.audio.playMatchForm()
+                            
+                            if let _ = self.gameManager {
+                                self.gameCombine(movingEntity: movingEntity, staticEntity: entity)
+                            } else if let _ = self.constructionManager {
+                                self.constructionCombine()
+                            } else if let _ = self.tutorialManager {
+                                self.tutorialCombine()
+                            }
                             
                             return
                         }
@@ -229,22 +278,8 @@ class ARViewController: UIViewController {
         }
     }
     
-    func setUpMatchFormSound() {
-        let soundPath = Bundle.main.path(forResource: "matchForms.mp3", ofType: nil)!
-        let soundUrl = URL(fileURLWithPath: soundPath)
-        
-        matchFormSound = try! AVAudioPlayer(contentsOf: soundUrl)
-    }
-    
     func setUpOrientationEntity() {
-        var oritentationEntity: OrientationEntity!
-        if let size = gameManager?.board.getGeometriesSize() {
-            oritentationEntity = OrientationEntity(size: 2 * size)
-        }
-        
-        if let size = constructionManager?.board.getGeometriesSize() {
-            oritentationEntity = OrientationEntity(size: 2 * size)
-        }
+        let oritentationEntity = OrientationEntity(size: 2 * board.getGeometriesSize())
         
         orientationAnchorEntity = AnchorEntity()
         orientationAnchorEntity.addChild(oritentationEntity)
@@ -256,6 +291,30 @@ class ARViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
+    func gameCombine(movingEntity: GeometryEntity, staticEntity: GeometryEntity) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            self.gameManager?.board.removePair(firstEntity: movingEntity, secondEntity: staticEntity)
+            self.gameManager?.board.addNewPair()
+        }
+
+        self.changeGamePoints(self.gameManager?.newCombination(), isRestart: false)
+    }
+    
+    func constructionCombine() {
+        constructionManager?.change(to: .looking)
+    }
+    
+    func tutorialCombine() {
+        tutorialManager?.isFirstTime = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            self.tutorialManager?.board.restart()
+            self.arTutorialGameView.finished()
+        }
+        
+        setUpGameManager()
+    }
     
     func resetToInitialConfiguration() {
         arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
@@ -281,13 +340,13 @@ class ARViewController: UIViewController {
     }
     
     func resetWidgets() {
-        changeGamePoints(gameManager?.resetPoints())
+        changeGamePoints(gameManager?.resetPoints(), isRestart: true)
         arGameView.restartTimer()
     }
     
-    func changeGamePoints(_ points: Int?) {
+    func changeGamePoints(_ points: Int?, isRestart: Bool) {
         guard let points = points else { return }
-        arGameView.updatePoints(points)
+        arGameView.updatePoints(points, isRestart: isRestart)
     }
     
     func getSelectedEntityTransform() -> Transform? {
@@ -321,6 +380,7 @@ class ARViewController: UIViewController {
         position.y += Float(size / 2)
         
         DispatchQueue.main.async {
+            self.orientationAnchorEntity.setScale([1, 1, 1], relativeTo: nil)
             self.orientationAnchorEntity?.setPosition(position, relativeTo: nil)
             self.arView.scene.addAnchor(self.orientationAnchorEntity)
         }
@@ -429,24 +489,27 @@ class ARViewController: UIViewController {
     @objc
     private func handleSwipe(recognizer: UISwipeGestureRecognizer) {
         guard let constructionManager = constructionManager else { return }
-        guard constructionManager.current == .looking ||  constructionManager.current == .constructing else {
-            return
-        }
+        guard constructionManager.current == .looking ||
+            constructionManager.current == .constructing else { return }
         
         let swipeLocation = recognizer.location(in: arView)
         
         let hits = arView.hitTest(swipeLocation)
-        debugPrint(type(of:self), #function)
+        
         for hit in hits {
             if hit.entity is GeometryEntity {
                 let entity = hit.entity as! GeometryEntity
+                
                 guard let type = entity.type.next(), let reference = board.getReference() else { return }
-                print("Entrou aqui com \(type), \(entity.position(relativeTo: reference))")
+                
                 let anchorEntity = AnchorEntity(world: entity.position(relativeTo: reference))
                 let newEntity = board.createEntity(in: anchorEntity, type)
-                board.removeEntity(entity)
                 
-                guard let _ = selectedEntity else { return }
+                board.removeEntity(entity)
+                audio.playSwap()
+                arConstructionView.hideFeedbackView()
+                
+                guard let _ = selectedEntity, entity == selectedEntity else { return }
                 
                 selectedEntity = newEntity
                 
@@ -508,6 +571,7 @@ class ARViewController: UIViewController {
         switch constructionManager.current {
         case .placing:
             handleTapConstructionPlacing(location: location)
+            audio.playSandboxMusic()
         case .constructing, .looking:
             handleTapConstructing(location: location)
         default:
@@ -524,7 +588,7 @@ class ARViewController: UIViewController {
                                               alignment: .horizontal).first else { return }
             
             let arAnchor = ARAnchor(name: "Reference", transform: result.worldTransform)
-
+            
             constructionManager.board.decode(map: construction!.map,
                                              reference:AnchorEntity(anchor: arAnchor))
             constructionManager.change(to: .looking)
@@ -533,7 +597,7 @@ class ARViewController: UIViewController {
     
     func handleTapConstructing(location: CGPoint) {
         guard let constructionManager = constructionManager else { return }
-
+        
         let hits = arView.hitTest(location)
         
         for hit in hits {
@@ -587,10 +651,14 @@ extension ARViewController: GameDelegate {
         gameManager?.board.randomizeInitialBoard()
         setUpOrientationEntity()
         appearWidgets()
-        
+        startTimer()
+    }
+    
+    func startTimer() {
         DispatchQueue.main.async { [unowned self] in
             self.arGameView.startTimer {
                 self.played()
+                self.audio.playFinished()
             }
         }
     }
@@ -621,10 +689,7 @@ extension ARViewController: GameDelegate {
     
     func counted() {
         gameManager?.change(to: .playing)
-    }
-    
-    func updatedEntities(_ entities: [GeometryEntity]) {
-        self.entities = entities
+        audio.playGameMusic()
     }
     
     func updateScores(score: Int, highScore: Int) {
@@ -633,6 +698,14 @@ extension ARViewController: GameDelegate {
     
     func played() {
         gameManager?.change(to: .finished)
+    }
+    
+    func nextLevel(_ level: Int) {
+        arGameView.showLevelUp()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            self.gameManager?.addMore(points: self.arGameView.levelUp(level))
+            self.startTimer()
+        }
     }
 }
 
@@ -659,10 +732,7 @@ extension ARViewController: ConstructionDelegate {
     
     func addingToLooking() {}
     
-    // TODO: send to ml
-    func addingToClassifying() {
-        
-    }
+    func addingToClassifying() {}
     
     func constructingToLooking() {
         selectedEntity = nil
@@ -675,18 +745,20 @@ extension ARViewController: ConstructionDelegate {
         hideOrientationEntity()
     }
     
-    // TODO: draw the result
     func classifyingToConstructing() {
         arConstructionView.constructing()
+        audio.playAdd()
     }
     
     func classifyingToAdding() {
         arConstructionView.addingAgain()
+        audio.playWrongAdd()
     }
     
     func leavingToInitializing() {
         coachingView?.removeFromSuperview()
         board.restart()
+        audio.stopSandboxMusic()
         goHome()
     }
     
@@ -694,6 +766,7 @@ extension ARViewController: ConstructionDelegate {
     
     func removeSelectedEntity() {
         board.removeEntity(selectedEntity!)
+        audio.playRemove()
     }
     
     func saveProgress() {
@@ -708,6 +781,8 @@ extension ARViewController: ConstructionDelegate {
         }
     }
 }
+
+// MARK:- ML Delegate
 
 extension ARViewController: MLDelegate {
     func result(identifier: String, confidence: Float) {
@@ -727,7 +802,34 @@ extension ARViewController: MLDelegate {
     }
 }
 
-//MARK: - AR Coaching Overlay View Delegate
+// MARK:- ML Delegate
+
+extension ARViewController: TutorialDelegate {
+    func showObject(type: GeometryType) -> GeometryEntity {
+        let anchorEntity = AnchorEntity()
+        anchorEntity.position = cameraAnchor.position(relativeTo: nil)
+        anchorEntity.position.z -= 0.5
+        anchorEntity.position.y -= 0.2
+        
+        return board.createEntity(in: anchorEntity, type)
+    }
+    
+    func showOrientedEntity(for object: GeometryEntity) {
+        selectedEntity = object
+        setUpOrientationEntity()
+        showOrientationEntity()
+    }
+    
+    func showObjectUnder(object: GeometryEntity, type: GeometryType) -> GeometryEntity {
+        let anchorEntity = AnchorEntity()
+        anchorEntity.position = object.position(relativeTo: nil)
+        anchorEntity.position.y -= 0.3
+        
+        return board.createEntity(in: anchorEntity, type)
+    }
+}
+
+// MARK: - AR Coaching Overlay View Delegate
 
 extension ARViewController: ARCoachingOverlayViewDelegate {
     

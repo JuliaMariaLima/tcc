@@ -32,6 +32,8 @@ class ARConstructionView: UIView {
 
     var allArrowButtonsView: AllArrowButtonsView!
     
+    var isFirst: Bool = true
+    
     // MARK: Life Cicle
     
     override init(frame: CGRect) {
@@ -155,6 +157,7 @@ class ARConstructionView: UIView {
     
     func showFeedBackView() {
         feedbackView.isHidden = false
+        feedbackView.clickFeedback()
     }
     
     func looking() {
@@ -187,6 +190,11 @@ class ARConstructionView: UIView {
             self.removeButton.isHidden = false
             self.closeButton.isHidden = false
             self.allArrowButtonsView.buttonsIsHidden(false)
+            if self.isFirst {
+                self.isFirst = false
+                self.feedbackView.isHidden = false
+                self.feedbackView.swapFeedback()
+            }
         }
     }
     
@@ -201,6 +209,10 @@ class ARConstructionView: UIView {
         loadingView.isHidden = false
         
         ConstructionManager.shared.change(to: .classifying)
+    }
+    
+    func hideFeedbackView() {
+        feedbackView.isHidden = true
     }
     
     // MARK: Objc Actions
@@ -247,8 +259,6 @@ class ARConstructionView: UIView {
         ConstructionManager.shared.change(to: .saving)
         
         loadingView.isHidden = false
-        
-//        leave()
     }
     
     @objc

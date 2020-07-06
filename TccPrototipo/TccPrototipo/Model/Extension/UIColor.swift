@@ -29,8 +29,9 @@ extension UIColor {
     }
     
     static let lightGreen = UIColor.init(hex: "B2FBBA")
-    static let labelYellow = UIColor.init(hex: "F5CE23")
-    static let borderRed = UIColor.init(hex: "F5243D")
+    static let triangleYellow = UIColor.init(hex: "F5CE23")
+    static let squareRed = UIColor.init(hex: "F5243D")
+    static let circleBlue = UIColor.init(hex: "2587F5")
 }
 
 

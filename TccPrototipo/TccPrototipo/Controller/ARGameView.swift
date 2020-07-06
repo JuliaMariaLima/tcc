@@ -23,6 +23,8 @@ class ARGameView: UIView {
     
     private var countDownView: CountDownView!
     
+    private var levelUpView: LevelUpView!
+    
     var allArrowButtonsView: AllArrowButtonsView!
     
     override init(frame: CGRect) {
@@ -40,6 +42,7 @@ class ARGameView: UIView {
         setUpPlaceBoardView()
         setUpStartGameView()
         setUpEndGameView()
+        setUpLevelUpView()
     }
     
     required init?(coder: NSCoder) {
@@ -91,12 +94,18 @@ class ARGameView: UIView {
         endGameView.homeButton.addTarget(target, action: #selector(goHome), for: .touchDown)
     }
     
+    private func setUpLevelUpView() {
+        levelUpView = LevelUpView(frame: .zero)
+        self.addSubview(levelUpView)
+    }
+    
     func addCountDownViewDelegate(delegate: GameDelegate?) {
         countDownView.delegate = delegate
     }
     
-    func updatePoints(_ points: Int) {
-       pointsView.update(points)
+    func updatePoints(_ points: Int, isRestart: Bool) {
+        debugPrint(type(of:self), #function)
+        pointsView.update(points, isRestart: isRestart)
     }
     
     func timerIsHidden(_ isHidden: Bool) {
@@ -134,7 +143,18 @@ class ARGameView: UIView {
     }
     
     func restartTimer() {
-        timerView.restart()
+        let _ = timerView.restart()
+    }
+    
+    func levelUp(_ level: Int) -> Int {
+        let timeLeft = timerView.restart()
+        pointsView.sum(timeLeft)
+        
+        return timeLeft
+    }
+    
+    func showLevelUp() {
+        levelUpView.show()
     }
     
     func setUpConstraints() {
@@ -153,7 +173,7 @@ class ARGameView: UIView {
         timerView.setUpConstraints()
         pointsView.setUpConstraints()
         countDownView.setUpConstraints()
-        
+        levelUpView.setUpConstraints()
         placeBoardView.setUpConstraints()
         startGameView.setUpConstraints()
         endGameView.setUpConstraints()
@@ -181,9 +201,9 @@ class ARGameView: UIView {
         endGameView.isHidden = true
         
         countDownView.start()
-        
-        pointsView.update(GameManager.shared.resetPoints())
-        timerView.restart()
+        debugPrint(type(of:self), #function)
+        pointsView.update(GameManager.shared.resetPoints(), isRestart: true)
+        let _ = timerView.restart()
         
         GameManager.shared.board.clearBoard()
         GameManager.shared.change(to: .counting)
